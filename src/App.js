@@ -4,6 +4,7 @@ const App = ({ mapService }) => {
     useEffect(() => {
         const container = document.getElementById('map');
         const map = new mapService(container);
+        map.setShuttlebusStop();
     }, []);
 
     return (

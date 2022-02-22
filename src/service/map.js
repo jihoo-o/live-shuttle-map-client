@@ -1,5 +1,3 @@
-// 🗑
-
 const { kakao } = window;
 
 // dummy data

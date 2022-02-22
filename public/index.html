@@ -2,7 +2,8 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+        <link rel="manifest" href="manifest.json" />
+        <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <meta
@@ -11,6 +12,11 @@
         />
         <title>React App</title>
         <link rel="stylesheet" href="../src/styles.css" />
+        <script type="module">
+            import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
+            const el = document.createElement('pwa-update');
+            document.body.appendChild(el);
+        </script>
     </head>
     <body>
         <div id="root"></div>
