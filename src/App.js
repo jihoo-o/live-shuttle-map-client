@@ -1,16 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import Map from './components/map.js';
 
 const App = ({ mapService }) => {
+    let navigate = useNavigate();
     useEffect(() => {
-        const container = document.getElementById('map');
-        const map = new mapService(container);
-        map.setShuttlebusStop();
+        navigate('/services/taxi');
     }, []);
 
     return (
-        <div>
-            <div id="map" style={{ width: 500, height: 500 }}></div>
-        </div>
+        <Routes>
+            <Route
+                path="services/taxi"
+                element={<Map mapService={mapService} />}
+            ></Route>
+        </Routes>
     );
 };
 

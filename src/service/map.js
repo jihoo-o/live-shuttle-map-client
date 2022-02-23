@@ -4,7 +4,7 @@ const { kakao } = window;
 const stations = [
     {
         id: 1,
-        name: 'noop',
+        title: 'noop',
         location: {
             lat: 0,
             lng: 0,
@@ -12,7 +12,7 @@ const stations = [
     },
     {
         id: 2,
-        name: 'NamsanFireStation',
+        title: 'NamsanFireStation',
         location: {
             lat: 0,
             lng: 0,
@@ -20,7 +20,7 @@ const stations = [
     },
     {
         id: 3,
-        name: 'HanbatSportsComplex',
+        title: 'HanbatSportsComplex',
         location: {
             lat: 0,
             lng: 0,
@@ -28,7 +28,7 @@ const stations = [
     },
     {
         id: 4,
-        name: 'BusaFiveWayIntersection',
+        title: 'BusaFiveWayIntersection',
         location: {
             lat: 0,
             lng: 0,
@@ -36,7 +36,7 @@ const stations = [
     },
     {
         id: 5,
-        name: 'MotorcycleStreet',
+        title: 'MotorcycleStreet',
         location: {
             lat: 0,
             lng: 0,
