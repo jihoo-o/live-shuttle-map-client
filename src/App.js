@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Map from './components/map.js';
+import TaxiService from './pages/TaxiService.js';
 
 const App = ({ mapService }) => {
     let navigate = useNavigate();
@@ -10,10 +11,7 @@ const App = ({ mapService }) => {
 
     return (
         <Routes>
-            <Route
-                path="services/taxi"
-                element={<Map mapService={mapService} />}
-            ></Route>
+            <Route path="services/taxi" element={<TaxiService />}></Route>
         </Routes>
     );
 };
