@@ -17,7 +17,7 @@ const TaxiService = (props) => {
             <RealtimeBusInfo />
             <ServicePanel>
                 <ServiceLocations />
-                {/* <Chatrooms /> */}
+                <Chatrooms />
             </ServicePanel>
         </>
     );
