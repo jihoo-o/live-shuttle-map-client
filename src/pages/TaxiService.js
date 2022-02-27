@@ -13,7 +13,6 @@ const TaxiService = (props) => {
 
     return (
         <>
-            <Header />
             <RealtimeBusInfo />
             <ServicePanel>
                 <ServiceLocations />
