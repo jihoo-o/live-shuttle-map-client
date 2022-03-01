@@ -9,12 +9,13 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 
-const BottomTabs = (props) => {
+const BottomTabs = ({ openModalForm }) => {
+    // -> BottomNavigation
+
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
-        console.log(event.target);
     };
 
     return (
@@ -40,6 +41,7 @@ const BottomTabs = (props) => {
                     color="primary"
                     aria-label="add"
                     style={{ margin: '0 1rem 5px 1rem' }}
+                    onClick={openModalForm}
                 >
                     <AddIcon />
                 </Fab>
