@@ -1,13 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Services = (props) => {
+const Services = ({ currentService, setCurrentService }) => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!currentService) {
+            return;
+        }
+
+        switch (currentService) {
+            case 'taxi':
+                navigate('/services/taxi');
+                break;
+            case 'delivery':
+                navigate('/services/delivery');
+                break;
+            default:
+                throw new Error('존재하지 않는 서비스입니다.');
+        }
+    }, [currentService]);
 
     return (
         <nav>
-            <li onClick={() => navigate('/services/taxi')}>택시</li>
-            <li onClick={() => navigate('/services/delivery')}>배달</li>
+            <li
+                onClick={() => {
+                    setCurrentService('taxi');
+                    navigate('/services/taxi');
+                }}
+            >
+                택시
+            </li>
+            <li
+                onClick={() => {
+                    setCurrentService('delivery');
+                    navigate('/services/delivery');
+                }}
+            >
+                배달
+            </li>
         </nav>
     );
 };

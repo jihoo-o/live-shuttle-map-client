@@ -8,11 +8,13 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
 
 const BottomTabs = ({ openModalForm }) => {
     // -> BottomNavigation
 
     const [value, setValue] = React.useState(0);
+    const navigate = useNavigate();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -30,11 +32,13 @@ const BottomTabs = ({ openModalForm }) => {
                     style={{ minWidth: 50 }}
                     icon={<HomeIcon />}
                     aria-label="home"
+                    onClick={() => navigate('/home')}
                 />
                 <Tab
                     style={{ minWidth: 50 }}
                     icon={<ChatBubbleIcon />}
                     aria-label="chat"
+                    onClick={() => navigate('/conversations/list')}
                 />
                 <Fab
                     size="medium"
