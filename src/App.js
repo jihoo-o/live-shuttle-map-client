@@ -7,6 +7,7 @@ import Services from './pages/Services.js';
 import TaxiService from './pages/TaxiService.js';
 
 const App = ({ mapService }) => {
+    const [userId, setUserId] = useState('1');
     const [currentService, setCurrentService] = useState(null);
     let navigate = useNavigate();
 
@@ -30,7 +31,10 @@ const App = ({ mapService }) => {
                 <Route path="delivery" element={<DeliveryService />} />
             </Route>
             <Route path="conversations" element={<ServiceTemplate />}>
-                <Route path="list" element={<Conversations />} />
+                <Route
+                    path="list"
+                    element={<Conversations userId={userId} />}
+                />
             </Route>
         </Routes>
     );

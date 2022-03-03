@@ -1,3 +1,4 @@
+import React from 'react';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
@@ -5,7 +6,7 @@ import { useEffect, useState } from 'react';
 const receiveStyle = `
 color: black;
 background: #e5e5ea;
-align-self: flex-end;
+align-self: flex-start;
 
     &:before {
         left: -7px;
