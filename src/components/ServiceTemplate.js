@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import BottomTabs from './BottomTabs';
 import Header from './Header';
@@ -6,13 +6,13 @@ import ModalForm from './ModalForm';
 
 // -> HomeLayout
 const ServiceTemplate = (props) => {
-    const [open, setOpen] = useState(false);
+    const [modalFormOpen, setModalFormOpen] = useState(false);
 
     const openModalForm = (open) => {
         if (open || open == null) {
-            setOpen(true);
+            setModalFormOpen(true);
         } else {
-            setOpen(false);
+            setModalFormOpen(false);
         }
     };
 
@@ -21,7 +21,9 @@ const ServiceTemplate = (props) => {
             <Header />
             <Outlet />
             <BottomTabs openModalForm={openModalForm} />
-            {open && <ModalForm open={open} openModalForm={openModalForm} />}
+            {modalFormOpen && (
+                <ModalForm open={modalFormOpen} openModalForm={openModalForm} />
+            )}
         </>
     );
 };

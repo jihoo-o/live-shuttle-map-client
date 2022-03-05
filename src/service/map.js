@@ -52,7 +52,7 @@ export class MapService {
             center: new kakao.maps.LatLng(33.450701, 126.570667),
             level: 3,
         });
-        // setMarkers()
+        // this.setMarkers();
         // setShuttlebusStop()
     }
 
@@ -95,7 +95,18 @@ export class MapService {
         this.map.setCenter(new kakao.maps.LatLng(location.lat, location.lng));
     }
     /** TODO */
-    addMarker(station) {}
+    // setMarkers() {
+    //     // getShuttlebusStops(<- backend).map(shuttlestop => addMarker(shuttlestop))
+    //     this.addMarker(new kakao.maps.LatLng(33.450701, 126.570667));
+    // }
+
+    // addMarker(position) {
+    //     const marker = new kakao.maps.Marker({
+    //         map: this.map,
+    //         position,
+    //     });
+    // }
+
     removeMarker(station) {}
     findNearestShuttlebusStop() {}
 }

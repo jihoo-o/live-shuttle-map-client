@@ -8,7 +8,6 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import ToggleButton from '@mui/material/ToggleButton';
 import Tag from './Tag';
 
 const StyledModal = styled(ModalUnstyled)`

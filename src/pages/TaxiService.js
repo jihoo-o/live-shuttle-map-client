@@ -1,11 +1,11 @@
 import React from 'react';
-import ServiceLocations from '../components/ServiceLocations';
+import LocationPanel from '../components/LocationPanel';
 import Chatrooms from '../components/Chatrooms';
 import Header from '../components/Header';
 import RealtimeBusInfo from '../components/RealtimeBusInfo';
 import ServicePanel from '../components/ServicePanel';
 
-const TaxiService = (props) => {
+const TaxiService = ({ mapService }) => {
     // Header(back + notification)
     // RealtimeBusInfo
     // Recommendations
@@ -15,7 +15,7 @@ const TaxiService = (props) => {
         <>
             <RealtimeBusInfo />
             <ServicePanel>
-                <ServiceLocations />
+                <LocationPanel mapService={mapService} />
                 <Chatrooms />
             </ServicePanel>
         </>

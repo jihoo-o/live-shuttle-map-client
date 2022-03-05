@@ -27,7 +27,10 @@ const App = ({ mapService }) => {
                 }
             ></Route>
             <Route path="services" element={<ServiceTemplate />}>
-                <Route path="taxi" element={<TaxiService />} />
+                <Route
+                    path="taxi"
+                    element={<TaxiService mapService={mapService} />}
+                />
                 <Route path="delivery" element={<DeliveryService />} />
             </Route>
             <Route path="conversations" element={<ServiceTemplate />}>
