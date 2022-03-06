@@ -9,7 +9,17 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 
 const Header = (props) => {
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box
+            sx={{
+                flexGrow: 1,
+                position: '-webkit-sticky',
+                position: 'sticky',
+                top: 0,
+                left: 0,
+                right: 0,
+                zIndex: 999,
+            }}
+        >
             <AppBar position="static">
                 <Toolbar>
                     <IconButton

@@ -1,5 +1,7 @@
 import React from 'react';
-import Paper from '@mui/material/Paper';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import Box from '@mui/material/Box';
 import TableContainer from '@mui/material/TableContainer';
 import TableBody from '@mui/material/TableBody';
 import Table from '@mui/material/Table';
@@ -38,7 +40,14 @@ const rows = [
 
 const RealtimeBusInfo = (props) => {
     return (
-        <>
+        <Box
+            css={css`
+                position: -webkit-sticky;
+                position: sticky;
+                top: 56px;
+                z-index: 2;
+            `}
+        >
             {/* <TableContainer component={Paper}> */}
             <TableContainer>
                 <Table sx={{ minWidth: 400 }}>
@@ -60,7 +69,7 @@ const RealtimeBusInfo = (props) => {
                     </TableBody>
                 </Table>
             </TableContainer>
-        </>
+        </Box>
     );
 };
 
