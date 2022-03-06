@@ -3,15 +3,18 @@ import MapCategory from './MapCategory';
 
 const Map = ({ mapService }) => {
     const [category, setCategory] = useState(null);
+    // map이 존재하지 않는 경우
+    let map;
 
     useEffect(() => {
         const container = document.getElementById('map');
-        const map = new mapService(container);
-        map.setShuttlebusStop();
+        map = new mapService(container);
+        map && map.setShuttlebusStop();
     }, []);
 
     const handleCategoryChange = useCallback((clickedValue) => {
         setCategory(clickedValue);
+        map && map.changeMarker(clickedValue);
     }, []);
 
     return (

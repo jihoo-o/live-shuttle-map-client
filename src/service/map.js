@@ -60,6 +60,8 @@ const shuttlebusStops = [
     },
 ];
 
+const markers = { shuttle: [], delivery: [] };
+
 export class MapService {
     constructor(container) {
         this.map = new kakao.maps.Map(container, {
@@ -71,7 +73,6 @@ export class MapService {
             ),
             level: 2,
         });
-        this.setMarkers();
         // setShuttlebusStop()
     }
 
@@ -114,25 +115,58 @@ export class MapService {
         this.map.setCenter(new kakao.maps.LatLng(location.lat, location.lng));
     }
     /** TODO */
-    setMarkers() {
+    // setMarkers ->
+    // setShuttleMarkers
+    // setDeliveryMarkers
+    // setCaffeMarkers...
+    setShuttleMarkers(map) {
         // shuttlebusStops <- getShuttlebusStops <- (backend)
-        shuttlebusStops.forEach(({ location }) => {
-            this.addMarker(new kakao.maps.LatLng(location.lat, location.lng));
-        });
+
+        if (markers['shuttle'].length === 0) {
+            markers['shuttle'] =
+                //  -> validator
+                shuttlebusStops &&
+                shuttlebusStops.length !== 0 &&
+                shuttlebusStops.map(({ location }) =>
+                    this.createMarker(
+                        new kakao.maps.LatLng(location.lat, location.lng)
+                    )
+                );
+        }
+
+        // 받아온 데이터가 존재하지 않는 경우
+        shuttlebusStops &&
+            shuttlebusStops.length !== 0 &&
+            markers['shuttle'].forEach((marker) => marker.setMap(map));
     }
 
-    addMarker(position) {
+    createMarker(position) {
         const marker = new kakao.maps.Marker({
-            map: this.map,
             position,
             image: new kakao.maps.MarkerImage(
                 BusImage,
                 new kakao.maps.Size(48, 48)
             ),
         });
+
+        return marker;
     }
 
-    changeMarker() {}
+    changeMarker(categoryId) {
+        switch (categoryId) {
+            case '-1':
+                this.setShuttleMarkers(null);
+                break;
+            case '1':
+                this.setShuttleMarkers(this.map);
+                break;
+            case '2':
+                this.setShuttleMarkers(null);
+                break;
+            default:
+                throw new Error('존재하지 않는 카테고리입니다.');
+        }
+    }
 
     removeMarker(station) {}
     findNearestShuttlebusStop() {}

@@ -104,11 +104,11 @@ const ModalForm = ({ open, openModalForm, fixedInfo }) => {
                                 style={{ marginRight: '5px' }}
                             />
                             <Tag
-                                id="-1"
+                                id="-2"
                                 text="지금"
                                 use="time"
                                 onClick={handleTimeChange}
-                                isSelected={time === '-1' ? true : false}
+                                isSelected={time === '-2' ? true : false}
                             />
                             <input
                                 type="time"

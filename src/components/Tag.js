@@ -8,6 +8,7 @@ import { css } from '@emotion/react';
  */
 
 /**
+ * @param id -1을 제외한 값을 사용할 수 있음. isSelected가 이미 true인 경우 id가 아닌 '-1'을 반환함
  * @param use Tag 컴포넌트의 스타일을 설정할 수 있음
  */
 
@@ -16,15 +17,21 @@ const Tag = ({ id, text, use, onClick, isSelected }) => {
     const [color, setColor] = useState(null);
     const [opacity, setOpacity] = useState(null);
 
+    useEffect(() => {
+        if (id === '-1') {
+            throw new Error(`'-1'은 id로 사용할 수 없습니다.`);
+        }
+    }, []);
+
     const handleClick = useCallback(
         (e) => {
             if (onClick) {
-                onClick(id);
+                !isSelected ? onClick(id) : onClick('-1');
             } else {
                 throw new Error('클릭할 수 없습니다.');
             }
         },
-        [onClick]
+        [onClick, isSelected]
     );
 
     // useEffect(() => {
