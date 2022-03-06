@@ -11,7 +11,7 @@ import { css } from '@emotion/react';
  * @param use Tag 컴포넌트의 스타일을 설정할 수 있음
  */
 
-const Tag = ({ text, use, onClick, isSelected }) => {
+const Tag = ({ id, text, use, onClick, isSelected }) => {
     const [backgroundColor, setBackgroundColor] = useState(null);
     const [color, setColor] = useState(null);
     const [opacity, setOpacity] = useState(null);
@@ -19,7 +19,7 @@ const Tag = ({ text, use, onClick, isSelected }) => {
     const handleClick = useCallback(
         (e) => {
             if (onClick) {
-                onClick(text);
+                onClick(id);
             } else {
                 throw new Error('클릭할 수 없습니다.');
             }

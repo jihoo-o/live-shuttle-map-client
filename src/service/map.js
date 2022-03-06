@@ -132,6 +132,8 @@ export class MapService {
         });
     }
 
+    changeMarker() {}
+
     removeMarker(station) {}
     findNearestShuttlebusStop() {}
 }

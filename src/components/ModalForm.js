@@ -59,11 +59,7 @@ const ModalForm = ({ open, openModalForm, fixedInfo }) => {
     };
 
     const handleTimeChange = useCallback((clickedValue) => {
-        if (clickedValue === '지금') {
-            setTime('-1');
-        } else {
-            setTime(clickedValue);
-        }
+        setTime(clickedValue);
     }, []);
 
     const handleCapacityChange = useCallback((clickedValue) => {
@@ -108,6 +104,7 @@ const ModalForm = ({ open, openModalForm, fixedInfo }) => {
                                 style={{ marginRight: '5px' }}
                             />
                             <Tag
+                                id="-1"
                                 text="지금"
                                 use="time"
                                 onClick={handleTimeChange}
@@ -134,16 +131,18 @@ const ModalForm = ({ open, openModalForm, fixedInfo }) => {
                         <Grid container>
                             <PeopleAltIcon style={{ marginRight: '5px' }} />
                             <Tag
+                                id="1"
                                 text="2"
                                 use="name"
                                 onClick={handleCapacityChange}
-                                isSelected={capacity === '2' ? true : false}
+                                isSelected={capacity === '1' ? true : false}
                             />
                             <Tag
+                                id="2"
                                 text="3"
                                 use="name"
                                 onClick={handleCapacityChange}
-                                isSelected={capacity === '3' ? true : false}
+                                isSelected={capacity === '2' ? true : false}
                             />
                             <span>명</span>
                         </Grid>
