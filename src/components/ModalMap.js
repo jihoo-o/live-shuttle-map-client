@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { styled, Box } from '@mui/system';
 import ModalUnstyled from '@mui/base/ModalUnstyled';
 import Map from './Map';
@@ -41,8 +41,8 @@ const ModalMap = ({ open, openModalMap, mapService }) => {
         >
             <Box
                 style={{
-                    width: '50%',
-                    height: '50%',
+                    width: '80%',
+                    height: '80%',
                     minWidth: '300px',
                     minHeight: '300px',
                     bgcolor: 'white',
