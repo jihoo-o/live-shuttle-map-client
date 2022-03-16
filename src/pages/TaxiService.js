@@ -1,9 +1,9 @@
 import React from 'react';
-import LocationPanel from '../components/LocationPanel';
-import Chatrooms from '../components/Chatrooms';
-import Header from '../components/Header';
-import RealtimeBusInfo from '../components/RealtimeBusInfo';
-import ServicePanel from '../components/ServicePanel';
+import LocationPanel from '../🗑/LocationPanel';
+import Chatrooms from '../🗑/Chatrooms';
+import Header from '../🗑/Header';
+import RealtimeBusInfo from '../🗑/RealtimeBusInfo';
+import ServicePanel from '../🗑/ServicePanel';
 
 const TaxiService = ({ mapService }) => {
     // Header(back + notification)

@@ -2,7 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import Messages from '../components/Messages';
+import Messages from '../🗑/Messages';
 
 const chat = [
     {
