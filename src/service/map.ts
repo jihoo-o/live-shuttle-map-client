@@ -5,7 +5,9 @@ interface Coordinates {
     lng: number;
 }
 
-export interface Marker extends Coordinates {}
+export interface Marker extends Coordinates {
+    imageUrl: string;
+}
 
 export interface UserMarker extends Marker {
     userId: string;
@@ -23,12 +25,24 @@ export class Map {
         this.map = new kakao.maps.Map(container, {
             /** TODO */
             // 초기화 시작위치 변경
-            center: new kakao.maps.LatLng(33.450701, 126.570667),
-            level: 3,
+            center: new kakao.maps.LatLng(
+                35.267342474237104,
+                129.08901354232913
+            ),
+            level: 6,
         });
     }
 
-    addMarker(marker: Marker) {}
+    addMarker({ lat, lng, imageUrl }: Marker) {
+        new kakao.maps.Marker({
+            map: this.map,
+            position: new kakao.maps.LatLng(lat, lng),
+            image: new kakao.maps.MarkerImage(
+                imageUrl,
+                new kakao.maps.Size(48, 48)
+            ),
+        });
+    }
     removeMarker(marker: Marker) {}
     setCenter({ lat, lng }: Coordinates) {
         this.map.setCenter(new kakao.maps.LatLng(lat, lng));

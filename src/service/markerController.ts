@@ -1,4 +1,4 @@
-import { getUsers, getShuttleStops, getBusStops } from './../api/marker';
+import { getUsers, getShuttleStops } from './../api/marker';
 import { Marker, UserMarker, StationMarker } from './map';
 
 interface MarkerController {
@@ -8,11 +8,7 @@ interface MarkerController {
 }
 
 class BaseMarkerController {
-    private map: any;
-
-    // constructor() {
-    //     this.map = new Map( :HTMLDivElement)
-    // }
+    constructor(private map: any) {}
 
     protected setAll(markers: Array<Marker>) {
         // 이전 배열과 비교해서 달라진 부분만 렌더링함
@@ -27,7 +23,7 @@ class BaseMarkerController {
     }
 }
 
-class User extends BaseMarkerController implements MarkerController {
+export class User extends BaseMarkerController implements MarkerController {
     public async setAll() {
         const users: Array<UserMarker> = await getUsers();
         users
@@ -56,7 +52,7 @@ class User extends BaseMarkerController implements MarkerController {
     }
 }
 
-class Station extends BaseMarkerController implements MarkerController {
+export class Station extends BaseMarkerController implements MarkerController {
     public async setAllShuttlestops() {
         const shuttleStops: Array<StationMarker> = await getShuttleStops();
         shuttleStops
@@ -65,10 +61,10 @@ class Station extends BaseMarkerController implements MarkerController {
     }
 
     public async setAllBusstops() {
-        const busStops: Array<StationMarker> = await getBusStops();
-        busStops
-            ? super.setAll(busStops)
-            : console.error('버스 정류장 마커를 가져오지 못했습니다.');
+        // const busStops: Array<StationMarker> = await getBusStops();
+        // busStops
+        //     ? super.setAll(busStops)
+        //     : console.error('버스 정류장 마커를 가져오지 못했습니다.');
     }
 
     // for Admin

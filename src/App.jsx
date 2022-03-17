@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Map from './components/Map.js';
+import Map from './components/Map';
 
-const App = ({ mapService }) => {
-    // const [userId, setUserId] = useState('1');
+const App = ({ map, userMarkerController, stationMarkerController }) => {
+    const [userId, setUserId] = useState('1234');
     const [currentService, setCurrentService] = useState('taxi');
     // let navigate = useNavigate();
 
@@ -42,8 +42,11 @@ const App = ({ mapService }) => {
                 path="/"
                 element={
                     <Map
+                        userId={userId}
                         currentService={currentService}
-                        setCurrentService={setCurrentService}
+                        map={map}
+                        userMarkerController={userMarkerController}
+                        stationMarkerController={stationMarkerController}
                     />
                 }
             />
