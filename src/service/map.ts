@@ -1,3 +1,5 @@
+import { StationTypes, UserStates } from './markerController';
+
 const { kakao } = window;
 
 interface Coordinates {
@@ -11,11 +13,13 @@ export interface Marker extends Coordinates {
 
 export interface UserMarker extends Marker {
     userId: string;
+    state: UserStates;
 }
 
 export interface StationMarker extends Marker {
     stationId: string;
     name: Object;
+    type: StationTypes;
 }
 
 export class Map {
@@ -31,15 +35,20 @@ export class Map {
             ),
             level: 6,
         });
+
+        kakao.maps.event.addListener(this.map, 'click', (e) => {
+            const latlng = e.latLng;
+            console.log(`lat: ${latlng.getLat()}, lng: ${latlng.getLng()}`);
+        });
     }
 
     addMarker({ lat, lng, imageUrl }: Marker) {
-        new kakao.maps.Marker({
+        const marker = new kakao.maps.Marker({
             map: this.map,
             position: new kakao.maps.LatLng(lat, lng),
             image: new kakao.maps.MarkerImage(
                 imageUrl,
-                new kakao.maps.Size(48, 48)
+                new kakao.maps.Size(50, 50)
             ),
         });
     }

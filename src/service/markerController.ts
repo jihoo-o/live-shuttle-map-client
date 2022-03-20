@@ -7,6 +7,14 @@ interface MarkerController {
     delete(): void;
 }
 
+export type StationTypes = 'shuttlebus' | 'bus';
+export type UserStates = 'ready' | 'running' | 'blocked';
+type MarkerType<T> = T extends UserMarker
+    ? UserStates
+    : T extends StationMarker
+    ? StationTypes
+    : Marker;
+
 class BaseMarkerController {
     constructor(private map: any) {}
 
@@ -21,11 +29,19 @@ class BaseMarkerController {
     protected update() {
         // Socket.broadcast('update markers for user')
     }
+
+    // private getMarkerImages<T extends Marker>(marker: T): ImageUrl
+    private getMarkerImages<MarkerType extends Marker>(marker: MarkerType) {
+        //    switch(MarkerType) {
+        //        case MarkerType extends UserMarker:
+        //            break;
+        //    }
+    }
 }
 
 export class User extends BaseMarkerController implements MarkerController {
     public async setAll() {
-        const users: Array<UserMarker> = await getUsers();
+        const users = await getUsers();
         users
             ? super.setAll(users)
             : console.error('사용자 마커를 가져오지 못했습니다.');
@@ -54,7 +70,7 @@ export class User extends BaseMarkerController implements MarkerController {
 
 export class Station extends BaseMarkerController implements MarkerController {
     public async setAllShuttlestops() {
-        const shuttleStops: Array<StationMarker> = await getShuttleStops();
+        const shuttleStops = await getShuttleStops();
         shuttleStops
             ? super.setAll(shuttleStops)
             : console.error('셔틀 정류장 마커를 가져오지 못했습니다.');
