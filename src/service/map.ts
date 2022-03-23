@@ -2,13 +2,14 @@ import { StationTypes, UserStates } from './markerController';
 
 const { kakao } = window;
 
-interface Coordinates {
+export interface Coordinates {
     lat: number;
     lng: number;
 }
 
 export interface Marker extends Coordinates {
     imageUrl: string;
+    isDraggable?: boolean;
 }
 
 export interface UserMarker extends Marker {
@@ -42,18 +43,34 @@ export class Map {
         });
     }
 
-    addMarker({ lat, lng, imageUrl }: Marker) {
-        const marker = new kakao.maps.Marker({
+    addMarker({ lat, lng, imageUrl, isDraggable }: Marker) {
+        return new kakao.maps.Marker({
             map: this.map,
             position: new kakao.maps.LatLng(lat, lng),
             image: new kakao.maps.MarkerImage(
                 imageUrl,
                 new kakao.maps.Size(50, 50)
             ),
+            draggable: isDraggable ? true : false,
         });
     }
-    removeMarker(marker: Marker) {}
     setCenter({ lat, lng }: Coordinates) {
         this.map.setCenter(new kakao.maps.LatLng(lat, lng));
+    }
+    drawCircle(center, radius, color) {
+        return new kakao.maps.Circle({
+            map: this.map,
+            center: new kakao.maps.LatLng(center.lat, center.lng), // 원의 중심좌표 입니다
+            radius, // 미터 단위의 원의 반지름입니다
+            strokeWeight: 5, // 선의 두께입니다
+            strokeColor: color, // 선의 색깔입니다
+            strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+            strokeStyle: 'dashed', // 선의 스타일 입니다
+            fillColor: color, // 채우기 색깔입니다
+            fillOpacity: 0.7, // 채우기 불투명도 입니다
+        });
+    }
+    removeFromMap(kakaoObj) {
+        kakaoObj.setMap(null);
     }
 }

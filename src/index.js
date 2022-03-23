@@ -4,19 +4,22 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
 import './index.css';
 import { Map } from './dist/service/map.js';
-import { User, Station } from './dist/service/markerController.js';
+import { Taxi, Station } from './dist/service/markerController.js';
+import { ShapeController } from './dist/service/shapeController.js';
 
 const map = Map;
-const userMarkerController = User;
+const taxiMarkerController = Taxi;
 const stationMarkerController = Station;
+const shapeController = ShapeController;
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <App
                 map={map}
-                userMarkerController={userMarkerController}
+                taxiMarkerController={taxiMarkerController}
                 stationMarkerController={stationMarkerController}
+                shapeController={shapeController}
             />
         </BrowserRouter>
     </React.StrictMode>,

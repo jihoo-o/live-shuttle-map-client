@@ -1,5 +1,5 @@
-const markerImages = {
-    shuttlebus: `https://lh3.googleusercontent.com/jpYi5e5efpQ68U9dCkSWkutqglAbMg5luXUqm2ORfdIHK5YEpeAGp0-KRq64MeXpZt5Qp66P2tp2_wv7LqxxrWmCgjtLPfdTCz15fW9l-PI2CnHf-3_yykhg-lWCQuZwrgp4sD3MRIiw7PchCMy91LsF4hDtPb1p97i3ehTCvEx0DsX7PRaA_5reR9qeBub6mREg8Og2IXS5K02RxIpcLD08cuzqeDqW-DpCFhmURpc7bnWSb23F_WTCBvP2679oEUyJqK4cLOwPHRZc5rf1ZQqVg6vYIO2ULQhNnC-DilvuzszyA2tsAaLUxjPW_OLnMDbKpo-XjcnbhOrBpTYfhoAJh2L7Mgfnf24YasKPEjI1JT6toBfFBK0B936gO590B9nuNAi-ABjgV25O6DvLdr0EbNeJ3u1LmnfdFtOVzyGeYxtVxi_zdbF-m0AaRR0ZMEvucoP8H1t7d5g2GTL-bcR6l0tsvglvdo_TC6j4DjmHro-Tv17rdNgjHUNS40Jdyy6vfG6fvuhMR6_a_XP_iX-Qvtg04nyZwBXsz5nRbAepfI3v89McMczuZGM8VX8zCUFbzVqJ8NWITWo5AuqNNRYqMKi0uTNlJ2m0v1qn8ByS66f25dvNaO1dOIkUEWjg3ZwY7dgMFhGqnZMnVHPZlNz2CfjKj4G7wXYKRQasMv89S1nI_Lpo-fcbjJZEVA9aqpCsofD2ZRCA0MZK2Lf_Wa-9fZlpI-LnUS9qurg8PM9w1cKHBZ52oAbOCsEciT5bh73igENyIzNHsVrN2of6FdBFh2I6jp4=s500-no?authuser=1`,
+export const markerImages = {
+    shuttlebus: `https://lh3.googleusercontent.com/R12lqqD3a2a2yFEOBI5w2pTgwejG_P82IkbWCIzQwWf5W7pU-hQu0OfB5ED0380jVLcNvg0f3Yoem8mIb4LPwDzkbqnfuVyiUZ6EyYsDmKojoT1zF8iE3Wq9qoXtvWeFXaKvJmBJu3N1_nTVQCJcu1cCYF76AO8TbBnYXFmn-id7ryEeBLPPISGL65vszNdqBfQ1rgJbwnkWdhEiVydVwGW-68iMomBNpFdhC9O3BpaoLEl1dEktD_6Kcy78Vpb4gyQapA1Sg3w56U4X3IuUsfzcrAodYvfCkpFpcF5C6TWfg7DWD46xRHhyOKR7vebeF3AwLUDWoR3nvZYxzei1FiKx6XdHTzSGy5GOlutRgSQhSugGbj3jjmA_fNgkzTxthpp09GBgo_1SY6TBI-4fckO-_bkhDBulTvnXtdmKoziBxG-OOlykDM5-AciAx2UUm6Z2cwjRc4wJpkAMK5SgSu_qM3lfQkfuSl7tBChNsURrb361ckuHooy0bH0yaNOtf0feCm6yXB2FU75LjEc2c3YVZVvg24tu-fKghue9Bv42tAVm4go8bjFfkhBtXgeW9SOY0TdBP4RDqTsf2Ie08_yzsS69K7jNtQGCRIobXOjveDwlRl2DAy7FonsNYscNXFd4jlbpmQA9QfNlSDkA4Xi_N_uiCOFLISZC0gXoczrDx3eOP8M8g40qNcWePAi6BQIM2tFvkjOCz5kvCoICEwICz5gz7Ockm3aF1kurb1ehNyANORUNCsrXcR65KUsDtUQvK5WpPwaUA4EY73y3b5hK3uCuKI4=s500-no?authuser=1`,
     bus: `https://lh3.googleusercontent.com/Xb2jRt6XhtTGt0pAiX-Lhhm8FQoLGSslp401-os4SIVzSF3BuqB0CZ2TRMPNpyX03R8V2f47zGY_SiulC9zJ6PRWFBSXKcDf8UsdRZvGhK0iUqe__VCbHX5GP4vwYzraF_YsrhyZ6vKimivFm2tM-VfQOtBrJjhJ6-uk3y6mQKrgumb9raRMbYovcgPcpz2xbehJy-iVn2u1UptzWgDfnfdIo5sB1-uzqdSM22fmcwTUgHiH6d_FNkGunxxCJJVt57OTve-K5cbM4PuZAbHflU4zQowFgrelpFnbogV6RWp8KA-_utRvyeqwLFcyWUn31eLZE6klKae1K3Wf2C9rsqv-07lntm7VOABVmMT0E9dimjjDjJnZL0XjUiOySMfvoTld9ev8UIuDraW20WLt3nRkIUFFgGi6Iv0I2El-00i3-t94fhp06pVV8CSvHqMmekadBQi9qajmVYiZCLZQJqy7b49-EiHR7JgE3CJ4DxBIMxFvDoZLDuojmvv1-cEnTl62MmeieEmAe1uVLUpIP-3RNX9vgW_3wwFs5P0SO3LRg_xbm4LWyZ2jFmqCnxQzQrNR_Im-awjH44OvYZYZue6n21gJeSf-kwuWCKl77Q26EX8O84cd4vcw6y0v7vkbQPlsDxy0Qax6oLs1yrX0Lr2xVbozbYh6ZHasypqNse1FCLKwK1LIqjaBKtI5K1c0dW-xl9kjUhayUBDyxzUtWyy_xgD1djpQK9bEmNPqxdukM7FD4GNBcDzDn9Va5NEoFLLUSTz2ptrJZwJVFxE8M2JtyBFaeJ8=s512-no?authuser=1`,
     user: {
         ready: {
@@ -160,8 +160,6 @@ const shuttleStops = [
     },
 ];
 
-export const addUser = async (markerUser) => {};
-
 export const getUsers = async () => {
     return users.map((user) => ({
         ...user,
@@ -184,6 +182,15 @@ export const getShuttleStops = async () => {
 // return busStops;
 // };
 
-export const postUser = async () => {};
+export const postUser = async (userId, position) => {
+    return {
+        userId,
+        type: 'user',
+        state: 'ready',
+        // isCurrent: true,
+        lat: position.lat,
+        lng: position.lng,
+    };
+};
 
 export const deleteUser = async (userId) => {};
