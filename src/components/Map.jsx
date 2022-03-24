@@ -6,15 +6,17 @@ import ClearIcon from '@mui/icons-material/Clear';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
 import { getCurrentPosition } from '../dist/service/geolocation.js';
+import { markerImages } from '../dist/api/marker.js';
 
 const Map = React.forwardRef(
     ({ userId, map, taxiMarker, stationMarker, shapeController }, ref) => {
         const createMarkerBtn = useRef();
         const clearMarkerBtn = useRef();
         const sendMarkerBtn = useRef();
-        const [marker, setMarker] = useState(null);
         const [circles, setCircles] = useState([]);
-        const [position, setPosition] = useState(null);
+        const [position, setPosition] = useState(null); //
+        const [createMode, setCreateMode] = useState(false);
+        const [isCurrent, setIsCurrent] = useState(true);
 
         useEffect(() => {
             stationMarker && stationMarker.setAllShuttlestops();
@@ -42,7 +44,7 @@ const Map = React.forwardRef(
 
             return () => {
                 /**
-                 * Set removeEventListeners or the listeners would be run twice
+                 * removeEventListeners를 설정하지 않으면 useEffect가 여러번 실행되면서 listener가 여러번 등록됨
                  */
                 createMarkerBtn.current &&
                     createMarkerBtn.current.removeEventListener(
@@ -62,22 +64,24 @@ const Map = React.forwardRef(
                         addMarkerListener
                     );
             };
-        }, [map, marker, stationMarker, taxiMarker, shapeController]);
+        }, [map, stationMarker, taxiMarker, shapeController]);
 
-        // create marker
         const createMarkerListener = () => {
             console.log('created');
-            if (marker) {
+
+            if (createMode) {
                 window.alert('이미 생성중인 마커가 존재합니다.');
                 return;
             }
+            setCreateMode(true);
 
             getCurrentPosition(({ lat, lng }) => {
                 taxiMarker &&
-                    setMarker((marker) => {
-                        if (marker) return;
-                        return taxiMarker.create({ lat, lng });
-                    });
+                    taxiMarker.create(
+                        { lat, lng },
+                        markerImages['user']['ready']['isCurrent'],
+                        true
+                    );
 
                 if (shapeController) {
                     const newCircles = [];
@@ -89,49 +93,44 @@ const Map = React.forwardRef(
                     );
                     setCircles(newCircles);
                 }
-
                 setPosition({ lat, lng });
             });
         };
 
-        // remove marker
         const clearMarkerListener = () => {
-            setMarker((marker) => {
-                map.removeFromMap(marker);
-                return null;
-            });
+            const marker = taxiMarker.get();
+            map.removeFromMap(marker);
             setCircles((circles) => {
                 circles.forEach((circle) => map.removeFromMap(circle));
                 return [];
             });
+            taxiMarker.set(null);
+            setCreateMode(false);
+            setIsCurrent(true);
+            setPosition(null);
         };
 
-        // add marker
         const addMarkerListener = () => {
+            taxiMarker.add(userId, isCurrent);
             clearMarkerListener();
-
-            // get position of the Marker
-            setPosition((position) => {
-                taxiMarker.add(userId, position);
-                return null;
-            });
         };
 
         return (
             <>
-                {!marker && (
-                    <Button
-                        ref={createMarkerBtn}
-                        variant="contained"
-                        // style={{ display: 'none' }}
-                    >
-                        <RoomIcon />
-                    </Button>
-                )}
-
+                <Button
+                    ref={createMarkerBtn}
+                    variant="contained"
+                    style={{
+                        display: `${createMode ? 'none' : ''}`,
+                    }}
+                >
+                    <RoomIcon />
+                </Button>
                 <ButtonGroup
                     variant="contained"
-                    style={{ display: `${!marker ? 'none' : 'inline-block'}` }}
+                    style={{
+                        display: `${!createMode ? 'none' : ''}`,
+                    }}
                 >
                     <Button ref={sendMarkerBtn} variant="contained">
                         <CheckIcon />

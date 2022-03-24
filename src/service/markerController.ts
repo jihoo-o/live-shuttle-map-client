@@ -52,12 +52,15 @@ class BaseMarkerController {
 }
 
 export class Taxi extends BaseMarkerController implements MarkerController {
-    private newMarker: Marker = {
-        lat: 0,
-        lng: 0,
-        imageUrl: `${markerImages['user']['ready']['isCurrent']}`,
-        isDraggable: true,
-    };
+    private marker: any = null;
+
+    public get() {
+        return this.marker ? this.marker : null;
+    }
+
+    public set(marker) {
+        this.marker = marker;
+    }
 
     public async setAll() {
         const users = await getUsers();
@@ -66,15 +69,16 @@ export class Taxi extends BaseMarkerController implements MarkerController {
             : console.error('사용자 마커를 가져오지 못했습니다.');
     }
 
-    public create(position: Coordinates) {
+    public create(position: Coordinates, imageUrl = '', isDraggable = false) {
         super.create(position);
-        this.newMarker = {
+        const markerTemplate = {
             lat: position.lat,
             lng: position.lng,
-            imageUrl: `${markerImages['user']['ready']['isCurrent']}`,
-            isDraggable: true,
+            imageUrl,
+            isDraggable,
         };
-        return super.setOne(this.newMarker);
+        const newMarker = super.setOne(markerTemplate);
+        this.set(newMarker);
     }
 
     protected update() {
@@ -82,9 +86,10 @@ export class Taxi extends BaseMarkerController implements MarkerController {
         this.setAll();
     }
 
-    public add(userId, position: Coordinates) {
-        // postUser
-        postUser(userId, position) //
+    public add(userId, isCurrent) {
+        if (!this.marker) return;
+        const position = this.marker.getPosition();
+        postUser(userId, isCurrent, position) //
             .then(console.log);
         this.update();
     }

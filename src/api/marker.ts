@@ -182,15 +182,17 @@ export const getShuttleStops = async () => {
 // return busStops;
 // };
 
-export const postUser = async (userId, position) => {
-    return {
+export const postUser = async (userId, isCurrent, position) => {
+    const newUserMarker = {
         userId,
         type: 'user',
         state: 'ready',
-        // isCurrent: true,
-        lat: position.lat,
-        lng: position.lng,
+        isCurrent,
+        lat: position.La,
+        lng: position.Ma,
     };
+    users.push(newUserMarker);
+    return newUserMarker;
 };
 
 export const deleteUser = async (userId) => {};
