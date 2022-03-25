@@ -14,34 +14,30 @@ const Map = React.forwardRef(
         const clearMarkerBtn = useRef();
         const sendMarkerBtn = useRef();
         const [circles, setCircles] = useState([]);
+        const [polyline, setPolyline] = useState(null);
         const [position, setPosition] = useState(null); //
         const [createMode, setCreateMode] = useState(false);
         const [isCurrent, setIsCurrent] = useState(true);
+        const [drag, setDrag] = useState(false);
 
         useEffect(() => {
+            map && map.setEventListener('mousemove', dragMarker);
             stationMarker && stationMarker.setAllShuttlestops();
-            taxiMarker && taxiMarker.setAll();
-        }, [stationMarker, taxiMarker, shapeController]);
+            if (taxiMarker) {
+                taxiMarker.setAll();
+                taxiMarker.setClickEventListener(clickMarker);
+            }
+        }, [map, stationMarker, taxiMarker, shapeController]);
 
         useEffect(() => {
             createMarkerBtn.current &&
-                createMarkerBtn.current.addEventListener(
-                    'click',
-                    createMarkerListener
-                );
+                createMarkerBtn.current.addEventListener('click', createMarker);
 
             clearMarkerBtn.current &&
-                clearMarkerBtn.current.addEventListener(
-                    'click',
-                    clearMarkerListener
-                );
+                clearMarkerBtn.current.addEventListener('click', clearMarker);
 
             sendMarkerBtn.current &&
-                sendMarkerBtn.current.addEventListener(
-                    'click',
-                    addMarkerListener
-                );
-
+                sendMarkerBtn.current.addEventListener('click', addMarker);
             return () => {
                 /**
                  * removeEventListeners를 설정하지 않으면 useEffect가 여러번 실행되면서 listener가 여러번 등록됨
@@ -49,24 +45,24 @@ const Map = React.forwardRef(
                 createMarkerBtn.current &&
                     createMarkerBtn.current.removeEventListener(
                         'click',
-                        createMarkerListener
+                        createMarker
                     );
 
                 clearMarkerBtn.current &&
                     clearMarkerBtn.current.removeEventListener(
                         'click',
-                        clearMarkerListener
+                        clearMarker
                     );
 
                 sendMarkerBtn.current &&
                     sendMarkerBtn.current.removeEventListener(
                         'click',
-                        addMarkerListener
+                        addMarker
                     );
             };
         }, [map, stationMarker, taxiMarker, shapeController]);
 
-        const createMarkerListener = () => {
+        const createMarker = () => {
             console.log('created');
 
             if (createMode) {
@@ -97,7 +93,7 @@ const Map = React.forwardRef(
             });
         };
 
-        const clearMarkerListener = () => {
+        const clearMarker = () => {
             const marker = taxiMarker.get();
             map.removeFromMap(marker);
             setCircles((circles) => {
@@ -108,11 +104,51 @@ const Map = React.forwardRef(
             setCreateMode(false);
             setIsCurrent(true);
             setPosition(null);
+            setPolyline(null);
         };
 
-        const addMarkerListener = () => {
+        const addMarker = () => {
             taxiMarker.add(userId, isCurrent);
-            clearMarkerListener();
+            clearMarker();
+        };
+
+        const clickMarker = () => {
+            setDrag((dragState) => {
+                return dragState ? false : true;
+            });
+        };
+
+        const dragMarker = () => {
+            let dragflag = false;
+            setDrag((drag) => {
+                dragflag = drag;
+                return drag;
+            });
+            if (!dragflag) return;
+            setPolyline((polyline) => {
+                let path;
+                if (!polyline) {
+                    path = [];
+                    setPosition((position) => {
+                        path.push(
+                            new kakao.maps.LatLng(position.lat, position.lng)
+                        );
+                        return position;
+                    });
+                } else {
+                    path = polyline.getPath();
+                    path.pop();
+                }
+                const position = taxiMarker.getPosition();
+                const newPath = [
+                    ...path,
+                    new kakao.maps.LatLng(position.lat, position.lng),
+                ];
+                return map.drawPolyline({
+                    polyline,
+                    path: newPath,
+                });
+            });
         };
 
         return (
@@ -148,15 +184,6 @@ const Map = React.forwardRef(
                         padding: '5px',
                     }}
                 >
-                    {/* <div
-                    ref={mapContainer}
-                    id="map"
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        borderRadius: '10px',
-                    }}
-                ></div> */}
                     <div
                         ref={ref}
                         id="map"

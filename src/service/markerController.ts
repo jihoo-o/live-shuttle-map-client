@@ -53,13 +53,22 @@ class BaseMarkerController {
 
 export class Taxi extends BaseMarkerController implements MarkerController {
     private marker: any = null;
+    private clickListener: any = null;
 
     public get() {
         return this.marker ? this.marker : null;
     }
 
     public set(marker) {
+        if (marker == null) {
+            // remove event listener
+        }
         this.marker = marker;
+    }
+
+    public getPosition() {
+        const position = this.marker.getPosition();
+        return this.marker ? { lat: position.Ma, lng: position.La } : null;
     }
 
     public async setAll() {
@@ -78,6 +87,12 @@ export class Taxi extends BaseMarkerController implements MarkerController {
             isDraggable,
         };
         const newMarker = super.setOne(markerTemplate);
+        kakao.maps.event.addListener(
+            newMarker,
+            'dragstart',
+            this.clickListener
+        );
+        kakao.maps.event.addListener(newMarker, 'dragend', this.clickListener);
         this.set(newMarker);
     }
 
@@ -102,6 +117,10 @@ export class Taxi extends BaseMarkerController implements MarkerController {
     public delete() {
         // deleteUser
         this.update();
+    }
+
+    public setClickEventListener(listener) {
+        this.clickListener = listener;
     }
 }
 
