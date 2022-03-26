@@ -24,6 +24,7 @@ const Map = React.forwardRef(
         const createMarkerBtn = useRef();
         const clearMarkerBtn = useRef();
         const sendMarkerBtn = useRef();
+        const [sendIsClickable, setSendIsClickable] = useState(true);
         const [marker, setMarker] = useState(null);
         const [circles, setCircles] = useState([]);
         const [polyline, setPolyline] = useState(null);
@@ -42,7 +43,7 @@ const Map = React.forwardRef(
                 taxiMarkers.forEach((marker) => taxiMarker.setOne(marker));
                 taxiMarker.setEventListener([
                     { event: 'dragstart', listener: clickMarker },
-                    { event: 'dragend', listener: clickMarker },
+                    { event: 'dragend', listener: dragEndMarker },
                 ]);
             }
         }, [map, taxiMarker, taxiMarkers, stationMarker, stationMarkers]);
@@ -82,7 +83,6 @@ const Map = React.forwardRef(
 
         const createMarker = () => {
             console.log('created');
-
             if (createMode) {
                 window.alert('이미 생성중인 마커가 존재합니다.');
                 return;
@@ -96,9 +96,10 @@ const Map = React.forwardRef(
                         taxiMarker.create(
                             {
                                 position: { lat, lng },
-                                imageUrl:
-                                    markerImages['user']['ready']['isCurrent'],
                                 isDraggable: true,
+                                image: markerImages['user']['ready'][
+                                    'isCurrent'
+                                ],
                             },
                             marker
                         )
@@ -116,29 +117,41 @@ const Map = React.forwardRef(
                     setCircles(newCircles);
                 }
                 setPosition({ lat, lng });
+                drawPolyline();
             });
         };
 
         const clearMarker = () => {
             setMarker((marker) => {
-                return taxiMarker.create(
-                    {
-                        map: null,
-                    },
-                    marker
-                );
+                map.removeFromMap(marker);
+                return marker;
             });
             setCircles((circles) => {
                 circles.forEach((circle) => map.removeFromMap(circle));
                 return [];
             });
+            setPolyline((polyline) => {
+                map.removeFromMap(polyline);
+                return null;
+            });
             setCreateMode(false);
             setIsCurrent(true);
             setPosition(null);
-            setPolyline(null);
+            setSendIsClickable(true);
         };
 
         const addMarker = () => {
+            let exit = false;
+            setSendIsClickable((isClickable) => {
+                if (!isClickable) {
+                    exit = true;
+                    window.alert(
+                        '마커는 색상으로 표시된 원 안에만 생성할 수 있습니다'
+                    );
+                }
+                return isClickable;
+            });
+            if (exit) return;
             setMarker((marker) => {
                 taxiMarker.add(userId, marker, isCurrent);
                 return marker;
@@ -152,6 +165,19 @@ const Map = React.forwardRef(
             });
         };
 
+        const dragEndMarker = () => {
+            clickMarker();
+            setPolyline((polyline) => {
+                const length = polyline.getLength();
+                if (length <= 50) {
+                    setSendIsClickable(true);
+                } else {
+                    setSendIsClickable(false);
+                }
+                return polyline;
+            });
+        };
+
         const dragMarker = () => {
             let dragflag = false;
             setDrag((drag) => {
@@ -159,6 +185,10 @@ const Map = React.forwardRef(
                 return drag;
             });
             if (!dragflag) return;
+            drawPolyline();
+        };
+
+        const drawPolyline = () => {
             setPolyline((polyline) => {
                 let path;
                 if (!polyline) {
@@ -171,7 +201,9 @@ const Map = React.forwardRef(
                     });
                 } else {
                     path = polyline.getPath();
-                    path.pop();
+                    if (path.length > 1) {
+                        path.pop();
+                    }
                 }
                 let newPath = [];
                 setMarker((marker) => {
@@ -182,11 +214,49 @@ const Map = React.forwardRef(
                     ];
                     return marker;
                 });
-                return map.drawPolyline({
+                const newPolyline = map.drawPolyline({
                     polyline,
                     path: newPath,
                 });
+                constrainMarker(newPolyline.getLength());
+                return newPolyline;
             });
+        };
+
+        const constrainMarker = (length) => {
+            if (length <= 20) {
+                setMarker((marker) => {
+                    return taxiMarker.create(
+                        {
+                            image: markerImages['user']['ready']['isCurrent'],
+                            isDraggable: true,
+                        },
+                        marker
+                    );
+                });
+            } else if (length <= 50) {
+                setMarker((marker) => {
+                    return taxiMarker.create(
+                        {
+                            image: markerImages['user']['ready'][
+                                'isNotCurrent'
+                            ],
+                            isDraggable: true,
+                        },
+                        marker
+                    );
+                });
+            } else {
+                setMarker((marker) => {
+                    return taxiMarker.create(
+                        {
+                            image: markerImages['user']['blocked'],
+                            isDraggable: true,
+                        },
+                        marker
+                    );
+                });
+            }
         };
 
         return (
@@ -201,12 +271,20 @@ const Map = React.forwardRef(
                     <RoomIcon />
                 </Button>
                 <ButtonGroup
-                    variant="contained"
+                    // variant="contained"
                     style={{
                         display: `${!createMode ? 'none' : ''}`,
                     }}
                 >
-                    <Button ref={sendMarkerBtn} variant="contained">
+                    <Button
+                        ref={sendMarkerBtn}
+                        variant={sendIsClickable ? 'contained' : 'outlined'}
+                        style={
+                            {
+                                // backgroundColor: `${sendIsClickable ? '' : 'gray'}`,
+                            }
+                        }
+                    >
                         <CheckIcon />
                     </Button>
                     <Button ref={clearMarkerBtn} variant="contained">

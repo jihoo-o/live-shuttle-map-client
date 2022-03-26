@@ -8,7 +8,7 @@ export interface Coordinates {
 }
 
 export interface Marker extends Coordinates {
-    imageUrl: string;
+    image: string;
     isDraggable?: boolean;
 }
 
@@ -44,32 +44,33 @@ export class Map {
     }
 
     setMarker(options, marker?) {
-        const { map, position, imageUrl, isDraggable } = options;
         options = {
             ...options,
-            image: imageUrl
+            image: options.image
                 ? new kakao.maps.MarkerImage(
-                      imageUrl,
+                      options.image,
                       new kakao.maps.Size(50, 50)
                   )
-                : '',
-            draggable: isDraggable == null ? false : isDraggable,
-            position: position
-                ? new kakao.maps.LatLng(position.lat, position.lng)
-                : '',
+                : null,
+            position: options.position
+                ? new kakao.maps.LatLng(
+                      options.position.lat,
+                      options.position.lng
+                  )
+                : null,
+            draggable: options.isDraggable,
         };
-
         if (!marker) {
             return new kakao.maps.Marker({
-                map: this.map,
                 ...options,
+                map: this.map,
             });
         }
-
-        map == null && marker.setMap(null);
+        const { position, image, draggable } = options;
+        marker.setMap(this.map);
         position && marker.setPosition(position);
-        imageUrl && marker.setImage(imageUrl);
-        isDraggable != null && marker.setDraggable(isDraggable);
+        image && marker.setImage(image);
+        draggable != null && marker.setDraggable(draggable);
         return marker;
     }
     setCenter({ lat, lng }: Coordinates) {
@@ -95,7 +96,7 @@ export class Map {
                 path,
                 strokeWeight: 3, // 선의 두께입니다
                 strokeColor: '#db4040', // 선의 색깔입니다
-                strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+                strokeOpacity: 0, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
                 strokeStyle: 'solid', // 선의 스타일입니다
             });
         }

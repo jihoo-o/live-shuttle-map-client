@@ -30,7 +30,7 @@ class BaseMarkerController {
         // Socket.broadcast('update markers for user') -> It allows every other users to call this.setAll()
     }
 
-    // private getMarkerImages<T extends Marker>(marker: T): ImageUrl
+    // private getMarkerImages<T extends Marker>(marker: T): image
     private getMarkerImages<MarkerType extends Marker>(marker: MarkerType) {
         //    switch(MarkerType) {
         //        case MarkerType extends UserMarker:
@@ -49,12 +49,12 @@ export class Taxi extends BaseMarkerController implements MarkerController {
 
     /**
      *
-     * @options { map, position, imageUrl, isDraggable }
+     * @options { map, position, image, isDraggable }
      * @param marker null이면 새로운 마커를 생성하고, null이 아니면 기존의 마커를 수정합니다.
      */
     public create(options, marker?) {
         const { position } = options;
-        super.setCenter(position);
+        position && super.setCenter(position);
         const newMarker = super.setOne(options, marker);
         if (!marker) {
             this.addEventListener(newMarker);

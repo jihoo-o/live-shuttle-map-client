@@ -35,10 +35,9 @@ const Home = ({
             const { type, state, isCurrent, lat, lng } = marker;
             const newMarker = {
                 ...marker,
-                imageUrl:
-                    markerImages[type][state][
-                        isCurrent ? 'isCurrent' : 'isNotCurrent'
-                    ],
+                image: markerImages[type][state][
+                    isCurrent ? 'isCurrent' : 'isNotCurrent'
+                ],
                 position: { lat, lng },
                 isDraggable: false,
             };
@@ -55,7 +54,7 @@ const Home = ({
             const { type, lat, lng } = marker;
             const newMarker = {
                 ...marker,
-                imageUrl: markerImages[type],
+                image: markerImages[type],
                 position: { lat, lng },
                 isDraggable: false,
             };
