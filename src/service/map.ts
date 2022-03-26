@@ -43,16 +43,34 @@ export class Map {
         });
     }
 
-    addMarker({ lat, lng, imageUrl, isDraggable }: Marker) {
-        return new kakao.maps.Marker({
-            map: this.map,
-            position: new kakao.maps.LatLng(lat, lng),
-            image: new kakao.maps.MarkerImage(
-                imageUrl,
-                new kakao.maps.Size(50, 50)
-            ),
-            draggable: isDraggable ? true : false,
-        });
+    setMarker(options, marker?) {
+        const { map, position, imageUrl, isDraggable } = options;
+        options = {
+            ...options,
+            image: imageUrl
+                ? new kakao.maps.MarkerImage(
+                      imageUrl,
+                      new kakao.maps.Size(50, 50)
+                  )
+                : '',
+            draggable: isDraggable == null ? false : isDraggable,
+            position: position
+                ? new kakao.maps.LatLng(position.lat, position.lng)
+                : '',
+        };
+
+        if (!marker) {
+            return new kakao.maps.Marker({
+                map: this.map,
+                ...options,
+            });
+        }
+
+        map == null && marker.setMap(null);
+        position && marker.setPosition(position);
+        imageUrl && marker.setImage(imageUrl);
+        isDraggable != null && marker.setDraggable(isDraggable);
+        return marker;
     }
     setCenter({ lat, lng }: Coordinates) {
         this.map.setCenter(new kakao.maps.LatLng(lat, lng));
@@ -77,7 +95,7 @@ export class Map {
                 path,
                 strokeWeight: 3, // 선의 두께입니다
                 strokeColor: '#db4040', // 선의 색깔입니다
-                strokeOpacity: 0, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+                strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
                 strokeStyle: 'solid', // 선의 스타일입니다
             });
         }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import RoomIcon from '@mui/icons-material/Room';
 import CheckIcon from '@mui/icons-material/Check';
@@ -9,10 +9,22 @@ import { getCurrentPosition } from '../dist/service/geolocation.js';
 import { markerImages } from '../dist/api/marker.js';
 
 const Map = React.forwardRef(
-    ({ userId, map, taxiMarker, stationMarker, shapeController }, ref) => {
+    (
+        {
+            userId,
+            map,
+            taxiMarker,
+            stationMarker,
+            shapeController,
+            taxiMarkers,
+            stationMarkers,
+        },
+        ref
+    ) => {
         const createMarkerBtn = useRef();
         const clearMarkerBtn = useRef();
         const sendMarkerBtn = useRef();
+        const [marker, setMarker] = useState(null);
         const [circles, setCircles] = useState([]);
         const [polyline, setPolyline] = useState(null);
         const [position, setPosition] = useState(null); //
@@ -22,12 +34,18 @@ const Map = React.forwardRef(
 
         useEffect(() => {
             map && map.setEventListener('mousemove', dragMarker);
-            stationMarker && stationMarker.setAllShuttlestops();
+            stationMarker &&
+                stationMarkers.forEach((marker) =>
+                    stationMarker.setOne(marker)
+                );
             if (taxiMarker) {
-                taxiMarker.setAll();
-                taxiMarker.setClickEventListener(clickMarker);
+                taxiMarkers.forEach((marker) => taxiMarker.setOne(marker));
+                taxiMarker.setEventListener([
+                    { event: 'dragstart', listener: clickMarker },
+                    { event: 'dragend', listener: clickMarker },
+                ]);
             }
-        }, [map, stationMarker, taxiMarker, shapeController]);
+        }, [map, taxiMarker, taxiMarkers, stationMarker, stationMarkers]);
 
         useEffect(() => {
             createMarkerBtn.current &&
@@ -40,7 +58,7 @@ const Map = React.forwardRef(
                 sendMarkerBtn.current.addEventListener('click', addMarker);
             return () => {
                 /**
-                 * removeEventListeners를 설정하지 않으면 useEffect가 여러번 실행되면서 listener가 여러번 등록됨
+                 * removeEventListeners를 설정하지 않으면 useEffect가 여러번 실행되면서 listener가 여러번 등록됩니다
                  */
                 createMarkerBtn.current &&
                     createMarkerBtn.current.removeEventListener(
@@ -69,15 +87,23 @@ const Map = React.forwardRef(
                 window.alert('이미 생성중인 마커가 존재합니다.');
                 return;
             }
-            setCreateMode(true);
+            setCreateMode(true); //
 
             getCurrentPosition(({ lat, lng }) => {
-                taxiMarker &&
-                    taxiMarker.create(
-                        { lat, lng },
-                        markerImages['user']['ready']['isCurrent'],
-                        true
+                setMarker((marker) => {
+                    return (
+                        taxiMarker &&
+                        taxiMarker.create(
+                            {
+                                position: { lat, lng },
+                                imageUrl:
+                                    markerImages['user']['ready']['isCurrent'],
+                                isDraggable: true,
+                            },
+                            marker
+                        )
                     );
+                });
 
                 if (shapeController) {
                     const newCircles = [];
@@ -85,7 +111,7 @@ const Map = React.forwardRef(
                         shapeController.drawCircle({ lat, lng }, 50, 'yellow')
                     );
                     newCircles.push(
-                        shapeController.drawCircle({ lat, lng }, 20, 'blue')
+                        shapeController.drawCircle({ lat, lng }, 20, 'green')
                     );
                     setCircles(newCircles);
                 }
@@ -94,13 +120,18 @@ const Map = React.forwardRef(
         };
 
         const clearMarker = () => {
-            const marker = taxiMarker.get();
-            map.removeFromMap(marker);
+            setMarker((marker) => {
+                return taxiMarker.create(
+                    {
+                        map: null,
+                    },
+                    marker
+                );
+            });
             setCircles((circles) => {
                 circles.forEach((circle) => map.removeFromMap(circle));
                 return [];
             });
-            taxiMarker.set(null);
             setCreateMode(false);
             setIsCurrent(true);
             setPosition(null);
@@ -108,7 +139,10 @@ const Map = React.forwardRef(
         };
 
         const addMarker = () => {
-            taxiMarker.add(userId, isCurrent);
+            setMarker((marker) => {
+                taxiMarker.add(userId, marker, isCurrent);
+                return marker;
+            });
             clearMarker();
         };
 
@@ -139,11 +173,15 @@ const Map = React.forwardRef(
                     path = polyline.getPath();
                     path.pop();
                 }
-                const position = taxiMarker.getPosition();
-                const newPath = [
-                    ...path,
-                    new kakao.maps.LatLng(position.lat, position.lng),
-                ];
+                let newPath = [];
+                setMarker((marker) => {
+                    const position = taxiMarker.getPosition(marker);
+                    newPath = [
+                        ...path,
+                        new kakao.maps.LatLng(position.lat, position.lng),
+                    ];
+                    return marker;
+                });
                 return map.drawPolyline({
                     polyline,
                     path: newPath,

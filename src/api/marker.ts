@@ -110,6 +110,7 @@ const busStops = [
 const shuttleStops = [
     {
         stationId: '111',
+        type: 'shuttlebus',
         name: {
             ko: '외성생활관',
             en: 'Off-campus dorm',
@@ -120,6 +121,7 @@ const shuttleStops = [
     },
     {
         stationId: '112',
+        type: 'shuttlebus',
         name: {
             ko: '범어사역',
             en: 'Beomeosa station',
@@ -130,6 +132,7 @@ const shuttleStops = [
     },
     {
         stationId: '113',
+        type: 'shuttlebus',
         name: {
             ko: '남산역',
             en: 'Namsan station',
@@ -140,6 +143,7 @@ const shuttleStops = [
     },
     {
         stationId: '114',
+        type: 'shuttlebus',
         name: {
             ko: '남산소방서',
             en: 'Namsan Fire Station',
@@ -150,6 +154,7 @@ const shuttleStops = [
     },
     {
         stationId: '115',
+        type: 'shuttlebus',
         name: {
             ko: '건학관',
             en: 'Campus',
@@ -163,11 +168,6 @@ const shuttleStops = [
 export const getUsers = async () => {
     return users.map((user) => ({
         ...user,
-        imageUrl: `${
-            markerImages['user'][user.state][
-                user.isCurrent ? 'isCurrent' : 'isNotCurrent'
-            ]
-        }`,
     }));
 };
 
