@@ -1,5 +1,6 @@
 import React from 'react';
 import Account from './Account';
+import AccountHistoryFilter from './AccountHistoryFilter';
 
 const Profile = ({ userInfo }) => (
     <div
@@ -25,6 +26,9 @@ const Profile = ({ userInfo }) => (
             }}
         >
             <Account />
+        </div>
+        <div>
+            <AccountHistoryFilter />
         </div>
     </div>
 );
