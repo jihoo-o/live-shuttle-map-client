@@ -1,8 +1,9 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect } from 'react';
 import Map from './Map';
-
+import Profile from './Profile';
 import { getShuttleStops, getUsers } from '../dist/api/marker.js';
 import { markerImages } from '../dist/api/marker.js';
+
 const Home = ({
     userId,
     map,
@@ -67,16 +68,23 @@ const Home = ({
 
     return (
         <>
-            <Map
-                userId={userId}
-                ref={ref}
-                map={mapService}
-                taxiMarker={taxiMarker}
-                stationMarker={stationMarker}
-                shapeController={drawingService}
-                taxiMarkers={taxiMarkers}
-                stationMarkers={stationMarkers}
-            />
+            <div
+                style={{
+                    height: '60vh',
+                }}
+            >
+                <Map
+                    userId={userId}
+                    ref={ref}
+                    map={mapService}
+                    taxiMarker={taxiMarker}
+                    stationMarker={stationMarker}
+                    shapeController={drawingService}
+                    taxiMarkers={taxiMarkers}
+                    stationMarkers={stationMarkers}
+                />
+                <Profile />
+            </div>
         </>
     );
 };
