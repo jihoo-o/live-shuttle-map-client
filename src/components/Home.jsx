@@ -83,7 +83,7 @@ const Home = ({
                     taxiMarkers={taxiMarkers}
                     stationMarkers={stationMarkers}
                 />
-                <Profile />
+                {/* <Profile /> */}
             </div>
         </>
     );

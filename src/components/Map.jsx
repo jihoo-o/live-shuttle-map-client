@@ -40,6 +40,11 @@ const Map = React.forwardRef(
                     stationMarker.setOne(marker)
                 );
             if (taxiMarker) {
+                /**
+                 * setOne(marker, clickListener)
+                 * clickListener: Home에 정의함. 넘겨받은 userId값으로 getProfile(userId) api를 호출함
+                 * profile state: userId로 가져온 info. state가 running이 아닐 떄만 <Profile>을 보여줌
+                 */
                 taxiMarkers.forEach((marker) => taxiMarker.setOne(marker));
                 taxiMarker.setEventListener([
                     { event: 'dragstart', listener: clickMarker },
