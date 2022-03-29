@@ -17,7 +17,7 @@ export const markerImages = {
 // const users: Array<UserMarker> = [
 const users = [
     {
-        userId: '1234',
+        userId: '2dsfji5r44356j',
         type: 'user',
         state: 'ready',
         isCurrent: true,

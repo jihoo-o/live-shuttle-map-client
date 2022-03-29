@@ -2,7 +2,7 @@ import React from 'react';
 import Account from './Account';
 import AccountHistoryFilter from './AccountHistoryFilter';
 
-const Profile = ({ userInfo }) => (
+const Profile = ({ userInfo, closeProfile }) => (
     <div
         style={{
             position: 'fixed',
@@ -25,7 +25,7 @@ const Profile = ({ userInfo }) => (
                 padding: '20px',
             }}
         >
-            <Account />
+            <Account userInfo={userInfo} closeProfile={closeProfile} />
         </div>
         <div>
             <AccountHistoryFilter />

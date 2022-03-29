@@ -1,3 +1,4 @@
+/*global kakao*/
 import { postUser } from '../api/marker';
 import { Marker, UserMarker, StationMarker, Coordinates } from './map';
 

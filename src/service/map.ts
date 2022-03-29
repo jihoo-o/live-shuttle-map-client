@@ -61,10 +61,17 @@ export class Map {
             draggable: options.isDraggable,
         };
         if (!marker) {
-            return new kakao.maps.Marker({
+            const { userId, clickListener } = options;
+            const newMarker = new kakao.maps.Marker({
                 ...options,
                 map: this.map,
             });
+            newMarker.setTitle(userId);
+            kakao.maps.event.addListener(newMarker, 'click', (e) => {
+                clickListener(newMarker.getTitle());
+            });
+
+            return newMarker;
         }
         const { position, image, draggable } = options;
         marker.setMap(this.map);

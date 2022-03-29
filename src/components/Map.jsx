@@ -1,3 +1,4 @@
+/*global kakao*/
 import React, { useEffect, useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import RoomIcon from '@mui/icons-material/Room';
@@ -36,8 +37,8 @@ const Map = React.forwardRef(
         useEffect(() => {
             map && map.setEventListener('mousemove', dragMarker);
             stationMarker &&
-                stationMarkers.forEach((marker) =>
-                    stationMarker.setOne(marker)
+                stationMarkers.forEach((markerOptions) =>
+                    stationMarker.setOne(markerOptions)
                 );
             if (taxiMarker) {
                 /**
@@ -45,7 +46,9 @@ const Map = React.forwardRef(
                  * clickListener: Home에 정의함. 넘겨받은 userId값으로 getProfile(userId) api를 호출함
                  * profile state: userId로 가져온 info. state가 running이 아닐 떄만 <Profile>을 보여줌
                  */
-                taxiMarkers.forEach((marker) => taxiMarker.setOne(marker));
+                taxiMarkers.forEach((markerOptions) =>
+                    taxiMarker.setOne(markerOptions)
+                );
                 taxiMarker.setEventListener([
                     { event: 'dragstart', listener: clickMarker },
                     { event: 'dragend', listener: dragEndMarker },

@@ -3,6 +3,7 @@ import Map from './Map';
 import Profile from './Profile';
 import { getShuttleStops, getUsers } from '../dist/api/marker.js';
 import { markerImages } from '../dist/api/marker.js';
+import { getProfile } from '../dist/api/users.js';
 
 const Home = ({
     userId,
@@ -18,6 +19,7 @@ const Home = ({
     const [drawingService, setDrawingService] = useState(null);
     const [taxiMarkers, setTaxiMarkers] = useState([]);
     const [stationMarkers, setStationMarkers] = useState([]);
+    const [profile, setProfile] = useState(null);
 
     useEffect(() => {
         const mapInstance = new map(ref.current);
@@ -41,6 +43,7 @@ const Home = ({
                 ],
                 position: { lat, lng },
                 isDraggable: false,
+                clickListener: getProfielByUserId,
             };
             delete marker['lat'];
             delete marker['lng'];
@@ -66,6 +69,15 @@ const Home = ({
         setStationMarkers(newStationMarkers);
     }, [stationMarker]);
 
+    const getProfielByUserId = async (userId) => {
+        const newProfile = await getProfile(userId);
+        setProfile(newProfile);
+    };
+
+    const closeProfile = () => {
+        setProfile(null);
+    };
+
     return (
         <>
             <div
@@ -83,7 +95,9 @@ const Home = ({
                     taxiMarkers={taxiMarkers}
                     stationMarkers={stationMarkers}
                 />
-                {/* <Profile /> */}
+                {profile && (
+                    <Profile userInfo={profile} closeProfile={closeProfile} />
+                )}
             </div>
         </>
     );

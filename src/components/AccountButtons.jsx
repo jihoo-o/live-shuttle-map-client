@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import ClearIcon from '@mui/icons-material/Clear';
 
-const AccountButtons = (props) => (
+const AccountButtons = ({ closeProfile }) => (
     <div>
         <div
             style={{
@@ -37,6 +37,7 @@ const AccountButtons = (props) => (
                     maxHeight: '36px',
                     minHeight: '36px',
                 }}
+                onClick={closeProfile}
             >
                 <ClearIcon />
             </Button>
