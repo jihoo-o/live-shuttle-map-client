@@ -71,6 +71,10 @@ const Home = ({
 
     const getProfielByUserId = async (userId) => {
         const newProfile = await getProfile(userId);
+        if (newProfile && newProfile.state === 'running') {
+            window.alert('해당 사용자는 이미 다른 사용자와 대화중입니다.');
+            return;
+        }
         setProfile(newProfile);
     };
 
