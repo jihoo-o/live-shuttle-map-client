@@ -42,12 +42,24 @@ export class Map {
             map: this.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
             averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
             minLevel: 2, // 클러스터 할 최소 지도 레벨
+            disableClickZoom: true,
         });
 
         kakao.maps.event.addListener(this.map, 'click', (e) => {
             const latlng = e.latLng;
             console.log(`lat: ${latlng.getLat()}, lng: ${latlng.getLng()}`);
         });
+
+        kakao.maps.event.addListener(
+            this.clusterer,
+            'clusterclick',
+            (cluster) => {
+                console.log(cluster.getMarkers());
+                const center = cluster.getCenter();
+                this.map.setLevel(this.map.getLevel() - 1);
+                this.setCenter({ lat: center.Ma, lng: center.La });
+            }
+        );
     }
 
     setMarker(options, marker?) {

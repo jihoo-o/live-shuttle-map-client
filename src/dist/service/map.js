@@ -10,11 +10,18 @@ export class Map {
         this.clusterer = new kakao.maps.MarkerClusterer({
             map: this.map,
             averageCenter: true,
-            minLevel: 2, // 클러스터 할 최소 지도 레벨
+            minLevel: 2,
+            disableClickZoom: true,
         });
         kakao.maps.event.addListener(this.map, 'click', (e) => {
             const latlng = e.latLng;
             console.log(`lat: ${latlng.getLat()}, lng: ${latlng.getLng()}`);
+        });
+        kakao.maps.event.addListener(this.clusterer, 'clusterclick', (cluster) => {
+            console.log(cluster.getMarkers());
+            const center = cluster.getCenter();
+            this.map.setLevel(this.map.getLevel() - 1);
+            this.setCenter({ lat: center.Ma, lng: center.La });
         });
     }
     setMarker(options, marker) {
