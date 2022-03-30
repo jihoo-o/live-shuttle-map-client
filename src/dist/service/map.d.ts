@@ -18,6 +18,7 @@ export interface StationMarker extends Marker {
 }
 export declare class Map {
     private map;
+    private clusterer;
     constructor(container: HTMLDivElement);
     setMarker(options: any, marker?: any): any;
     setCenter({ lat, lng }: Coordinates): void;
@@ -28,4 +29,5 @@ export declare class Map {
     }): any;
     removeFromMap(kakaoObj: any): void;
     setEventListener(event: any, listener: any): void;
+    setCluster(markers: any): void;
 }

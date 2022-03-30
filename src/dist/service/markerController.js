@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 /*global kakao*/
+/* eslint-disable import/first */
 import { postUser } from '../api/marker';
 class BaseMarkerController {
     constructor(map) {

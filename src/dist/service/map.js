@@ -7,6 +7,11 @@ export class Map {
             center: new kakao.maps.LatLng(35.267342474237104, 129.08901354232913),
             level: 6,
         });
+        this.clusterer = new kakao.maps.MarkerClusterer({
+            map: this.map,
+            averageCenter: true,
+            minLevel: 2, // 클러스터 할 최소 지도 레벨
+        });
         kakao.maps.event.addListener(this.map, 'click', (e) => {
             const latlng = e.latLng;
             console.log(`lat: ${latlng.getLat()}, lng: ${latlng.getLng()}`);
@@ -69,6 +74,9 @@ export class Map {
     }
     setEventListener(event, listener) {
         kakao.maps.event.addListener(this.map, event, listener);
+    }
+    setCluster(markers) {
+        this.clusterer.addMarkers(markers);
     }
 }
 //# sourceMappingURL=map.js.map

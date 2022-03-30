@@ -42,13 +42,14 @@ const Map = React.forwardRef(
                 );
             if (taxiMarker) {
                 /**
-                 * setOne(marker, clickListener)
-                 * clickListener: Home에 정의함. 넘겨받은 userId값으로 getProfile(userId) api를 호출함
-                 * profile state: userId로 가져온 info. state가 running이 아닐 떄만 <Profile>을 보여줌
+                 * cluster 생성
+                 * cluster에 marker 추가
                  */
-                taxiMarkers.forEach((markerOptions) =>
+                const clusterTargetMarkers = taxiMarkers.map((markerOptions) =>
                     taxiMarker.setOne(markerOptions)
                 );
+                map.setCluster(clusterTargetMarkers);
+                
                 taxiMarker.setEventListener([
                     { event: 'dragstart', listener: clickMarker },
                     { event: 'dragend', listener: dragEndMarker },
