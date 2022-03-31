@@ -55,7 +55,9 @@ export class Map {
             'clusterclick',
             (cluster) => {
                 console.log(cluster.getMarkers());
+                const center = cluster.getCenter();
                 this.map.setLevel(this.map.getLevel() - 1);
+                this.setCenter({ lat: center.Ma, lng: center.La });
             }
         );
     }

@@ -19,7 +19,9 @@ export class Map {
         });
         kakao.maps.event.addListener(this.clusterer, 'clusterclick', (cluster) => {
             console.log(cluster.getMarkers());
+            const center = cluster.getCenter();
             this.map.setLevel(this.map.getLevel() - 1);
+            this.setCenter({ lat: center.Ma, lng: center.La });
         });
     }
     setMarker(options, marker) {
