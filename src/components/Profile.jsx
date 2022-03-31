@@ -25,7 +25,11 @@ const Profile = ({ userInfo, closeProfile }) => (
                 padding: '20px',
             }}
         >
-            <Account userInfo={userInfo} closeProfile={closeProfile} />
+            <Account
+                type="full"
+                userInfo={userInfo}
+                closeProfile={closeProfile}
+            />
         </div>
         <div>
             <AccountHistoryFilter />

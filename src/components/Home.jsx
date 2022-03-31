@@ -4,6 +4,8 @@ import Profile from './Profile';
 import { getShuttleStops, getUsers } from '../dist/api/marker.js';
 import { markerImages } from '../dist/api/marker.js';
 import { getProfile } from '../dist/api/users.js';
+import MarkerItem from './MarkerItem';
+import MarkerList from './MarkerList';
 
 const Home = ({
     userId,
@@ -102,6 +104,9 @@ const Home = ({
                 {profile && (
                     <Profile userInfo={profile} closeProfile={closeProfile} />
                 )}
+                <MarkerList />
+                {/* {clusterMarkers.map(() => <MarkerItem />)}
+                </MarkerList> */}
             </div>
         </>
     );

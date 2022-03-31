@@ -5,7 +5,11 @@ import Avatar from '@mui/material/Avatar';
 
 const ProfileAvatar = ({ name, image, isAuthorized }) => {
     const normalUser = (
-        <Avatar alt={name} src={image} sx={{ width: 90, height: 90 }}>
+        <Avatar
+            alt={name}
+            src={image}
+            sx={{ width: 90, height: 90, marginBottom: '10px' }}
+        >
             {!image && name}
         </Avatar>
     );
