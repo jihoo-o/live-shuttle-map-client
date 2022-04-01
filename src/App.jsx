@@ -8,7 +8,10 @@ const App = ({
     stationMarkerController,
     shapeController,
 }) => {
-    const [userId, setUserId] = useState('1234');
+    const [userInfo, setUerInfo] = useState({
+        userId: '2dsfji5r44356j',
+        name: '선화',
+    });
     const [currentService, setCurrentService] = useState('taxi');
 
     // let navigate = useNavigate();
@@ -38,7 +41,7 @@ const App = ({
         //     <Route path="conversations" element={<ServiceTemplate />}>
         //         <Route
         //             path="list"
-        //             element={<Conversations userId={userId} />}
+        //             element={<Conversations userInfo={userInfo} />}
         //         />
         //     </Route>
         // </Routes>
@@ -48,7 +51,7 @@ const App = ({
                 path="/"
                 element={
                     <Home
-                    userId={userId}
+                        userInfo={userInfo}
                         map={map}
                         taxiMarkerController={taxiMarkerController}
                         stationMarkerController={stationMarkerController}

@@ -55,13 +55,13 @@ const profiles = [
     },
 ];
 
-const MarkerList = ({ markerInfo }) => (
+const MarkerList = ({ markers }) => (
     <List
         sx={{ width: '100%', height: '100%' }}
         style={{ overflowY: 'scroll' }}
     >
-        {profiles.map((profile, idx) => (
-            <MarkerItem key={idx} userInfo={profile} />
+        {markers.map((marker, idx) => (
+            <MarkerItem key={idx} markerInfo={marker} />
         ))}
     </List>
 );

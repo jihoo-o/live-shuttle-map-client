@@ -8,7 +8,7 @@ import MarkerItem from './MarkerItem';
 import MarkerList from './MarkerList';
 
 const Home = ({
-    userId,
+    userInfo,
     map,
     taxiMarkerController,
     stationMarkerController,
@@ -21,6 +21,7 @@ const Home = ({
     const [drawingService, setDrawingService] = useState(null);
     const [taxiMarkers, setTaxiMarkers] = useState([]);
     const [stationMarkers, setStationMarkers] = useState([]);
+    const [clusterMarkers, setClusterMarkers] = useState([]);
     const [profile, setProfile] = useState(null);
 
     useEffect(() => {
@@ -32,6 +33,7 @@ const Home = ({
         setTaxiMarker(() => taxiMarkerInstance);
         setStationMarker(() => stationMarkerInstance);
         setDrawingService(() => drawingService);
+        mapInstance.setClusterEventListener('clusterclick', clickCluster);
     }, []);
 
     useEffect(async () => {
@@ -71,7 +73,8 @@ const Home = ({
         setStationMarkers(newStationMarkers);
     }, [stationMarker]);
 
-    const getProfielByUserId = async (userId) => {
+    const getProfielByUserId = async (userInfo) => {
+        const [userId, name] = [...userInfo.trim().split(' ')];
         const newProfile = await getProfile(userId);
         if (newProfile && newProfile.state === 'running') {
             window.alert('해당 사용자는 이미 다른 사용자와 대화중입니다.');
@@ -84,11 +87,22 @@ const Home = ({
         setProfile(null);
     };
 
+    const clickCluster = (cluster) => {
+        console.log(cluster.getMarkers());
+        const includedMarkers = cluster.getMarkers().map((marker) => {
+            const [userId, name] = [...marker.getTitle().trim().split(' ')];
+            return {
+                userId,
+                name,
+                image: marker.getImage().Yj,
+            };
+        });
+        setClusterMarkers(includedMarkers);
+    };
+
     return (
         <div
             style={{
-                // overflowX: 'hidden',
-                // overflowY: 'scroll',
                 height: '100vh',
                 width: '100%',
             }}
@@ -104,7 +118,7 @@ const Home = ({
                 }}
             >
                 <Map
-                    userId={userId}
+                    userInfo={userInfo}
                     ref={ref}
                     map={mapService}
                     taxiMarker={taxiMarker}
@@ -117,10 +131,10 @@ const Home = ({
                     <Profile userInfo={profile} closeProfile={closeProfile} />
                 )}
             </section>
-            <section style={{ height: '40vh' }}>
-                <MarkerList />
-                {/* {clusterMarkers.map(() => <MarkerItem />)}
-                </MarkerList> */}
+            <section style={{ height: '40vh', width: '100%' }}>
+                {clusterMarkers.length !== 0 && (
+                    <MarkerList markers={clusterMarkers} />
+                )}
             </section>
         </div>
     );

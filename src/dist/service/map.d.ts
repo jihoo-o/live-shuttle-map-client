@@ -29,5 +29,6 @@ export declare class Map {
         path: any;
     }): any;
     removeFromMap(kakaoObj: any): void;
-    setEventListener(event: any, listener: any): void;
+    setMapEventListener(event: any, listener: any): void;
+    setClusterEventListener(event: any, listener: any): void;
 }

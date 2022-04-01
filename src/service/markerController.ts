@@ -75,9 +75,9 @@ export class Taxi extends BaseMarkerController implements MarkerController {
         super.update();
     }
 
-    public add(userId: string, marker, isCurrent: Boolean) {
+    public add(userInfo, marker, isCurrent: Boolean) {
         const position = this.getPosition(marker);
-        postUser(userId, isCurrent, position) //
+        postUser(userInfo, isCurrent, position) //
             .then(console.log);
         this.update();
     }

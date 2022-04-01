@@ -26,6 +26,7 @@ export const markerImages = {
 const users = [
     {
         userId: '2dsfji5r44356j',
+        name: '선화',
         type: 'user',
         state: 'ready',
         isCurrent: true,
@@ -34,6 +35,7 @@ const users = [
     },
     {
         userId: '1235',
+        name: 'abc',
         type: 'user',
         state: 'running',
         isCurrent: false,
@@ -42,6 +44,7 @@ const users = [
     },
     {
         userId: '1237',
+        name: 'def',
         type: 'user',
         state: 'ready',
         isCurrent: false,
@@ -50,6 +53,7 @@ const users = [
     },
     {
         userId: '1238',
+        name: 'uuu',
         type: 'user',
         state: 'running',
         isCurrent: true,
@@ -58,6 +62,7 @@ const users = [
     },
     {
         userId: '1239',
+        name: 'lili',
         type: 'user',
         state: 'ready',
         isCurrent: true,
@@ -66,6 +71,7 @@ const users = [
     },
     {
         userId: '1240',
+        name: 'fa',
         type: 'user',
         state: 'ready',
         isCurrent: true,
@@ -74,6 +80,7 @@ const users = [
     },
     {
         userId: '1241',
+        name: 'k',
         type: 'user',
         state: 'ready',
         isCurrent: true,
@@ -180,9 +187,10 @@ export const getShuttleStops = () => __awaiter(void 0, void 0, void 0, function*
 // export const getBusStops = async (): Promise<Array<StationMarker>> => {
 // return busStops;
 // };
-export const postUser = (userId, isCurrent, position) => __awaiter(void 0, void 0, void 0, function* () {
+export const postUser = (userInfo, isCurrent, position) => __awaiter(void 0, void 0, void 0, function* () {
     const newUserMarker = {
-        userId,
+        userId: userInfo.userId,
+        name: userInfo.name,
         type: 'user',
         state: 'ready',
         isCurrent,

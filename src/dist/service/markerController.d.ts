@@ -27,7 +27,7 @@ export declare class Taxi extends BaseMarkerController implements MarkerControll
      */
     create(options: any, marker?: any): any;
     protected update(): void;
-    add(userId: string, marker: any, isCurrent: Boolean): void;
+    add(userInfo: any, marker: any, isCurrent: Boolean): void;
     edit(): void;
     delete(): void;
     /**

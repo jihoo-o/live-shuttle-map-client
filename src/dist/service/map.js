@@ -17,10 +17,8 @@ export class Map {
             const latlng = e.latLng;
             console.log(`lat: ${latlng.getLat()}, lng: ${latlng.getLng()}`);
         });
-        kakao.maps.event.addListener(this.clusterer, 'clusterclick', (cluster) => {
-            console.log(cluster.getMarkers());
+        this.setClusterEventListener('clusterclick', (cluster) => {
             const center = cluster.getCenter();
-            // this.map.setLevel(this.map.getLevel() - 1);
             this.setCenter({ lat: center.Ma, lng: center.La });
         });
     }
@@ -31,9 +29,9 @@ export class Map {
                 ? new kakao.maps.LatLng(options.position.lat, options.position.lng)
                 : null, draggable: options.isDraggable });
         if (!marker) {
-            const { userId, clickListener } = options;
+            const { userId, name, clickListener } = options;
             const newMarker = new kakao.maps.Marker(Object.assign(Object.assign({}, options), { map: this.map }));
-            newMarker.setTitle(userId);
+            newMarker.setTitle(`${userId} ${name}`);
             kakao.maps.event.addListener(newMarker, 'click', (e) => {
                 clickListener(newMarker.getTitle());
             });
@@ -82,8 +80,11 @@ export class Map {
     removeFromMap(kakaoObj) {
         kakaoObj.setMap(null);
     }
-    setEventListener(event, listener) {
+    setMapEventListener(event, listener) {
         kakao.maps.event.addListener(this.map, event, listener);
+    }
+    setClusterEventListener(event, listener) {
+        kakao.maps.event.addListener(this.clusterer, event, listener);
     }
 }
 //# sourceMappingURL=map.js.map

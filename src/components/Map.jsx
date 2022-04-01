@@ -12,7 +12,7 @@ import { markerImages } from '../dist/api/marker.js';
 const Map = React.forwardRef(
     (
         {
-            userId,
+            userInfo,
             map,
             taxiMarker,
             stationMarker,
@@ -35,7 +35,7 @@ const Map = React.forwardRef(
         const [drag, setDrag] = useState(false);
 
         useEffect(() => {
-            map && map.setEventListener('mousemove', dragMarker);
+            map && map.setMapEventListener('mousemove', dragMarker);
             stationMarker &&
                 stationMarkers.forEach((markerOptions) =>
                     stationMarker.setMap(markerOptions)
@@ -157,7 +157,7 @@ const Map = React.forwardRef(
             });
             if (exit) return;
             setMarker((marker) => {
-                taxiMarker.add(userId, marker, isCurrent);
+                taxiMarker.add(userInfo, marker, isCurrent);
                 return marker;
             });
             clearMarker();

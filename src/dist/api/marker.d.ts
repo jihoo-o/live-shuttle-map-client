@@ -15,6 +15,7 @@ export declare const markerImages: {
 };
 export declare const getUsers: () => Promise<{
     userId: string;
+    name: string;
     type: string;
     state: string;
     isCurrent: boolean;
@@ -32,8 +33,9 @@ export declare const getShuttleStops: () => Promise<{
     lat: number;
     lng: number;
 }[]>;
-export declare const postUser: (userId: any, isCurrent: any, position: any) => Promise<{
+export declare const postUser: (userInfo: any, isCurrent: any, position: any) => Promise<{
     userId: any;
+    name: any;
     type: string;
     state: string;
     isCurrent: any;
