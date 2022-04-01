@@ -54,7 +54,7 @@ const Home = ({
             return newMarker;
         });
         setTaxiMarkers(newTaxiMarkers);
-    }, [taxiMarker]);
+    }, []);
 
     useEffect(async () => {
         const shuttlestopMarkers = await getShuttleStops();
@@ -71,7 +71,7 @@ const Home = ({
             return newMarker;
         });
         setStationMarkers(newStationMarkers);
-    }, [stationMarker]);
+    }, []);
 
     const getProfielByUserId = async (userInfo) => {
         const [userId, name] = [...userInfo.trim().split(' ')];

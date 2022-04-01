@@ -36,10 +36,16 @@ const Map = React.forwardRef(
 
         useEffect(() => {
             map && map.setMapEventListener('mousemove', dragMarker);
+        }, [map]);
+
+        useEffect(() => {
             stationMarker &&
                 stationMarkers.forEach((markerOptions) =>
                     stationMarker.setMap(markerOptions)
                 );
+        }, [stationMarker, stationMarkers]);
+
+        useEffect(() => {
             if (taxiMarker) {
                 taxiMarkers.forEach((markerOptions) =>
                     taxiMarker.setCluster(markerOptions)
@@ -50,7 +56,7 @@ const Map = React.forwardRef(
                     { event: 'dragend', listener: dragEndMarker },
                 ]);
             }
-        }, [map, taxiMarker, taxiMarkers, stationMarker, stationMarkers]);
+        }, [taxiMarker, taxiMarkers]);
 
         useEffect(() => {
             createMarkerBtn.current &&
@@ -83,7 +89,7 @@ const Map = React.forwardRef(
                         addMarker
                     );
             };
-        }, [map, stationMarker, taxiMarker, shapeController]);
+        }, []);
 
         const createMarker = () => {
             console.log('created');
