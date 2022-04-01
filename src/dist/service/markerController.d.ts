@@ -8,7 +8,8 @@ export declare type UserStates = 'ready' | 'running' | 'blocked';
 declare class BaseMarkerController {
     private map;
     constructor(map: any);
-    setOne(options: any, marker?: any): any;
+    setMap(options: any, marker?: any): any;
+    setCluster(options: any, marker?: any): any;
     setCenter(position: Coordinates): void;
     protected update(): void;
     private getMarkerImages;

@@ -20,8 +20,15 @@ type MarkerType<T> = T extends UserMarker
 class BaseMarkerController {
     constructor(private map: any) {}
 
-    public setOne(options, marker?) {
+    public setMap(options, marker?) {
         return this.map.setMarker(options, marker);
+    }
+
+    public setCluster(options, marker?) {
+        const newMarker = this.map.setMarker(options, marker);
+        this.map.removeFromMap(newMarker);
+        this.map.setCluster(newMarker);
+        return newMarker;
     }
 
     public setCenter(position: Coordinates) {
@@ -57,7 +64,7 @@ export class Taxi extends BaseMarkerController implements MarkerController {
     public create(options, marker?) {
         const { position } = options;
         position && super.setCenter(position);
-        const newMarker = super.setOne(options, marker);
+        const newMarker = super.setMap(options, marker);
         if (!marker) {
             this.addEventListener(newMarker);
         }

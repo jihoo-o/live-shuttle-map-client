@@ -14,8 +14,14 @@ class BaseMarkerController {
     constructor(map) {
         this.map = map;
     }
-    setOne(options, marker) {
+    setMap(options, marker) {
         return this.map.setMarker(options, marker);
+    }
+    setCluster(options, marker) {
+        const newMarker = this.map.setMarker(options, marker);
+        this.map.removeFromMap(newMarker);
+        this.map.setCluster(newMarker);
+        return newMarker;
     }
     setCenter(position) {
         this.map.setCenter(position);
@@ -48,7 +54,7 @@ export class Taxi extends BaseMarkerController {
     create(options, marker) {
         const { position } = options;
         position && super.setCenter(position);
-        const newMarker = super.setOne(options, marker);
+        const newMarker = super.setMap(options, marker);
         if (!marker) {
             this.addEventListener(newMarker);
         }

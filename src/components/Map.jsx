@@ -38,18 +38,13 @@ const Map = React.forwardRef(
             map && map.setEventListener('mousemove', dragMarker);
             stationMarker &&
                 stationMarkers.forEach((markerOptions) =>
-                    stationMarker.setOne(markerOptions)
+                    stationMarker.setMap(markerOptions)
                 );
             if (taxiMarker) {
-                /**
-                 * cluster 생성
-                 * cluster에 marker 추가
-                 */
-                const clusterTargetMarkers = taxiMarkers.map((markerOptions) =>
-                    taxiMarker.setOne(markerOptions)
+                taxiMarkers.forEach((markerOptions) =>
+                    taxiMarker.setCluster(markerOptions)
                 );
-                map.setCluster(clusterTargetMarkers);
-                
+
                 taxiMarker.setEventListener([
                     { event: 'dragstart', listener: clickMarker },
                     { event: 'dragend', listener: dragEndMarker },

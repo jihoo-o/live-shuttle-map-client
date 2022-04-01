@@ -21,6 +21,7 @@ export declare class Map {
     private clusterer;
     constructor(container: HTMLDivElement);
     setMarker(options: any, marker?: any): any;
+    setCluster(marker: any): void;
     setCenter({ lat, lng }: Coordinates): void;
     drawCircle(center: any, radius: any, color: any): any;
     drawPolyline({ polyline, path }: {
@@ -29,5 +30,4 @@ export declare class Map {
     }): any;
     removeFromMap(kakaoObj: any): void;
     setEventListener(event: any, listener: any): void;
-    setCluster(markers: any): void;
 }

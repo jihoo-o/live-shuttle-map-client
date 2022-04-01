@@ -56,7 +56,7 @@ export class Map {
             (cluster) => {
                 console.log(cluster.getMarkers());
                 const center = cluster.getCenter();
-                this.map.setLevel(this.map.getLevel() - 1);
+                // this.map.setLevel(this.map.getLevel() - 1);
                 this.setCenter({ lat: center.Ma, lng: center.La });
             }
         );
@@ -99,6 +99,9 @@ export class Map {
         draggable != null && marker.setDraggable(draggable);
         return marker;
     }
+    setCluster(marker) {
+        this.clusterer.addMarker(marker);
+    }
     setCenter({ lat, lng }: Coordinates) {
         this.map.setCenter(new kakao.maps.LatLng(lat, lng));
     }
@@ -134,8 +137,5 @@ export class Map {
     }
     setEventListener(event, listener) {
         kakao.maps.event.addListener(this.map, event, listener);
-    }
-    setCluster(markers) {
-        this.clusterer.addMarkers(markers);
     }
 }
