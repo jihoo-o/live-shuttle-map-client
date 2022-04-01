@@ -85,10 +85,22 @@ const Home = ({
     };
 
     return (
-        <>
-            <div
+        <div
+            style={{
+                // overflowX: 'hidden',
+                // overflowY: 'scroll',
+                height: '100vh',
+                width: '100%',
+            }}
+        >
+            <section
                 style={{
+                    position: 'sticky',
                     height: '60vh',
+                    width: '100%',
+                    zIndex: '10',
+                    top: '0px',
+                    left: '0px',
                 }}
             >
                 <Map
@@ -104,11 +116,13 @@ const Home = ({
                 {profile && (
                     <Profile userInfo={profile} closeProfile={closeProfile} />
                 )}
+            </section>
+            <section style={{ height: '40vh' }}>
                 <MarkerList />
                 {/* {clusterMarkers.map(() => <MarkerItem />)}
                 </MarkerList> */}
-            </div>
-        </>
+            </section>
+        </div>
     );
 };
 
