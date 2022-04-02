@@ -2,11 +2,17 @@ import React from 'react';
 import ListItem from '@mui/material/ListItem';
 import Account from './Account';
 
-const MarkerItem = ({ markerInfo }) => {
+const MarkerItem = ({ markerInfo, handleListItemClick }) => {
     const userInfo = { userId: markerInfo.userId, name: markerInfo.name };
     return (
         <>
-            <ListItem divider sx={{ padding: '5px 16px' }}>
+            <ListItem
+                divider
+                sx={{ padding: '5px 16px' }}
+                onClick={() => {
+                    handleListItemClick(markerInfo.marker);
+                }}
+            >
                 <img
                     src={markerInfo.image}
                     alt="marker"

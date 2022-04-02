@@ -50,6 +50,9 @@ export class Map {
     setCenter({ lat, lng }) {
         this.map.setCenter(new kakao.maps.LatLng(lat, lng));
     }
+    setLevel(level, anchor) {
+        this.map.setLevel(level, { anchor, animation: true });
+    }
     drawCircle(center, radius, color) {
         return new kakao.maps.Circle({
             map: this.map,

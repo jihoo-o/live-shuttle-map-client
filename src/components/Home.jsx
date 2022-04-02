@@ -95,9 +95,23 @@ const Home = ({
                 userId,
                 name,
                 image: marker.getImage().Yj,
+                marker,
             };
         });
         setClusterMarkers(includedMarkers);
+    };
+
+    const onListItemClick = (marker) => {
+        setMapService((mapService) => {
+            mapService.setLevel(2);
+            mapService.setLevel(1, marker.getPosition());
+            mapService.removeFromMap(marker);
+            return mapService;
+        });
+        setTaxiMarker((taxiMarkerService) => {
+            taxiMarkerService.setCluster(marker);
+            return taxiMarkerService;
+        });
     };
 
     return (
@@ -133,7 +147,10 @@ const Home = ({
             </section>
             <section style={{ height: '40vh', width: '100%' }}>
                 {clusterMarkers.length !== 0 && (
-                    <MarkerList markers={clusterMarkers} />
+                    <MarkerList
+                        markers={clusterMarkers}
+                        handleListItemClick={onListItemClick}
+                    />
                 )}
             </section>
         </div>

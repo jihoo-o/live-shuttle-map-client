@@ -301,7 +301,6 @@ const Map = React.forwardRef(
                         <ClearIcon />
                     </Button>
                 </ButtonGroup>
-
                 <div
                     style={{
                         width: '100vw',
