@@ -129,6 +129,23 @@ export class Map {
         polyline.setPath(path);
         return polyline;
     }
+    drawCustomOverlay({ customOverlay, position, content }) {
+        if (!customOverlay) {
+            return new kakao.maps.CustomOverlay({
+                position,
+                content,
+            });
+        }
+        customOverlay.setPosition(position);
+        return customOverlay;
+    }
+    setMap(kakaoObj, set: boolean) {
+        kakaoObj.setMap(set ? this.map : null);
+    }
+    /**
+     * Refactor
+     * -> setMap
+     */
     removeFromMap(kakaoObj) {
         kakaoObj.setMap(null);
     }

@@ -29,6 +29,16 @@ export declare class Map {
         polyline: any;
         path: any;
     }): any;
+    drawCustomOverlay({ customOverlay, position, content }: {
+        customOverlay: any;
+        position: any;
+        content: any;
+    }): any;
+    setMap(kakaoObj: any, set: boolean): void;
+    /**
+     * Refactor
+     * -> setMap
+     */
     removeFromMap(kakaoObj: any): void;
     setMapEventListener(event: any, listener: any): void;
     setClusterEventListener(event: any, listener: any): void;

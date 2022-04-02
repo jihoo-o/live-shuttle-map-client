@@ -4,7 +4,6 @@ import Profile from './Profile';
 import { getShuttleStops, getUsers } from '../dist/api/marker.js';
 import { markerImages } from '../dist/api/marker.js';
 import { getProfile } from '../dist/api/users.js';
-import MarkerItem from './MarkerItem';
 import MarkerList from './MarkerList';
 
 const Home = ({
@@ -22,6 +21,7 @@ const Home = ({
     const [taxiMarkers, setTaxiMarkers] = useState([]);
     const [stationMarkers, setStationMarkers] = useState([]);
     const [clusterMarkers, setClusterMarkers] = useState([]);
+    const [markerHighlighter, setMarkerHighlighter] = useState(null);
     const [profile, setProfile] = useState(null);
 
     useEffect(() => {
@@ -102,10 +102,23 @@ const Home = ({
     };
 
     const onListItemClick = (marker) => {
+        const position = marker.getPosition();
         setMapService((mapService) => {
             mapService.setLevel(2);
-            mapService.setLevel(1, marker.getPosition());
+            mapService.setLevel(1, position);
             mapService.removeFromMap(marker);
+            setMarkerHighlighter((customOverlay) => {
+                if (customOverlay) {
+                    customOverlay.setMap(false);
+                }
+                const newCustomOverlay = mapService.drawCustomOverlay({
+                    customOverlay,
+                    position,
+                    content: `<div style='width:10px; height:10px; background-color:#e06666; border-radius:50%; z-index:10;'></div>`,
+                });
+                mapService.setMap(newCustomOverlay, true);
+                return newCustomOverlay;
+            });
             return mapService;
         });
         setTaxiMarker((taxiMarkerService) => {
