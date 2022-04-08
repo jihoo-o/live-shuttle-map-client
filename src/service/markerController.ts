@@ -1,7 +1,8 @@
-/*global kakao*/
 /* eslint-disable import/first */
 import { postUser } from '../api/marker';
 import { Marker, UserMarker, StationMarker, Coordinates } from './map';
+
+const { kakao } = window;
 
 interface MarkerController {
     // add(): void;

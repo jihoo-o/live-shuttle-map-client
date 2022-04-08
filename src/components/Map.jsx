@@ -8,6 +8,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 
 import { getCurrentPosition } from '../dist/service/geolocation.js';
 import { markerImages } from '../dist/api/marker.js';
+import { getMarkerImageSrc } from '../dist/utils/kakaomap.js';
 
 const Map = React.forwardRef(
     (
@@ -101,15 +102,18 @@ const Map = React.forwardRef(
 
             getCurrentPosition(({ lat, lng }) => {
                 setMarker((marker) => {
+                    const { type, state, isCurrent } = marker;
                     return (
                         taxiMarker &&
                         taxiMarker.create(
                             {
                                 position: { lat, lng },
                                 isDraggable: true,
-                                image: markerImages['user']['ready'][
-                                    'isCurrent'
-                                ],
+                                image: getMarkerImageSrc({
+                                    type,
+                                    state,
+                                    isCurrent,
+                                }),
                             },
                             marker
                         )
@@ -236,9 +240,14 @@ const Map = React.forwardRef(
         const constrainMarker = (length) => {
             if (length <= 20) {
                 setMarker((marker) => {
+                    const { type, state, isCurrent } = marker;
                     return taxiMarker.create(
                         {
-                            image: markerImages['user']['ready']['isCurrent'],
+                            image: getMarkerImageSrc({
+                                type,
+                                state,
+                                isCurrent,
+                            }),
                             isDraggable: true,
                         },
                         marker
@@ -246,11 +255,14 @@ const Map = React.forwardRef(
                 });
             } else if (length <= 50) {
                 setMarker((marker) => {
+                    const { type, state, isCurrent } = marker;
                     return taxiMarker.create(
                         {
-                            image: markerImages['user']['ready'][
-                                'isNotCurrent'
-                            ],
+                            image: getMarkerImageSrc({
+                                type,
+                                state,
+                                isCurrent,
+                            }),
                             isDraggable: true,
                         },
                         marker
@@ -258,9 +270,14 @@ const Map = React.forwardRef(
                 });
             } else {
                 setMarker((marker) => {
+                    const { type, state, isCurrent } = marker;
                     return taxiMarker.create(
                         {
-                            image: markerImages['user']['blocked'],
+                            image: getMarkerImageSrc({
+                                type,
+                                state,
+                                isCurrent,
+                            }),
                             isDraggable: true,
                         },
                         marker

@@ -7,6 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+/* eslint-disable import/first */
+import { getMarkerImageSrc } from '../utils/kakaomap';
 export const markerImages = {
     shuttlebus: `https://lh3.googleusercontent.com/R12lqqD3a2a2yFEOBI5w2pTgwejG_P82IkbWCIzQwWf5W7pU-hQu0OfB5ED0380jVLcNvg0f3Yoem8mIb4LPwDzkbqnfuVyiUZ6EyYsDmKojoT1zF8iE3Wq9qoXtvWeFXaKvJmBJu3N1_nTVQCJcu1cCYF76AO8TbBnYXFmn-id7ryEeBLPPISGL65vszNdqBfQ1rgJbwnkWdhEiVydVwGW-68iMomBNpFdhC9O3BpaoLEl1dEktD_6Kcy78Vpb4gyQapA1Sg3w56U4X3IuUsfzcrAodYvfCkpFpcF5C6TWfg7DWD46xRHhyOKR7vebeF3AwLUDWoR3nvZYxzei1FiKx6XdHTzSGy5GOlutRgSQhSugGbj3jjmA_fNgkzTxthpp09GBgo_1SY6TBI-4fckO-_bkhDBulTvnXtdmKoziBxG-OOlykDM5-AciAx2UUm6Z2cwjRc4wJpkAMK5SgSu_qM3lfQkfuSl7tBChNsURrb361ckuHooy0bH0yaNOtf0feCm6yXB2FU75LjEc2c3YVZVvg24tu-fKghue9Bv42tAVm4go8bjFfkhBtXgeW9SOY0TdBP4RDqTsf2Ie08_yzsS69K7jNtQGCRIobXOjveDwlRl2DAy7FonsNYscNXFd4jlbpmQA9QfNlSDkA4Xi_N_uiCOFLISZC0gXoczrDx3eOP8M8g40qNcWePAi6BQIM2tFvkjOCz5kvCoICEwICz5gz7Ockm3aF1kurb1ehNyANORUNCsrXcR65KUsDtUQvK5WpPwaUA4EY73y3b5hK3uCuKI4=s500-no?authuser=1`,
     bus: `https://lh3.googleusercontent.com/Xb2jRt6XhtTGt0pAiX-Lhhm8FQoLGSslp401-os4SIVzSF3BuqB0CZ2TRMPNpyX03R8V2f47zGY_SiulC9zJ6PRWFBSXKcDf8UsdRZvGhK0iUqe__VCbHX5GP4vwYzraF_YsrhyZ6vKimivFm2tM-VfQOtBrJjhJ6-uk3y6mQKrgumb9raRMbYovcgPcpz2xbehJy-iVn2u1UptzWgDfnfdIo5sB1-uzqdSM22fmcwTUgHiH6d_FNkGunxxCJJVt57OTve-K5cbM4PuZAbHflU4zQowFgrelpFnbogV6RWp8KA-_utRvyeqwLFcyWUn31eLZE6klKae1K3Wf2C9rsqv-07lntm7VOABVmMT0E9dimjjDjJnZL0XjUiOySMfvoTld9ev8UIuDraW20WLt3nRkIUFFgGi6Iv0I2El-00i3-t94fhp06pVV8CSvHqMmekadBQi9qajmVYiZCLZQJqy7b49-EiHR7JgE3CJ4DxBIMxFvDoZLDuojmvv1-cEnTl62MmeieEmAe1uVLUpIP-3RNX9vgW_3wwFs5P0SO3LRg_xbm4LWyZ2jFmqCnxQzQrNR_Im-awjH44OvYZYZue6n21gJeSf-kwuWCKl77Q26EX8O84cd4vcw6y0v7vkbQPlsDxy0Qax6oLs1yrX0Lr2xVbozbYh6ZHasypqNse1FCLKwK1LIqjaBKtI5K1c0dW-xl9kjUhayUBDyxzUtWyy_xgD1djpQK9bEmNPqxdukM7FD4GNBcDzDn9Va5NEoFLLUSTz2ptrJZwJVFxE8M2JtyBFaeJ8=s512-no?authuser=1`,
@@ -182,7 +184,7 @@ export const getUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     return users.map((user) => (Object.assign({}, user)));
 });
 export const getShuttleStops = () => __awaiter(void 0, void 0, void 0, function* () {
-    return shuttleStops.map((shuttlestop) => (Object.assign(Object.assign({}, shuttlestop), { image: markerImages['shuttlebus'] })));
+    return shuttleStops.map((shuttlestop) => (Object.assign(Object.assign({}, shuttlestop), { image: getMarkerImageSrc['shuttlebus'] })));
 });
 // export const getBusStops = async (): Promise<Array<StationMarker>> => {
 // return busStops;

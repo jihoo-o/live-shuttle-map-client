@@ -7,9 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-/*global kakao*/
 /* eslint-disable import/first */
 import { postUser } from '../api/marker';
+const { kakao } = window;
 class BaseMarkerController {
     constructor(map) {
         this.map = map;
