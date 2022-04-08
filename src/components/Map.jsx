@@ -8,7 +8,10 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 
 import { getCurrentPosition } from '../dist/service/geolocation.js';
 import { markerImages } from '../dist/api/marker.js';
-import { getMarkerImageSrc } from '../dist/utils/kakaomap.js';
+import {
+    createKakaoLatLngInstance,
+    getMarkerImageSrc,
+} from '../dist/utils/kakaomap.js';
 
 const Map = React.forwardRef(
     (
@@ -41,16 +44,28 @@ const Map = React.forwardRef(
 
         useEffect(() => {
             stationMarker &&
-                stationMarkers.forEach((markerOptions) =>
-                    stationMarker.setMap(markerOptions)
-                );
+                stationMarkers.forEach((markerOptions) => {
+                    const newMarkerOptions = {
+                        ...markerOptions,
+                        position: createKakaoLatLngInstance(
+                            markerOptions.position
+                        ),
+                    };
+                    stationMarker.setMap(newMarkerOptions);
+                });
         }, [stationMarker, stationMarkers]);
 
         useEffect(() => {
             if (taxiMarker) {
-                taxiMarkers.forEach((markerOptions) =>
-                    taxiMarker.setCluster(markerOptions)
-                );
+                taxiMarkers.forEach((markerOptions) => {
+                    const newMarkerOptions = {
+                        ...markerOptions,
+                        position: createKakaoLatLngInstance(
+                            markerOptions.position
+                        ),
+                    };
+                    taxiMarker.setCluster(newMarkerOptions);
+                });
 
                 taxiMarker.setEventListener([
                     { event: 'dragstart', listener: clickMarker },
@@ -107,7 +122,11 @@ const Map = React.forwardRef(
                         taxiMarker &&
                         taxiMarker.create(
                             {
-                                position: { lat, lng },
+                                // position: { lat, lng },
+                                position: createKakaoLatLngInstance({
+                                    lat,
+                                    lng,
+                                }),
                                 isDraggable: true,
                                 image: getMarkerImageSrc({
                                     type,

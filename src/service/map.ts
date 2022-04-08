@@ -66,12 +66,6 @@ export class Map {
                       new kakao.maps.Size(50, 50)
                   )
                 : null,
-            position: options.position
-                ? new kakao.maps.LatLng(
-                      options.position.lat,
-                      options.position.lng
-                  )
-                : null,
             draggable: options.isDraggable,
         };
         if (!marker) {
@@ -88,6 +82,7 @@ export class Map {
             return newMarker;
         }
         const { position, image, draggable } = options;
+        console.log(position);
         marker.setMap(this.map);
         position && marker.setPosition(position);
         image && marker.setImage(image);

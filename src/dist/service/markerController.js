@@ -72,6 +72,7 @@ export class Taxi extends BaseMarkerController {
      */
     create(options, marker) {
         const { position } = options;
+        console.log(position);
         position && super.setCenter(position);
         const newMarker = super.setMap(options, marker);
         if (!marker) {

@@ -26,8 +26,6 @@ export class Map {
     setMarker(options, marker) {
         options = Object.assign(Object.assign({}, options), { image: options.image
                 ? new kakao.maps.MarkerImage(options.image, new kakao.maps.Size(50, 50))
-                : null, position: options.position
-                ? new kakao.maps.LatLng(options.position.lat, options.position.lng)
                 : null, draggable: options.isDraggable });
         if (!marker) {
             const { userId, name, clickListener } = options;
@@ -39,6 +37,7 @@ export class Map {
             return newMarker;
         }
         const { position, image, draggable } = options;
+        console.log(position);
         marker.setMap(this.map);
         position && marker.setPosition(position);
         image && marker.setImage(image);
