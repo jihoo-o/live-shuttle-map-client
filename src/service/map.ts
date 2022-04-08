@@ -56,6 +56,7 @@ export class Map {
         });
     }
 
+    // ❌
     setMarker(options, marker?) {
         options = {
             ...options,
@@ -93,15 +94,20 @@ export class Map {
         draggable != null && marker.setDraggable(draggable);
         return marker;
     }
+
+    // ❌
     setCluster(marker) {
         this.clusterer.addMarker(marker);
     }
+
     setCenter({ lat, lng }: Coordinates) {
         this.map.setCenter(new kakao.maps.LatLng(lat, lng));
     }
     setLevel(level: number, anchor?) {
         this.map.setLevel(level, { anchor, animation: true });
     }
+
+    // ❌
     drawCircle(center, radius, color) {
         return new kakao.maps.Circle({
             map: this.map,
@@ -115,6 +121,8 @@ export class Map {
             fillOpacity: 0.7, // 채우기 불투명도 입니다
         });
     }
+
+    // ❌
     drawPolyline({ polyline, path }) {
         if (!polyline) {
             return new kakao.maps.Polyline({
@@ -129,6 +137,8 @@ export class Map {
         polyline.setPath(path);
         return polyline;
     }
+
+    // ❌
     drawCustomOverlay({ customOverlay, position, content }) {
         if (!customOverlay) {
             return new kakao.maps.CustomOverlay({
@@ -139,19 +149,27 @@ export class Map {
         customOverlay.setPosition(position);
         return customOverlay;
     }
+
     setMap(kakaoObj, set: boolean) {
         kakaoObj.setMap(set ? this.map : null);
     }
+
     /**
      * Refactor
      * -> setMap
      */
+    // ❌
     removeFromMap(kakaoObj) {
         kakaoObj.setMap(null);
     }
+
+    // -> addEventListener(instance, event, listener)
     setMapEventListener(event, listener) {
         kakao.maps.event.addListener(this.map, event, listener);
     }
+
+    // + removeEventListener(instance, event, listener)
+    // ❌
     setClusterEventListener(event, listener) {
         kakao.maps.event.addListener(this.clusterer, event, listener);
     }

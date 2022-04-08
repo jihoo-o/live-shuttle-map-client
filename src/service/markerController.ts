@@ -20,11 +20,31 @@ type MarkerType<T> = T extends UserMarker
 class BaseMarkerController {
     constructor(private map: any) {}
 
+    // addMarker
     public setMap(options, marker?) {
+        // let newMarker;
+        // if (!marker) {
+        //     newMarker = createKakaoMarkerInstance(options)
+        //     this.map.setMap(newMarker, true)
+        // } else {
+        //     newMarker = options가 업데이트 된 marker
+        // }
+        // return newMarker;
         return this.map.setMarker(options, marker);
     }
 
+    // addCluster(options, cluster?)
+    // 클러스터에 마커를 등록하는 경우도 options.marker에 넣어서 전달함
     public setCluster(options, marker?) {
+        // let newCluster;
+        // if (!cluster) {
+        //     newCluster = createKakaoClusterInstance(options);
+        //     this.map.setMap(newMarker, true);
+        // } else {
+        //     newCluster = options가 업데이트 된 cluster
+        // }
+        // return newCluster;
+
         const newMarker = this.map.setMarker(options, marker);
         this.map.removeFromMap(newMarker);
         this.map.setCluster(newMarker);
