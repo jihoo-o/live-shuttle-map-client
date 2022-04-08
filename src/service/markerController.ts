@@ -46,7 +46,7 @@ class BaseMarkerController {
         // return newCluster;
 
         const newMarker = this.map.setMarker(options, marker);
-        this.map.removeFromMap(newMarker);
+        this.map.setMap(newMarker, false);
         this.map.setCluster(newMarker);
         return newMarker;
     }

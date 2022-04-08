@@ -133,11 +133,11 @@ const Map = React.forwardRef(
 
         const clearMarker = () => {
             setMarker((marker) => {
-                map.removeFromMap(marker);
+                map.setMap(marker, false);
                 return marker;
             });
             setCircles((circles) => {
-                circles.forEach((circle) => map.removeFromMap(circle));
+                circles.forEach((circle) => map.setMap(circle, false));
                 return [];
             });
             setPolyline((polyline) => {

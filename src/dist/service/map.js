@@ -22,6 +22,7 @@ export class Map {
             this.setCenter({ lat: center.Ma, lng: center.La });
         });
     }
+    // ❌
     setMarker(options, marker) {
         options = Object.assign(Object.assign({}, options), { image: options.image
                 ? new kakao.maps.MarkerImage(options.image, new kakao.maps.Size(50, 50))
@@ -44,6 +45,7 @@ export class Map {
         draggable != null && marker.setDraggable(draggable);
         return marker;
     }
+    // ❌
     setCluster(marker) {
         this.clusterer.addMarker(marker);
     }
@@ -53,6 +55,7 @@ export class Map {
     setLevel(level, anchor) {
         this.map.setLevel(level, { anchor, animation: true });
     }
+    // ❌
     drawCircle(center, radius, color) {
         return new kakao.maps.Circle({
             map: this.map,
@@ -66,6 +69,7 @@ export class Map {
             fillOpacity: 0.7, // 채우기 불투명도 입니다
         });
     }
+    // ❌
     drawPolyline({ polyline, path }) {
         if (!polyline) {
             return new kakao.maps.Polyline({
@@ -80,6 +84,7 @@ export class Map {
         polyline.setPath(path);
         return polyline;
     }
+    // ❌
     drawCustomOverlay({ customOverlay, position, content }) {
         if (!customOverlay) {
             return new kakao.maps.CustomOverlay({
@@ -93,16 +98,12 @@ export class Map {
     setMap(kakaoObj, set) {
         kakaoObj.setMap(set ? this.map : null);
     }
-    /**
-     * Refactor
-     * -> setMap
-     */
-    removeFromMap(kakaoObj) {
-        kakaoObj.setMap(null);
-    }
+    // -> addEventListener(instance, event, listener)
     setMapEventListener(event, listener) {
         kakao.maps.event.addListener(this.map, event, listener);
     }
+    // + removeEventListener(instance, event, listener)
+    // ❌
     setClusterEventListener(event, listener) {
         kakao.maps.event.addListener(this.clusterer, event, listener);
     }

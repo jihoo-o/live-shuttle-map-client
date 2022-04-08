@@ -154,15 +154,6 @@ export class Map {
         kakaoObj.setMap(set ? this.map : null);
     }
 
-    /**
-     * Refactor
-     * -> setMap
-     */
-    // ❌
-    removeFromMap(kakaoObj) {
-        kakaoObj.setMap(null);
-    }
-
     // -> addEventListener(instance, event, listener)
     setMapEventListener(event, listener) {
         kakao.maps.event.addListener(this.map, event, listener);

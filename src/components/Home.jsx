@@ -106,7 +106,7 @@ const Home = ({
         setMapService((mapService) => {
             mapService.setLevel(2);
             mapService.setLevel(1, position);
-            mapService.removeFromMap(marker);
+            mapService.setMap(marker, false);
             setMarkerHighlighter((customOverlay) => {
                 if (customOverlay) {
                     customOverlay.setMap(false);

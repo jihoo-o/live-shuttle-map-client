@@ -35,11 +35,6 @@ export declare class Map {
         content: any;
     }): any;
     setMap(kakaoObj: any, set: boolean): void;
-    /**
-     * Refactor
-     * -> setMap
-     */
-    removeFromMap(kakaoObj: any): void;
     setMapEventListener(event: any, listener: any): void;
     setClusterEventListener(event: any, listener: any): void;
 }
