@@ -1,5 +1,9 @@
 /* eslint-disable import/first */
 import { postUser } from '../api/marker';
+import {
+    createKakaoClusterInstance,
+    createKakaoMarkerInstance,
+} from '../utils/kakaomap';
 import { Marker, UserMarker, StationMarker, Coordinates } from './map';
 
 const { kakao } = window;
@@ -21,35 +25,26 @@ type MarkerType<T> = T extends UserMarker
 class BaseMarkerController {
     constructor(private map: any) {}
 
-    // addMarker
-    public setMap(options, marker?) {
-        // let newMarker;
-        // if (!marker) {
-        //     newMarker = createKakaoMarkerInstance(options)
-        //     this.map.setMap(newMarker, true)
-        // } else {
-        //     newMarker = options가 업데이트 된 marker
-        // }
-        // return newMarker;
-        return this.map.setMarker(options, marker);
+    public createMarker(options, marker?) {
+        let newMarker;
+        if (!marker) {
+            newMarker = createKakaoMarkerInstance(options);
+            this.map.setMap(newMarker, true);
+        } else {
+            newMarker = marker;
+            const { position, image, draggable } = options;
+            position && newMarker.setPosition(position);
+            image && newMarker.setImage(image);
+            draggable != null && newMarker.setDraggable(draggable);
+        }
+        return newMarker;
     }
 
-    // addCluster(options, cluster?)
-    // 클러스터에 마커를 등록하는 경우도 options.marker에 넣어서 전달함
-    public setCluster(options, marker?) {
-        // let newCluster;
-        // if (!cluster) {
-        //     newCluster = createKakaoClusterInstance(options);
-        //     this.map.setMap(newMarker, true);
-        // } else {
-        //     newCluster = options가 업데이트 된 cluster
-        // }
-        // return newCluster;
-
-        const newMarker = this.map.setMarker(options, marker);
-        this.map.setMap(newMarker, false);
-        this.map.setCluster(newMarker);
-        return newMarker;
+    public createCluster(options, cluster?) {
+        options.markers.forEach((marker) => this.map.setMap(marker, false));
+        const newCluster = createKakaoClusterInstance(options);
+        this.map.setMap(newCluster, true);
+        return newCluster;
     }
 
     public setCenter(position: Coordinates) {
@@ -58,14 +53,6 @@ class BaseMarkerController {
 
     protected update() {
         // Socket.broadcast('update markers for user') -> It allows every other users to call this.setAll()
-    }
-
-    // private getMarkerImages<T extends Marker>(marker: T): image
-    private getMarkerImages<MarkerType extends Marker>(marker: MarkerType) {
-        //    switch(MarkerType) {
-        //        case MarkerType extends UserMarker:
-        //            break;
-        //    }
     }
 }
 
@@ -86,7 +73,7 @@ export class Taxi extends BaseMarkerController implements MarkerController {
         const { position } = options;
         console.log(position);
         position && super.setCenter(position);
-        const newMarker = super.setMap(options, marker);
+        const newMarker = super.createMarker(options, marker);
         if (!marker) {
             this.addEventListener(newMarker);
         }

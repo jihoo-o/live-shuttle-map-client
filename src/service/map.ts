@@ -38,6 +38,7 @@ export class Map {
             level: 6,
         });
 
+        // ❌
         this.clusterer = new kakao.maps.MarkerClusterer({
             map: this.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
             averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
@@ -50,43 +51,11 @@ export class Map {
             console.log(`lat: ${latlng.getLat()}, lng: ${latlng.getLng()}`);
         });
 
+        // ❌
         this.setClusterEventListener('clusterclick', (cluster) => {
             const center = cluster.getCenter();
             this.setCenter({ lat: center.Ma, lng: center.La });
         });
-    }
-
-    // ❌
-    setMarker(options, marker?) {
-        options = {
-            ...options,
-            draggable: options.isDraggable,
-        };
-        if (!marker) {
-            const { userId, name, clickListener } = options;
-            const newMarker = new kakao.maps.Marker({
-                ...options,
-                map: this.map,
-            });
-            newMarker.setTitle(`${userId} ${name}`);
-            kakao.maps.event.addListener(newMarker, 'click', (e) => {
-                clickListener(newMarker.getTitle());
-            });
-
-            return newMarker;
-        }
-        const { position, image, draggable } = options;
-        console.log(position);
-        marker.setMap(this.map);
-        position && marker.setPosition(position);
-        image && marker.setImage(image);
-        draggable != null && marker.setDraggable(draggable);
-        return marker;
-    }
-
-    // ❌
-    setCluster(marker) {
-        this.clusterer.addMarker(marker);
     }
 
     setCenter({ lat, lng }: Coordinates) {

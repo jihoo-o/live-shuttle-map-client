@@ -7,6 +7,7 @@ export class Map {
             center: new kakao.maps.LatLng(35.267342474237104, 129.08901354232913),
             level: 6,
         });
+        // ❌
         this.clusterer = new kakao.maps.MarkerClusterer({
             map: this.map,
             averageCenter: true,
@@ -17,34 +18,11 @@ export class Map {
             const latlng = e.latLng;
             console.log(`lat: ${latlng.getLat()}, lng: ${latlng.getLng()}`);
         });
+        // ❌
         this.setClusterEventListener('clusterclick', (cluster) => {
             const center = cluster.getCenter();
             this.setCenter({ lat: center.Ma, lng: center.La });
         });
-    }
-    // ❌
-    setMarker(options, marker) {
-        options = Object.assign(Object.assign({}, options), { draggable: options.isDraggable });
-        if (!marker) {
-            const { userId, name, clickListener } = options;
-            const newMarker = new kakao.maps.Marker(Object.assign(Object.assign({}, options), { map: this.map }));
-            newMarker.setTitle(`${userId} ${name}`);
-            kakao.maps.event.addListener(newMarker, 'click', (e) => {
-                clickListener(newMarker.getTitle());
-            });
-            return newMarker;
-        }
-        const { position, image, draggable } = options;
-        console.log(position);
-        marker.setMap(this.map);
-        position && marker.setPosition(position);
-        image && marker.setImage(image);
-        draggable != null && marker.setDraggable(draggable);
-        return marker;
-    }
-    // ❌
-    setCluster(marker) {
-        this.clusterer.addMarker(marker);
     }
     setCenter({ lat, lng }) {
         this.map.setCenter(new kakao.maps.LatLng(lat, lng));

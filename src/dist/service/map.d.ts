@@ -20,8 +20,6 @@ export declare class Map {
     private map;
     private clusterer;
     constructor(container: HTMLDivElement);
-    setMarker(options: any, marker?: any): any;
-    setCluster(marker: any): void;
     setCenter({ lat, lng }: Coordinates): void;
     setLevel(level: number, anchor?: any): void;
     drawCircle(center: any, radius: any, color: any): any;

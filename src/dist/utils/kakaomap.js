@@ -20,7 +20,7 @@ const getMarkerImage = ({ type, state, isCurrent }) => {
 export const getMarkerPosition = (marker) => { };
 export const getMarkerImageSrc = (marker) => { };
 // create__Instance = get__Instance + setMap(instance, true)
-export const createKakaoClusterInstance = (options) => new kakao.maps.Cluster(options); // -> Marker class
+export const createKakaoClusterInstance = (options) => new kakao.maps.MarkerClusterer(options); // -> Marker class
 export const createKakaoMarkerInstance = (options) => new kakao.maps.Marker(options); // -> Marker class
 export const createKakaoPolyInstance = (options) => new kakao.maps.Polyline(options); // -> Map.jsx
 export const createKakaoCircleInstance = (options) => new kakao.maps.Circle(options); // -> Map.jsx

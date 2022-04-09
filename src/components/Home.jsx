@@ -32,7 +32,7 @@ const Home = ({
         setTaxiMarker(() => taxiMarkerInstance);
         setStationMarker(() => stationMarkerInstance);
         setDrawingService(() => drawingService);
-        mapInstance.setClusterEventListener('clusterclick', clickCluster);
+        // mapInstance.setClusterEventListener('clusterclick', clickCluster);
     }, []);
 
     useEffect(async () => {

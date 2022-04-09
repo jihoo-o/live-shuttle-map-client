@@ -31,7 +31,7 @@ export const getMarkerImageSrc = (marker) => {};
 
 // create__Instance = get__Instance + setMap(instance, true)
 export const createKakaoClusterInstance = (options) =>
-    new kakao.maps.Cluster(options); // -> Marker class
+    new kakao.maps.MarkerClusterer(options); // -> Marker class
 export const createKakaoMarkerInstance = (options) =>
     new kakao.maps.Marker(options); // -> Marker class
 export const createKakaoPolyInstance = (options) =>

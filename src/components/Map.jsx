@@ -54,13 +54,13 @@ const Map = React.forwardRef(
                             isCurrent,
                         }),
                     };
-                    stationMarker.setMap(newMarkerOptions);
+                    stationMarker.createMarker(newMarkerOptions);
                 });
         }, [stationMarker, stationMarkers]);
 
         useEffect(() => {
             if (taxiMarker) {
-                taxiMarkers.forEach((markerOptions) => {
+                const newClusterMarkers = taxiMarkers.map((markerOptions) => {
                     const { position, type, state, isCurrent } = markerOptions;
                     const newMarkerOptions = {
                         ...markerOptions,
@@ -71,8 +71,15 @@ const Map = React.forwardRef(
                             isCurrent,
                         }),
                     };
-                    taxiMarker.setCluster(newMarkerOptions);
+                    return taxiMarker.createMarker(newMarkerOptions);
                 });
+                const clusterOptions = {
+                    averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+                    minLevel: 2, // 클러스터 할 최소 지도 레벨
+                    disableClickZoom: true,
+                    markers: newClusterMarkers,
+                };
+                taxiMarker.createCluster(clusterOptions);
 
                 taxiMarker.setEventListener([
                     { event: 'dragstart', listener: clickMarker },

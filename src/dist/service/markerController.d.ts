@@ -8,11 +8,10 @@ export declare type UserStates = 'ready' | 'running' | 'blocked';
 declare class BaseMarkerController {
     private map;
     constructor(map: any);
-    setMap(options: any, marker?: any): any;
-    setCluster(options: any, marker?: any): any;
+    createMarker(options: any, marker?: any): any;
+    createCluster(options: any, cluster?: any): any;
     setCenter(position: Coordinates): void;
     protected update(): void;
-    private getMarkerImages;
 }
 export declare class Taxi extends BaseMarkerController implements MarkerController {
     private listeners;
