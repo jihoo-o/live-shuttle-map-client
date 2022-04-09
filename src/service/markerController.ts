@@ -40,10 +40,22 @@ class BaseMarkerController {
         return newMarker;
     }
 
+    // options.markers: Array
     public createCluster(options, cluster?) {
-        options.markers.forEach((marker) => this.map.setMap(marker, false));
-        const newCluster = createKakaoClusterInstance(options);
-        this.map.setMap(newCluster, true);
+        let newCluster;
+        const { markers } = options;
+        if (!markers) return;
+        if (!cluster) {
+            markers.forEach((marker) => this.map.setMap(marker, false));
+            newCluster = createKakaoClusterInstance(options);
+            this.map.setMap(newCluster, true);
+        } else {
+            newCluster = cluster;
+            markers.forEach((marker) => {
+                newCluster.removeMarker(marker);
+                newCluster.addMarker(marker);
+            });
+        }
         return newCluster;
     }
 
@@ -71,7 +83,6 @@ export class Taxi extends BaseMarkerController implements MarkerController {
      */
     public create(options, marker?) {
         const { position } = options;
-        console.log(position);
         position && super.setCenter(position);
         const newMarker = super.createMarker(options, marker);
         if (!marker) {

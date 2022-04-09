@@ -14,12 +14,16 @@ const Home = ({
 }) => {
     const ref = React.createRef();
     const [mapService, setMapService] = useState(null);
-    const [taxiMarker, setTaxiMarker] = useState(null);
-    const [stationMarker, setStationMarker] = useState(null);
+    const [taxiMarkerService, setTaxiMarker] = useState(null);
+    const [stationMarkerService, setStationMarker] = useState(null);
     const [drawingService, setDrawingService] = useState(null);
+
+    // socket으로 업데이트되기 이전에는 state에 보관중인 값을 사용함
     const [taxiMarkers, setTaxiMarkers] = useState([]);
     const [stationMarkers, setStationMarkers] = useState([]);
     const [clusterMarkers, setClusterMarkers] = useState([]);
+
+    const [cluster, setCluster] = useState(null);
     const [markerHighlighter, setMarkerHighlighter] = useState(null);
     const [profile, setProfile] = useState(null);
 
@@ -27,20 +31,20 @@ const Home = ({
         const mapInstance = new map(ref.current);
         const taxiMarkerInstance = new taxiMarkerController(mapInstance);
         const stationMarkerInstance = new stationMarkerController(mapInstance);
-        const drawingService = new shapeController(mapInstance);
+        const drawingServiceInstance = new shapeController(mapInstance);
         setMapService(() => mapInstance);
         setTaxiMarker(() => taxiMarkerInstance);
         setStationMarker(() => stationMarkerInstance);
-        setDrawingService(() => drawingService);
-        // mapInstance.setClusterEventListener('clusterclick', clickCluster);
+        setDrawingService(() => drawingServiceInstance);
     }, []);
 
     useEffect(async () => {
         const userTaxiMarkers = await getUsers();
         const newTaxiMarkers = userTaxiMarkers.map((marker) => {
-            const { lat, lng } = marker;
+            const { lat, lng, userId, name } = marker;
             const newMarker = {
                 ...marker,
+                title: `${userId} ${name}`,
                 position: { lat, lng },
                 isDraggable: false,
                 clickListener: getProfielByUserId,
@@ -68,8 +72,8 @@ const Home = ({
         setStationMarkers(newStationMarkers);
     }, []);
 
-    const getProfielByUserId = async (userInfo) => {
-        const [userId, name] = [...userInfo.trim().split(' ')];
+    const getProfielByUserId = async (marker) => {
+        const [userId, name] = [...marker.getTitle().trim().split(' ')];
         const newProfile = await getProfile(userId);
         if (newProfile && newProfile.state === 'running') {
             window.alert('해당 사용자는 이미 다른 사용자와 대화중입니다.');
@@ -82,7 +86,7 @@ const Home = ({
         setProfile(null);
     };
 
-    const clickCluster = (cluster) => {
+    const onClickCluster = (cluster) => {
         console.log(cluster.getMarkers());
         const includedMarkers = cluster.getMarkers().map((marker) => {
             const [userId, name] = [...marker.getTitle().trim().split(' ')];
@@ -96,15 +100,14 @@ const Home = ({
         setClusterMarkers(includedMarkers);
     };
 
-    const onListItemClick = (marker) => {
+    const onClickListItem = (marker) => {
         const position = marker.getPosition();
         setMapService((mapService) => {
             mapService.setLevel(2);
             mapService.setLevel(1, position);
-            mapService.setMap(marker, false);
             setMarkerHighlighter((customOverlay) => {
                 if (customOverlay) {
-                    customOverlay.setMap(false);
+                    mapService.setMap(customOverlay, false);
                 }
                 const newCustomOverlay = mapService.drawCustomOverlay({
                     customOverlay,
@@ -116,10 +119,11 @@ const Home = ({
             });
             return mapService;
         });
-        setTaxiMarker((taxiMarkerService) => {
-            taxiMarkerService.setCluster(marker);
-            return taxiMarkerService;
-        });
+        taxiMarkerService.createCluster({ markers: [marker] }, cluster);
+    };
+
+    const createCluster = (cluster) => {
+        setCluster(cluster);
     };
 
     return (
@@ -142,12 +146,15 @@ const Home = ({
                 <Map
                     userInfo={userInfo}
                     ref={ref}
-                    map={mapService}
-                    taxiMarker={taxiMarker}
-                    stationMarker={stationMarker}
-                    shapeController={drawingService}
+                    mapService={mapService}
+                    taxiMarkerService={taxiMarkerService}
+                    stationMarkerService={stationMarkerService}
+                    drawingService={drawingService}
                     taxiMarkers={taxiMarkers}
                     stationMarkers={stationMarkers}
+                    handleClickTaxiMarker={getProfielByUserId}
+                    handleClickCluster={onClickCluster}
+                    createCluster={createCluster}
                 />
                 {profile && (
                     <Profile userInfo={profile} closeProfile={closeProfile} />
@@ -157,7 +164,7 @@ const Home = ({
                 {clusterMarkers.length !== 0 && (
                     <MarkerList
                         markers={clusterMarkers}
-                        handleListItemClick={onListItemClick}
+                        handleListItemClick={onClickListItem}
                     />
                 )}
             </section>

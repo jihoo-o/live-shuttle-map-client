@@ -50,19 +50,14 @@ export class Map {
             const latlng = e.latLng;
             console.log(`lat: ${latlng.getLat()}, lng: ${latlng.getLng()}`);
         });
-
-        // ❌
-        this.setClusterEventListener('clusterclick', (cluster) => {
-            const center = cluster.getCenter();
-            this.setCenter({ lat: center.Ma, lng: center.La });
-        });
     }
 
     setCenter({ lat, lng }: Coordinates) {
         this.map.setCenter(new kakao.maps.LatLng(lat, lng));
     }
     setLevel(level: number, anchor?) {
-        this.map.setLevel(level, { anchor, animation: true });
+        this.map.setLevel(level);
+        anchor && this.map.setCenter(anchor);
     }
 
     // ❌
@@ -112,14 +107,18 @@ export class Map {
         kakaoObj.setMap(set ? this.map : null);
     }
 
-    // -> addEventListener(instance, event, listener)
-    setMapEventListener(event, listener) {
-        kakao.maps.event.addListener(this.map, event, listener);
-    }
-
-    // + removeEventListener(instance, event, listener)
-    // ❌
-    setClusterEventListener(event, listener) {
-        kakao.maps.event.addListener(this.clusterer, event, listener);
+    addEventListener(event, listener, kakaoObj?) {
+        kakao.maps.event.addListener(
+            !kakaoObj ? this.map : kakaoObj,
+            event,
+            listener
+        );
+        return () => {
+            kakao.maps.event.removeListener(
+                !kakaoObj ? this.map : kakaoObj,
+                event,
+                listener
+            );
+        };
     }
 }

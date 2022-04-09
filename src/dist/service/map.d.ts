@@ -33,6 +33,5 @@ export declare class Map {
         content: any;
     }): any;
     setMap(kakaoObj: any, set: boolean): void;
-    setMapEventListener(event: any, listener: any): void;
-    setClusterEventListener(event: any, listener: any): void;
+    addEventListener(event: any, listener: any, kakaoObj?: any): () => void;
 }
