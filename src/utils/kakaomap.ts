@@ -6,44 +6,28 @@ const { kakao } = window;
 export const createKakaoLatLngInstance = ({ lat, lng }: Coordinates) =>
     new kakao.maps.LatLng(lat, lng);
 
-export const getMarkerImage = ({ type, state, isCurrent }) => {
-    let imageSrc: string;
-    switch (type) {
-        case 'shuttlebus':
-        case 'bus':
-            imageSrc = markerImages[type];
-            break;
-        case 'user':
-            imageSrc =
-                markerImages[type][state][
-                    isCurrent ? 'isCurrent' : 'isNotCurrent'
-                ];
-            break;
-        default:
-            throw new Error('유효하지 않은 타입입니다');
-    }
-    return new kakao.maps.MarkerImage(imageSrc);
+export const createKakaoMarkerImageInstance = (markerImageOptions) => {
+    const { type, state, isCurrent } = markerImageOptions;
+    let imageSrc: string = getMarkerImage({ type, state, isCurrent });
+    return new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(50, 50));
 };
 
-// tmp
-export const getMarkerImageSrc = ({ type, state, isCurrent }) => {
-    let imageSrc: string;
+const getMarkerImage = ({ type, state, isCurrent }) => {
     switch (type) {
         case 'shuttlebus':
         case 'bus':
-            imageSrc = markerImages[type];
-            break;
+            return markerImages[type];
         case 'user':
-            imageSrc =
-                markerImages[type][state][
-                    isCurrent ? 'isCurrent' : 'isNotCurrent'
-                ];
-            break;
+            return markerImages[type][state][
+                isCurrent ? 'isCurrent' : 'isNotCurrent'
+            ];
         default:
             throw new Error('유효하지 않은 타입입니다');
     }
-    return imageSrc;
 };
+
+export const getMarkerPosition = (marker) => {};
+export const getMarkerImageSrc = (marker) => {};
 
 // create__Instance = get__Instance + setMap(instance, true)
 export const createKakaoClusterInstance = (options) =>

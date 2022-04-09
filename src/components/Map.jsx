@@ -7,10 +7,9 @@ import ClearIcon from '@mui/icons-material/Clear';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
 import { getCurrentPosition } from '../dist/service/geolocation.js';
-import { markerImages } from '../dist/api/marker.js';
 import {
     createKakaoLatLngInstance,
-    getMarkerImageSrc,
+    createKakaoMarkerImageInstance,
 } from '../dist/utils/kakaomap.js';
 
 const Map = React.forwardRef(
@@ -45,11 +44,15 @@ const Map = React.forwardRef(
         useEffect(() => {
             stationMarker &&
                 stationMarkers.forEach((markerOptions) => {
+                    const { position, type, state, isCurrent } = markerOptions;
                     const newMarkerOptions = {
                         ...markerOptions,
-                        position: createKakaoLatLngInstance(
-                            markerOptions.position
-                        ),
+                        position: createKakaoLatLngInstance(position),
+                        image: createKakaoMarkerImageInstance({
+                            type,
+                            state,
+                            isCurrent,
+                        }),
                     };
                     stationMarker.setMap(newMarkerOptions);
                 });
@@ -58,11 +61,15 @@ const Map = React.forwardRef(
         useEffect(() => {
             if (taxiMarker) {
                 taxiMarkers.forEach((markerOptions) => {
+                    const { position, type, state, isCurrent } = markerOptions;
                     const newMarkerOptions = {
                         ...markerOptions,
-                        position: createKakaoLatLngInstance(
-                            markerOptions.position
-                        ),
+                        position: createKakaoLatLngInstance(position),
+                        image: createKakaoMarkerImageInstance({
+                            type,
+                            state,
+                            isCurrent,
+                        }),
                     };
                     taxiMarker.setCluster(newMarkerOptions);
                 });
@@ -122,13 +129,12 @@ const Map = React.forwardRef(
                         taxiMarker &&
                         taxiMarker.create(
                             {
-                                // position: { lat, lng },
                                 position: createKakaoLatLngInstance({
                                     lat,
                                     lng,
                                 }),
                                 isDraggable: true,
-                                image: getMarkerImageSrc({
+                                image: createKakaoMarkerImageInstance({
                                     type,
                                     state,
                                     isCurrent,
@@ -262,7 +268,7 @@ const Map = React.forwardRef(
                     const { type, state, isCurrent } = marker;
                     return taxiMarker.create(
                         {
-                            image: getMarkerImageSrc({
+                            image: createKakaoMarkerImageInstance({
                                 type,
                                 state,
                                 isCurrent,
@@ -277,7 +283,7 @@ const Map = React.forwardRef(
                     const { type, state, isCurrent } = marker;
                     return taxiMarker.create(
                         {
-                            image: getMarkerImageSrc({
+                            image: createKakaoMarkerImageInstance({
                                 type,
                                 state,
                                 isCurrent,
@@ -292,7 +298,7 @@ const Map = React.forwardRef(
                     const { type, state, isCurrent } = marker;
                     return taxiMarker.create(
                         {
-                            image: getMarkerImageSrc({
+                            image: createKakaoMarkerImageInstance({
                                 type,
                                 state,
                                 isCurrent,

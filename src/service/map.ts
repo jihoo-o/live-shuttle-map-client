@@ -60,12 +60,6 @@ export class Map {
     setMarker(options, marker?) {
         options = {
             ...options,
-            image: options.image
-                ? new kakao.maps.MarkerImage(
-                      options.image,
-                      new kakao.maps.Size(50, 50)
-                  )
-                : null,
             draggable: options.isDraggable,
         };
         if (!marker) {

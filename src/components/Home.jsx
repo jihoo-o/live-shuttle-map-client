@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Map from './Map';
 import Profile from './Profile';
 import { getShuttleStops, getUsers } from '../dist/api/marker.js';
-import { markerImages } from '../dist/api/marker.js';
 import { getProfile } from '../dist/api/users.js';
 import MarkerList from './MarkerList';
-import { getMarkerImageSrc } from '../dist/utils/kakaomap.js';
 
 const Home = ({
     userInfo,
@@ -40,10 +38,9 @@ const Home = ({
     useEffect(async () => {
         const userTaxiMarkers = await getUsers();
         const newTaxiMarkers = userTaxiMarkers.map((marker) => {
-            const { type, state, isCurrent, lat, lng } = marker;
+            const { lat, lng } = marker;
             const newMarker = {
                 ...marker,
-                image: getMarkerImageSrc({ type, state, isCurrent }),
                 position: { lat, lng },
                 isDraggable: false,
                 clickListener: getProfielByUserId,
@@ -58,10 +55,9 @@ const Home = ({
     useEffect(async () => {
         const shuttlestopMarkers = await getShuttleStops();
         const newStationMarkers = shuttlestopMarkers.map((marker) => {
-            const { type, state, isCurrent, lat, lng } = marker;
+            const { lat, lng } = marker;
             const newMarker = {
                 ...marker,
-                image: getMarkerImageSrc({ type, state, isCurrent }),
                 position: { lat, lng },
                 isDraggable: false,
             };

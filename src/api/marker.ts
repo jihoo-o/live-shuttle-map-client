@@ -1,5 +1,4 @@
 /* eslint-disable import/first */
-import { getMarkerImageSrc } from '../utils/kakaomap';
 
 export const markerImages = {
     shuttlebus: `https://lh3.googleusercontent.com/R12lqqD3a2a2yFEOBI5w2pTgwejG_P82IkbWCIzQwWf5W7pU-hQu0OfB5ED0380jVLcNvg0f3Yoem8mIb4LPwDzkbqnfuVyiUZ6EyYsDmKojoT1zF8iE3Wq9qoXtvWeFXaKvJmBJu3N1_nTVQCJcu1cCYF76AO8TbBnYXFmn-id7ryEeBLPPISGL65vszNdqBfQ1rgJbwnkWdhEiVydVwGW-68iMomBNpFdhC9O3BpaoLEl1dEktD_6Kcy78Vpb4gyQapA1Sg3w56U4X3IuUsfzcrAodYvfCkpFpcF5C6TWfg7DWD46xRHhyOKR7vebeF3AwLUDWoR3nvZYxzei1FiKx6XdHTzSGy5GOlutRgSQhSugGbj3jjmA_fNgkzTxthpp09GBgo_1SY6TBI-4fckO-_bkhDBulTvnXtdmKoziBxG-OOlykDM5-AciAx2UUm6Z2cwjRc4wJpkAMK5SgSu_qM3lfQkfuSl7tBChNsURrb361ckuHooy0bH0yaNOtf0feCm6yXB2FU75LjEc2c3YVZVvg24tu-fKghue9Bv42tAVm4go8bjFfkhBtXgeW9SOY0TdBP4RDqTsf2Ie08_yzsS69K7jNtQGCRIobXOjveDwlRl2DAy7FonsNYscNXFd4jlbpmQA9QfNlSDkA4Xi_N_uiCOFLISZC0gXoczrDx3eOP8M8g40qNcWePAi6BQIM2tFvkjOCz5kvCoICEwICz5gz7Ockm3aF1kurb1ehNyANORUNCsrXcR65KUsDtUQvK5WpPwaUA4EY73y3b5hK3uCuKI4=s500-no?authuser=1`,
@@ -185,7 +184,6 @@ export const getUsers = async () => {
 export const getShuttleStops = async () => {
     return shuttleStops.map((shuttlestop) => ({
         ...shuttlestop,
-        image: getMarkerImageSrc['shuttlebus'],
     }));
 };
 

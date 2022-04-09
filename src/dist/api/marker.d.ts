@@ -23,7 +23,6 @@ export declare const getUsers: () => Promise<{
     lng: number;
 }[]>;
 export declare const getShuttleStops: () => Promise<{
-    image: any;
     stationId: string;
     type: string;
     name: {

@@ -24,9 +24,7 @@ export class Map {
     }
     // ❌
     setMarker(options, marker) {
-        options = Object.assign(Object.assign({}, options), { image: options.image
-                ? new kakao.maps.MarkerImage(options.image, new kakao.maps.Size(50, 50))
-                : null, draggable: options.isDraggable });
+        options = Object.assign(Object.assign({}, options), { draggable: options.isDraggable });
         if (!marker) {
             const { userId, name, clickListener } = options;
             const newMarker = new kakao.maps.Marker(Object.assign(Object.assign({}, options), { map: this.map }));
