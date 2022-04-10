@@ -1,4 +1,3 @@
-import { Coordinates } from './map';
 interface MarkerController {
     edit(): void;
     delete(): void;
@@ -10,7 +9,7 @@ declare class BaseMarkerController {
     constructor(map: any);
     createMarker(options: any, marker?: any): any;
     createCluster(options: any, cluster?: any): any;
-    setCenter(position: Coordinates): void;
+    setCenter(position: any): void;
     protected update(): void;
 }
 export declare class Taxi extends BaseMarkerController implements MarkerController {
@@ -21,7 +20,7 @@ export declare class Taxi extends BaseMarkerController implements MarkerControll
     };
     /**
      *
-     * @options { map, position, image, isDraggable }
+     * @options { map, position, image, draggable }
      * @param marker null이면 새로운 마커를 생성하고, null이 아니면 기존의 마커를 수정합니다.
      */
     create(options: any, marker?: any): any;

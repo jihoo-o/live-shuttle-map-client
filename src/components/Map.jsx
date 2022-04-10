@@ -41,8 +41,13 @@ const Map = React.forwardRef(
         const [drag, setDrag] = useState(false);
 
         useEffect(() => {
-            mapService &&
+            const removeMapEventListener =
+                mapService &&
                 mapService.addEventListener('mousemove', handleDragMarker);
+
+            return () => {
+                removeMapEventListener && removeMapEventListener();
+            };
         }, [mapService]);
 
         useEffect(() => {
@@ -103,15 +108,10 @@ const Map = React.forwardRef(
 
             createCluster(newCluster);
 
-            // ❌
-            // taxiMarkerService.setEventListener([
-            //     { event: 'dragstart', listener: handleDragStartMarker },
-            //     { event: 'dragend', listener: handleDragEndMarker },
-            // ]);
-
             return () => {
-                removeMarkerEventListeners.forEach((cb) => cb());
-                removeClusterEventListener();
+                removeMarkerEventListeners &&
+                    removeMarkerEventListeners.forEach((cb) => cb());
+                removeMarkerEventListeners && removeClusterEventListener();
             };
         }, [taxiMarkerService, taxiMarkers]);
 
@@ -155,7 +155,7 @@ const Map = React.forwardRef(
                         handleAddMarker
                     );
             };
-        }, []);
+        }, [mapService]);
 
         const handleCreateMarker = () => {
             console.log('created');
@@ -167,8 +167,7 @@ const Map = React.forwardRef(
 
             getCurrentPosition(({ lat, lng }) => {
                 setMarker((marker) => {
-                    const { type, state, isCurrent } = marker;
-                    return (
+                    const newMarker =
                         taxiMarkerService &&
                         taxiMarkerService.create(
                             {
@@ -176,16 +175,30 @@ const Map = React.forwardRef(
                                     lat,
                                     lng,
                                 }),
-                                isDraggable: true,
+                                draggable: true,
                                 image: createKakaoMarkerImageInstance({
-                                    type,
-                                    state,
-                                    isCurrent,
+                                    type: 'user',
+                                    state: 'ready',
+                                    isCurrent: true,
                                 }),
                             },
                             marker
-                        )
-                    );
+                        );
+
+                    if (!marker) {
+                        mapService.addEventListener(
+                            'dragstart',
+                            handleDragStartMarker,
+                            newMarker
+                        );
+                        mapService.addEventListener(
+                            'dragend',
+                            handleDragEndMarker,
+                            newMarker
+                        );
+                    }
+
+                    return newMarker;
                 });
 
                 if (drawingService) {
@@ -213,7 +226,7 @@ const Map = React.forwardRef(
                 return [];
             });
             setPolyline((polyline) => {
-                mapService.removeFromMap(polyline);
+                mapService.setMap(polyline, false);
                 return null;
             });
             setCreateMode(false);
@@ -272,34 +285,33 @@ const Map = React.forwardRef(
 
         const handleDrawPolyline = () => {
             setPolyline((polyline) => {
-                let path;
+                let newPath = [];
                 if (!polyline) {
-                    path = [];
                     setPosition((position) => {
-                        path.push(
-                            new kakao.maps.LatLng(position.lat, position.lng)
+                        newPath.push(
+                            createKakaoLatLngInstance({
+                                lat: position.lat,
+                                lng: position.lng,
+                            })
                         );
                         return position;
                     });
                 } else {
-                    path = polyline.getPath();
-                    if (path.length > 1) {
-                        path.pop();
+                    newPath = polyline.getPath();
+                    if (newPath.length > 1) {
+                        newPath.pop();
                     }
                 }
-                let newPath = [];
                 setMarker((marker) => {
-                    const position = taxiMarkerService.getPosition(marker);
-                    newPath = [
-                        ...path,
-                        new kakao.maps.LatLng(position.lat, position.lng),
-                    ];
+                    newPath.push(marker.getPosition());
                     return marker;
                 });
-                const newPolyline = mapService.handleDrawPolyline({
-                    polyline,
-                    path: newPath,
-                });
+                const newPolyline =
+                    mapService &&
+                    mapService.drawPolyline({
+                        polyline,
+                        path: newPath,
+                    });
                 handleConstrainMarker(newPolyline.getLength());
                 return newPolyline;
             });
@@ -308,45 +320,41 @@ const Map = React.forwardRef(
         const handleConstrainMarker = (length) => {
             if (length <= 20) {
                 setMarker((marker) => {
-                    const { type, state, isCurrent } = marker;
                     return taxiMarkerService.create(
                         {
                             image: createKakaoMarkerImageInstance({
-                                type,
-                                state,
-                                isCurrent,
+                                type: 'user',
+                                state: 'ready',
+                                isCurrent: true,
                             }),
-                            isDraggable: true,
+                            draggable: true,
                         },
                         marker
                     );
                 });
             } else if (length <= 50) {
                 setMarker((marker) => {
-                    const { type, state, isCurrent } = marker;
                     return taxiMarkerService.create(
                         {
                             image: createKakaoMarkerImageInstance({
-                                type,
-                                state,
-                                isCurrent,
+                                type: 'user',
+                                state: 'ready',
+                                isCurrent: false,
                             }),
-                            isDraggable: true,
+                            draggable: true,
                         },
                         marker
                     );
                 });
             } else {
                 setMarker((marker) => {
-                    const { type, state, isCurrent } = marker;
                     return taxiMarkerService.create(
                         {
                             image: createKakaoMarkerImageInstance({
-                                type,
-                                state,
-                                isCurrent,
+                                type: 'user',
+                                state: 'blocked',
                             }),
-                            isDraggable: true,
+                            draggable: true,
                         },
                         marker
                     );

@@ -19,7 +19,6 @@ class BaseMarkerController {
         let newMarker;
         if (!marker) {
             newMarker = createKakaoMarkerInstance(options);
-            this.map.setMap(newMarker, true);
         }
         else {
             newMarker = marker;
@@ -28,6 +27,7 @@ class BaseMarkerController {
             image && newMarker.setImage(image);
             draggable != null && newMarker.setDraggable(draggable);
         }
+        this.map.setMap(newMarker, true);
         return newMarker;
     }
     // options.markers: Array
@@ -68,16 +68,12 @@ export class Taxi extends BaseMarkerController {
     }
     /**
      *
-     * @options { map, position, image, isDraggable }
+     * @options { map, position, image, draggable }
      * @param marker null이면 새로운 마커를 생성하고, null이 아니면 기존의 마커를 수정합니다.
      */
     create(options, marker) {
-        const { position } = options;
-        position && super.setCenter(position);
         const newMarker = super.createMarker(options, marker);
-        if (!marker) {
-            this.addEventListener(newMarker);
-        }
+        options.position && super.setCenter(options.position);
         return newMarker;
     }
     update() {

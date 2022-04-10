@@ -46,7 +46,7 @@ const Home = ({
                 ...marker,
                 title: `${userId} ${name}`,
                 position: { lat, lng },
-                isDraggable: false,
+                draggable: false,
                 clickListener: getProfielByUserId,
             };
             delete marker['lat'];
@@ -63,7 +63,7 @@ const Home = ({
             const newMarker = {
                 ...marker,
                 position: { lat, lng },
-                isDraggable: false,
+                draggable: false,
             };
             delete marker['lat'];
             delete marker['lng'];

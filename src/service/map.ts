@@ -9,7 +9,7 @@ export interface Coordinates {
 
 export interface Marker extends Coordinates {
     image: string;
-    isDraggable?: boolean;
+    draggable?: boolean;
 }
 
 export interface UserMarker extends Marker {
@@ -52,9 +52,10 @@ export class Map {
         });
     }
 
-    setCenter({ lat, lng }: Coordinates) {
-        this.map.setCenter(new kakao.maps.LatLng(lat, lng));
+    setCenter(position) {
+        this.map.setCenter(position);
     }
+
     setLevel(level: number, anchor?) {
         this.map.setLevel(level);
         anchor && this.map.setCenter(anchor);

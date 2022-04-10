@@ -12,7 +12,9 @@ const getMarkerImage = ({ type, state, isCurrent }) => {
         case 'bus':
             return markerImages[type];
         case 'user':
-            return markerImages[type][state][isCurrent ? 'isCurrent' : 'isNotCurrent'];
+            return isCurrent != null
+                ? markerImages[type][state][isCurrent ? 'isCurrent' : 'isNotCurrent']
+                : markerImages[type][state];
         default:
             throw new Error('유효하지 않은 타입입니다');
     }

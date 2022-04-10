@@ -5,7 +5,7 @@ export interface Coordinates {
 }
 export interface Marker extends Coordinates {
     image: string;
-    isDraggable?: boolean;
+    draggable?: boolean;
 }
 export interface UserMarker extends Marker {
     userId: string;
@@ -20,7 +20,7 @@ export declare class Map {
     private map;
     private clusterer;
     constructor(container: HTMLDivElement);
-    setCenter({ lat, lng }: Coordinates): void;
+    setCenter(position: any): void;
     setLevel(level: number, anchor?: any): void;
     drawCircle(center: any, radius: any, color: any): any;
     drawPolyline({ polyline, path }: {

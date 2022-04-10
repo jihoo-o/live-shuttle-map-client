@@ -19,8 +19,8 @@ export class Map {
             console.log(`lat: ${latlng.getLat()}, lng: ${latlng.getLng()}`);
         });
     }
-    setCenter({ lat, lng }) {
-        this.map.setCenter(new kakao.maps.LatLng(lat, lng));
+    setCenter(position) {
+        this.map.setCenter(position);
     }
     setLevel(level, anchor) {
         this.map.setLevel(level);
