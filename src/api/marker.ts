@@ -198,8 +198,8 @@ export const postUser = async (userInfo, isCurrent, position) => {
         type: 'user',
         state: 'ready',
         isCurrent,
-        lat: position.La,
-        lng: position.Ma,
+        lat: position.lat,
+        lng: position.lng,
     };
     users.push(newUserMarker);
     return newUserMarker;

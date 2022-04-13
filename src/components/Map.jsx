@@ -25,6 +25,9 @@ const Map = React.forwardRef(
             handleClickTaxiMarker,
             handleClickCluster,
             createCluster,
+            onCreateMarker,
+            onDeleteMarker,
+            onUpdateMarker,
         },
         ref
     ) => {
@@ -37,6 +40,8 @@ const Map = React.forwardRef(
         const [polyline, setPolyline] = useState(null);
         const [position, setPosition] = useState(null); //
         const [createMode, setCreateMode] = useState(false);
+
+        // isCurrent -> marker
         const [isCurrent, setIsCurrent] = useState(true);
         const [drag, setDrag] = useState(false);
 
@@ -69,6 +74,7 @@ const Map = React.forwardRef(
 
         useEffect(() => {
             if (!taxiMarkerService || !taxiMarkers) return;
+            console.log(taxiMarkers);
 
             const newClusterMarkers = taxiMarkers.map((markerOptions) => {
                 const { position, type, state, isCurrent } = markerOptions;
@@ -247,10 +253,18 @@ const Map = React.forwardRef(
                 return isClickable;
             });
             if (exit) return;
+
             setMarker((marker) => {
-                taxiMarkerService.add(userInfo, marker, isCurrent);
+                setIsCurrent((isCurrent) => {
+                    onCreateMarker(marker, isCurrent);
+                    return isCurrent;
+                });
+
+                // ❌ -> state 변경에 따른 처리
+                // taxiMarkerService.add(userInfo, marker, isCurrent);
                 return marker;
             });
+
             handleClearMarker();
         };
 
@@ -264,11 +278,10 @@ const Map = React.forwardRef(
             handleDragStartMarker();
             setPolyline((polyline) => {
                 const length = polyline.getLength();
-                if (length <= 50) {
-                    setSendIsClickable(true);
-                } else {
-                    setSendIsClickable(false);
-                }
+                length <= 20 ? setIsCurrent(true) : setIsCurrent(false);
+                length <= 50
+                    ? setSendIsClickable(true)
+                    : setSendIsClickable(false);
                 return polyline;
             });
         };
@@ -318,6 +331,7 @@ const Map = React.forwardRef(
         };
 
         const handleConstrainMarker = (length) => {
+            console.log(length);
             if (length <= 20) {
                 setMarker((marker) => {
                     return taxiMarkerService.create(

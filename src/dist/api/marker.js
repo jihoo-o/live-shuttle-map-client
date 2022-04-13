@@ -195,8 +195,8 @@ export const postUser = (userInfo, isCurrent, position) => __awaiter(void 0, voi
         type: 'user',
         state: 'ready',
         isCurrent,
-        lat: position.La,
-        lng: position.Ma,
+        lat: position.lat,
+        lng: position.lng,
     };
     users.push(newUserMarker);
     return newUserMarker;

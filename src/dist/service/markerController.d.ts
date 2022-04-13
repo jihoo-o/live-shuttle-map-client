@@ -10,7 +10,7 @@ declare class BaseMarkerController {
     createMarker(options: any, marker?: any): any;
     createCluster(options: any, cluster?: any): any;
     setCenter(position: any): void;
-    protected update(): void;
+    protected update(data: any): void;
 }
 export declare class Taxi extends BaseMarkerController implements MarkerController {
     private listeners;
@@ -25,7 +25,15 @@ export declare class Taxi extends BaseMarkerController implements MarkerControll
      */
     create(options: any, marker?: any): any;
     protected update(): void;
-    add(userInfo: any, marker: any, isCurrent: Boolean): void;
+    add(userInfo: any, marker: any, isCurrent: Boolean): Promise<{
+        userId: any;
+        name: any;
+        type: string;
+        state: string;
+        isCurrent: any;
+        lat: any;
+        lng: any;
+    }>;
     edit(): void;
     delete(): void;
     /**

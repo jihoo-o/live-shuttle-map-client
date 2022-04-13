@@ -53,8 +53,12 @@ class BaseMarkerController {
     setCenter(position) {
         this.map.setCenter(position);
     }
-    update() {
-        // Socket.broadcast('update markers for user') -> It allows every other users to call this.setAll()
+    update(data) {
+        // stompClient.publish({
+        // destination: '/marker',
+        // body: JSON.stringify(data),
+        // type: ADD, DELETE, UPDATE
+        // });
     }
 }
 export class Taxi extends BaseMarkerController {
@@ -77,21 +81,23 @@ export class Taxi extends BaseMarkerController {
         return newMarker;
     }
     update() {
-        super.update();
+        // super.update();
     }
     add(userInfo, marker, isCurrent) {
-        const position = this.getPosition(marker);
-        postUser(userInfo, isCurrent, position) //
-            .then(console.log);
-        this.update();
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('add marker');
+            const position = this.getPosition(marker);
+            return yield postUser(userInfo, isCurrent, position);
+            // this.update();
+        });
     }
     edit() {
         // putUser
-        this.update();
+        // this.update();
     }
     delete() {
         // deleteUser
-        this.update();
+        // this.update();
     }
     /**
      *
@@ -118,15 +124,15 @@ export class Station extends BaseMarkerController {
     // for Admin
     add() {
         // addStation
-        this.update();
+        // this.update();
     }
     edit() {
         // postStation
-        this.update();
+        // this.update();
     }
     delete() {
         // deleteStation
-        this.update();
+        // this.update();
     }
 }
 //# sourceMappingURL=markerController.js.map

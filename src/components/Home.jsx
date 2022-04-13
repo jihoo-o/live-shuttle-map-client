@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import * as StompJs from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 import Map from './Map';
 import Profile from './Profile';
 import { getShuttleStops, getUsers } from '../dist/api/marker.js';
@@ -18,7 +20,7 @@ const Home = ({
     const [stationMarkerService, setStationMarker] = useState(null);
     const [drawingService, setDrawingService] = useState(null);
 
-    // socket으로 업데이트되기 이전에는 state에 보관중인 값을 사용함
+    // taxiMarekrs -> markers
     const [taxiMarkers, setTaxiMarkers] = useState([]);
     const [stationMarkers, setStationMarkers] = useState([]);
     const [clusterMarkers, setClusterMarkers] = useState([]);
@@ -26,6 +28,58 @@ const Home = ({
     const [cluster, setCluster] = useState(null);
     const [markerHighlighter, setMarkerHighlighter] = useState(null);
     const [profile, setProfile] = useState(null);
+
+    // user <- contextAPI,
+    const [user, setUser] = useState({
+        userId: '2dsfji5r44356j',
+        name: '선화',
+        iamgeUrl: '',
+        state: 'ready',
+        isAuthorized: true,
+    });
+    const [stompClient, setStompClient] = useState(null);
+
+    useEffect(() => {
+        const newStompClient = new StompJs.Client();
+        newStompClient.webSocketFactory = () =>
+            new SockJS('http://localhost:8080/webSocket');
+        newStompClient.onConnect = () => {
+            console.log('연결 ✨');
+
+            // subscribe
+            newStompClient.subscribe('/topic/marker-create', (response) => {
+                console.log(response);
+                onCreateMarker();
+            });
+            newStompClient.subscribe('/topic/marker-delete', (response) => {
+                console.log(response);
+                onDeleteMarker();
+            });
+            newStompClient.subscribe('/topic/marker-update', (response) => {
+                console.log(response);
+                onUpdateMarker();
+            });
+
+            // publish
+            newStompClient.publish({
+                destination: '/hello',
+                body: 'fist message!',
+            });
+        };
+
+        newStompClient.onStompError = (frame) => {
+            console.error('Broker reported error: ' + frame.headers['message']);
+            console.error('Additional details: ' + frame.body);
+        };
+        newStompClient.onDisconnect = () => {
+            console.log('끊김 ✂️');
+        };
+
+        newStompClient.activate();
+        setStompClient(newStompClient);
+
+        return () => stompClient && stompClient.deactivate();
+    }, []);
 
     useEffect(() => {
         const mapInstance = new map(ref.current);
@@ -49,8 +103,8 @@ const Home = ({
                 draggable: false,
                 clickListener: getProfielByUserId,
             };
-            delete marker['lat'];
-            delete marker['lng'];
+            delete newMarker['lat'];
+            delete newMarker['lng'];
             return newMarker;
         });
         setTaxiMarkers(newTaxiMarkers);
@@ -126,6 +180,52 @@ const Home = ({
         setCluster(cluster);
     };
 
+    const onCreateMarker = (marker, isCurrent) => {
+        taxiMarkerService
+            .add(user, marker, isCurrent)
+            .then((marker) => {
+                const { lat, lng, userId, name } = marker;
+                const newMarker = {
+                    ...marker,
+                    title: `${userId} ${name}`,
+                    position: { lat, lng },
+                    draggable: false,
+                    clickListener: getProfielByUserId,
+                };
+                delete newMarker['lat'];
+                delete newMarker['lng'];
+                setTaxiMarkers((markers) => [...markers, newMarker]);
+                // stompClient.publish({
+                //     destination: '/marker',
+                //     body: JSON.stringify(),
+                //     type: 'ADD'
+                //     // type: ADD, DELETE, UPDATE
+                // });
+            })
+            .catch(console.error);
+    };
+
+    const onDeleteMarker = (markerId) => {
+        taxiMarkerService
+            .delete(markerId)
+            .then((data) => {
+                console.log(data);
+                // setMarkers((markers) =>
+                //     markers.filter((marker) => marker.id !== markerId)
+                // )
+                // newStompClient.publish({
+                //     destination: '/marker',
+                //     body: 'fist message!',
+                //     // type: ADD, DELETE, UPDATE
+                // });
+            })
+            .catch(console.error);
+    };
+
+    const onUpdateMarker = () => {
+        // marker state
+    };
+
     return (
         <div
             style={{
@@ -155,6 +255,9 @@ const Home = ({
                     handleClickTaxiMarker={getProfielByUserId}
                     handleClickCluster={onClickCluster}
                     createCluster={createCluster}
+                    onCreateMarker={onCreateMarker}
+                    onDeleteMarker={onDeleteMarker}
+                    onUpdateMarker={onUpdateMarker}
                 />
                 {profile && (
                     <Profile userInfo={profile} closeProfile={closeProfile} />

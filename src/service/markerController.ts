@@ -63,8 +63,12 @@ class BaseMarkerController {
         this.map.setCenter(position);
     }
 
-    protected update() {
-        // Socket.broadcast('update markers for user') -> It allows every other users to call this.setAll()
+    protected update(data) {
+        // stompClient.publish({
+        // destination: '/marker',
+        // body: JSON.stringify(data),
+        // type: ADD, DELETE, UPDATE
+        // });
     }
 }
 
@@ -88,24 +92,24 @@ export class Taxi extends BaseMarkerController implements MarkerController {
     }
 
     protected update() {
-        super.update();
+        // super.update();
     }
 
-    public add(userInfo, marker, isCurrent: Boolean) {
+    public async add(userInfo, marker, isCurrent: Boolean) {
+        console.log('add marker');
         const position = this.getPosition(marker);
-        postUser(userInfo, isCurrent, position) //
-            .then(console.log);
-        this.update();
+        return await postUser(userInfo, isCurrent, position);
+        // this.update();
     }
 
     public edit() {
         // putUser
-        this.update();
+        // this.update();
     }
 
     public delete() {
         // deleteUser
-        this.update();
+        // this.update();
     }
 
     /**
@@ -134,16 +138,16 @@ export class Station extends BaseMarkerController implements MarkerController {
     // for Admin
     public add() {
         // addStation
-        this.update();
+        // this.update();
     }
 
     public edit() {
         // postStation
-        this.update();
+        // this.update();
     }
 
     public delete() {
         // deleteStation
-        this.update();
+        // this.update();
     }
 }
