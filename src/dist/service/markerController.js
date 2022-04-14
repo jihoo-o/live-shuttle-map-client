@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 /* eslint-disable import/first */
-import { postUser } from '../api/marker';
 import { createKakaoClusterInstance, createKakaoMarkerInstance, } from '../utils/kakaomap';
 const { kakao } = window;
 class BaseMarkerController {
@@ -53,17 +52,11 @@ class BaseMarkerController {
     setCenter(position) {
         this.map.setCenter(position);
     }
-    update(data) {
-        // stompClient.publish({
-        // destination: '/marker',
-        // body: JSON.stringify(data),
-        // type: ADD, DELETE, UPDATE
-        // });
-    }
 }
 export class Taxi extends BaseMarkerController {
-    constructor() {
-        super(...arguments);
+    constructor(map, socket) {
+        super(map);
+        this.socket = socket;
         this.listeners = null;
     }
     getPosition(marker) {
@@ -80,36 +73,31 @@ export class Taxi extends BaseMarkerController {
         options.position && super.setCenter(options.position);
         return newMarker;
     }
-    update() {
-        // super.update();
+    update(data) {
+        this.socket.publish('/marker', data);
     }
     add(userInfo, marker, isCurrent) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('add marker');
             const position = this.getPosition(marker);
-            return yield postUser(userInfo, isCurrent, position);
-            // this.update();
+            this.update({
+                userId: userInfo.userId,
+                name: userInfo.name,
+                type: 'user',
+                state: 'ready',
+                isCurrent,
+                lat: position.lat,
+                lng: position.lng,
+                status: 'ADD',
+            });
         });
     }
-    edit() {
-        // putUser
-        // this.update();
+    edit() { }
+    delete() { }
+    connect(subscribeList) {
+        this.socket.connect(subscribeList);
     }
-    delete() {
-        // deleteUser
-        // this.update();
-    }
-    /**
-     *
-     * @param listeners [{event, listener}, ]
-     */
-    setEventListener(listeners) {
-        this.listeners = listeners;
-    }
-    addEventListener(marker) {
-        this.listeners.forEach(({ event, listener }) => {
-            kakao.maps.event.addListener(marker, event, listener);
-        });
+    activate() {
+        return this.socket.activate();
     }
 }
 export class Station extends BaseMarkerController {

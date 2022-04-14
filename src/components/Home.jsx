@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import * as StompJs from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
 import Map from './Map';
 import Profile from './Profile';
 import { getShuttleStops, getUsers } from '../dist/api/marker.js';
 import { getProfile } from '../dist/api/users.js';
+import { Socket } from '../dist/api/socket.js';
 import MarkerList from './MarkerList';
 
 const Home = ({
@@ -40,56 +39,49 @@ const Home = ({
     const [stompClient, setStompClient] = useState(null);
 
     useEffect(() => {
-        const newStompClient = new StompJs.Client();
-        newStompClient.webSocketFactory = () =>
-            new SockJS('http://localhost:8080/webSocket');
-        newStompClient.onConnect = () => {
-            console.log('연결 ✨');
-
-            // subscribe
-            newStompClient.subscribe('/topic/marker-create', (response) => {
-                console.log(response);
-                onCreateMarker();
-            });
-            newStompClient.subscribe('/topic/marker-delete', (response) => {
-                console.log(response);
-                onDeleteMarker();
-            });
-            newStompClient.subscribe('/topic/marker-update', (response) => {
-                console.log(response);
-                onUpdateMarker();
-            });
-
-            // publish
-            newStompClient.publish({
-                destination: '/hello',
-                body: 'fist message!',
-            });
-        };
-
-        newStompClient.onStompError = (frame) => {
-            console.error('Broker reported error: ' + frame.headers['message']);
-            console.error('Additional details: ' + frame.body);
-        };
-        newStompClient.onDisconnect = () => {
-            console.log('끊김 ✂️');
-        };
-
-        newStompClient.activate();
-        setStompClient(newStompClient);
-
-        return () => stompClient && stompClient.deactivate();
-    }, []);
-
-    useEffect(() => {
+        const websocket = new Socket('http://localhost:8080/webSocket');
         const mapInstance = new map(ref.current);
-        const taxiMarkerInstance = new taxiMarkerController(mapInstance);
+        const taxiMarkerInstance = new taxiMarkerController(
+            mapInstance,
+            websocket
+        );
         const stationMarkerInstance = new stationMarkerController(mapInstance);
         const drawingServiceInstance = new shapeController(mapInstance);
+
+        // connect & subscribe
+        taxiMarkerInstance.connect([
+            {
+                destination: '/topic/marker-create',
+                callback: (response) => {
+                    onCreateMarker(JSON.parse(response.body));
+                },
+            },
+            {
+                destination: '/topic/marker-delete',
+                callback: (response) => {
+                    console.log(response);
+                    // onDeleteMarker();
+                },
+            },
+            {
+                destination: '/topic/marker-update',
+                callback: (response) => {
+                    console.log(response);
+                    // onUpdateMarker();
+                },
+            },
+        ]);
+
+        const deactivate = taxiMarkerInstance.activate();
+
         setMapService(() => mapInstance);
         setTaxiMarker(() => taxiMarkerInstance);
         setStationMarker(() => stationMarkerInstance);
         setDrawingService(() => drawingServiceInstance);
+
+        return () => {
+            deactivate();
+        };
     }, []);
 
     useEffect(async () => {
@@ -180,51 +172,27 @@ const Home = ({
         setCluster(cluster);
     };
 
-    const onCreateMarker = (marker, isCurrent) => {
-        taxiMarkerService
-            .add(user, marker, isCurrent)
-            .then((marker) => {
-                const { lat, lng, userId, name } = marker;
-                const newMarker = {
-                    ...marker,
-                    title: `${userId} ${name}`,
-                    position: { lat, lng },
-                    draggable: false,
-                    clickListener: getProfielByUserId,
-                };
-                delete newMarker['lat'];
-                delete newMarker['lng'];
-                setTaxiMarkers((markers) => [...markers, newMarker]);
-                // stompClient.publish({
-                //     destination: '/marker',
-                //     body: JSON.stringify(),
-                //     type: 'ADD'
-                //     // type: ADD, DELETE, UPDATE
-                // });
-            })
-            .catch(console.error);
+    const onCreateMarker = (marker) => {
+        const { lat, lng, userId, name } = marker;
+        const newMarker = {
+            ...marker,
+            title: `${userId} ${name}`,
+            position: { lat, lng },
+            draggable: false,
+            clickListener: getProfielByUserId,
+        };
+        delete newMarker['lat'];
+        delete newMarker['lng'];
+        setTaxiMarkers((markers) => [...markers, newMarker]);
     };
 
     const onDeleteMarker = (markerId) => {
-        taxiMarkerService
-            .delete(markerId)
-            .then((data) => {
-                console.log(data);
-                // setMarkers((markers) =>
-                //     markers.filter((marker) => marker.id !== markerId)
-                // )
-                // newStompClient.publish({
-                //     destination: '/marker',
-                //     body: 'fist message!',
-                //     // type: ADD, DELETE, UPDATE
-                // });
-            })
-            .catch(console.error);
+        // setMarkers((markers) =>
+        //     markers.filter((marker) => marker.id !== markerId)
+        // );
     };
 
-    const onUpdateMarker = () => {
-        // marker state
-    };
+    const onUpdateMarker = () => {};
 
     return (
         <div

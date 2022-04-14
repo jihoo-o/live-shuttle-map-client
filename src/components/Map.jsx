@@ -25,9 +25,6 @@ const Map = React.forwardRef(
             handleClickTaxiMarker,
             handleClickCluster,
             createCluster,
-            onCreateMarker,
-            onDeleteMarker,
-            onUpdateMarker,
         },
         ref
     ) => {
@@ -41,7 +38,6 @@ const Map = React.forwardRef(
         const [position, setPosition] = useState(null); //
         const [createMode, setCreateMode] = useState(false);
 
-        // isCurrent -> marker
         const [isCurrent, setIsCurrent] = useState(true);
         const [drag, setDrag] = useState(false);
 
@@ -256,12 +252,9 @@ const Map = React.forwardRef(
 
             setMarker((marker) => {
                 setIsCurrent((isCurrent) => {
-                    onCreateMarker(marker, isCurrent);
+                    taxiMarkerService.add(userInfo, marker, isCurrent);
                     return isCurrent;
                 });
-
-                // ❌ -> state 변경에 따른 처리
-                // taxiMarkerService.add(userInfo, marker, isCurrent);
                 return marker;
             });
 
@@ -331,7 +324,6 @@ const Map = React.forwardRef(
         };
 
         const handleConstrainMarker = (length) => {
-            console.log(length);
             if (length <= 20) {
                 setMarker((marker) => {
                     return taxiMarkerService.create(

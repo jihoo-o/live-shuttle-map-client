@@ -1,5 +1,4 @@
 /* eslint-disable import/first */
-import { postUser } from '../api/marker';
 import {
     createKakaoClusterInstance,
     createKakaoMarkerInstance,
@@ -62,18 +61,14 @@ class BaseMarkerController {
     public setCenter(position) {
         this.map.setCenter(position);
     }
-
-    protected update(data) {
-        // stompClient.publish({
-        // destination: '/marker',
-        // body: JSON.stringify(data),
-        // type: ADD, DELETE, UPDATE
-        // });
-    }
 }
 
 export class Taxi extends BaseMarkerController implements MarkerController {
     private listeners: any = null;
+
+    constructor(map, private socket) {
+        super(map);
+    }
 
     public getPosition(marker) {
         const { Ma, La } = marker.getPosition();
@@ -91,39 +86,34 @@ export class Taxi extends BaseMarkerController implements MarkerController {
         return newMarker;
     }
 
-    protected update() {
-        // super.update();
+    protected update(data) {
+        this.socket.publish('/marker', data);
     }
 
     public async add(userInfo, marker, isCurrent: Boolean) {
-        console.log('add marker');
         const position = this.getPosition(marker);
-        return await postUser(userInfo, isCurrent, position);
-        // this.update();
-    }
-
-    public edit() {
-        // putUser
-        // this.update();
-    }
-
-    public delete() {
-        // deleteUser
-        // this.update();
-    }
-
-    /**
-     *
-     * @param listeners [{event, listener}, ]
-     */
-    private setEventListener(listeners) {
-        this.listeners = listeners;
-    }
-
-    public addEventListener(marker) {
-        this.listeners.forEach(({ event, listener }) => {
-            kakao.maps.event.addListener(marker, event, listener);
+        this.update({
+            userId: userInfo.userId,
+            name: userInfo.name,
+            type: 'user',
+            state: 'ready',
+            isCurrent,
+            lat: position.lat,
+            lng: position.lng,
+            status: 'ADD',
         });
+    }
+
+    public edit() {}
+
+    public delete() {}
+
+    public connect(subscribeList) {
+        this.socket.connect(subscribeList);
+    }
+
+    public activate() {
+        return this.socket.activate();
     }
 }
 

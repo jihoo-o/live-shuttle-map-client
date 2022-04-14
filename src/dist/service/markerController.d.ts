@@ -10,10 +10,11 @@ declare class BaseMarkerController {
     createMarker(options: any, marker?: any): any;
     createCluster(options: any, cluster?: any): any;
     setCenter(position: any): void;
-    protected update(data: any): void;
 }
 export declare class Taxi extends BaseMarkerController implements MarkerController {
+    private socket;
     private listeners;
+    constructor(map: any, socket: any);
     getPosition(marker: any): {
         lat: any;
         lng: any;
@@ -24,24 +25,12 @@ export declare class Taxi extends BaseMarkerController implements MarkerControll
      * @param marker null이면 새로운 마커를 생성하고, null이 아니면 기존의 마커를 수정합니다.
      */
     create(options: any, marker?: any): any;
-    protected update(): void;
-    add(userInfo: any, marker: any, isCurrent: Boolean): Promise<{
-        userId: any;
-        name: any;
-        type: string;
-        state: string;
-        isCurrent: any;
-        lat: any;
-        lng: any;
-    }>;
+    protected update(data: any): void;
+    add(userInfo: any, marker: any, isCurrent: Boolean): Promise<void>;
     edit(): void;
     delete(): void;
-    /**
-     *
-     * @param listeners [{event, listener}, ]
-     */
-    private setEventListener;
-    addEventListener(marker: any): void;
+    connect(subscribeList: any): void;
+    activate(): any;
 }
 export declare class Station extends BaseMarkerController implements MarkerController {
     setAllBusstops(): Promise<void>;
