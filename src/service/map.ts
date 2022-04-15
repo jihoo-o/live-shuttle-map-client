@@ -95,6 +95,7 @@ export class Map {
     // ❌
     drawCustomOverlay({ customOverlay, position, content }) {
         if (!customOverlay) {
+            console.log('new customoverlay');
             return new kakao.maps.CustomOverlay({
                 position,
                 content,

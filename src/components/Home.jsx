@@ -153,7 +153,7 @@ const Home = ({
             mapService.setLevel(1, position);
             setMarkerHighlighter((customOverlay) => {
                 if (customOverlay) {
-                    mapService.setMap(customOverlay, false);
+                    customOverlay.setMap(null);
                 }
                 const newCustomOverlay = mapService.drawCustomOverlay({
                     customOverlay,
