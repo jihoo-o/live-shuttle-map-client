@@ -25,6 +25,7 @@ const Map = React.forwardRef(
             handleClickTaxiMarker,
             handleClickCluster,
             handleUpdateCluster,
+            handleUpdateProgressMode,
         },
         ref
     ) => {
@@ -37,6 +38,7 @@ const Map = React.forwardRef(
         const [polyline, setPolyline] = useState(null);
         const [position, setPosition] = useState(null); //
         const [createMode, setCreateMode] = useState(false);
+        // const [readyMode, handleUpdateProgressMode] = useState(false);
 
         const [isCurrent, setIsCurrent] = useState(true);
         const [drag, setDrag] = useState(false);
@@ -166,7 +168,8 @@ const Map = React.forwardRef(
                 window.alert('이미 생성중인 마커가 존재합니다.');
                 return;
             }
-            setCreateMode(true); //
+            setCreateMode(true);
+            handleUpdateProgressMode(true);
 
             getCurrentPosition(({ lat, lng }) => {
                 setMarker((marker) => {
@@ -216,6 +219,7 @@ const Map = React.forwardRef(
                 }
                 setPosition({ lat, lng });
                 handleDrawPolyline();
+                handleUpdateProgressMode(false);
             });
         };
 

@@ -5,6 +5,7 @@ import { getShuttleStops, getUsers } from '../dist/api/marker.js';
 import { getProfile } from '../dist/api/users.js';
 import { Socket } from '../dist/api/socket.js';
 import MarkerList from './MarkerList';
+import ProgerssIndicator from './ProgerssIndicator.jsx';
 
 const Home = ({
     userInfo,
@@ -36,7 +37,7 @@ const Home = ({
         state: 'ready',
         isAuthorized: true,
     });
-    const [stompClient, setStompClient] = useState(null);
+    const [progressMode, setProgressMode] = useState(false);
 
     useEffect(() => {
         const websocket = new Socket('http://localhost:8080/webSocket');
@@ -197,6 +198,9 @@ const Home = ({
     };
 
     const onUpdateMarker = () => {};
+    const onUpdateProgressMode = (newProgressMode) => {
+        setProgressMode(newProgressMode);
+    };
 
     return (
         <div
@@ -227,6 +231,7 @@ const Home = ({
                     handleClickTaxiMarker={getProfielByUserId}
                     handleClickCluster={onClickCluster}
                     handleUpdateCluster={onUpdateCluster}
+                    handleUpdateProgressMode={onUpdateProgressMode}
                 />
                 {profile && (
                     <Profile userInfo={profile} closeProfile={closeProfile} />
@@ -240,6 +245,7 @@ const Home = ({
                     />
                 )}
             </section>
+            {progressMode && <ProgerssIndicator />}
         </div>
     );
 };
