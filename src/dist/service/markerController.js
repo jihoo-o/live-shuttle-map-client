@@ -29,16 +29,16 @@ class BaseMarkerController {
         this.map.setMap(newMarker, true);
         return newMarker;
     }
-    // options.markers: Array
-    createCluster(options, cluster) {
-        let newCluster;
+    // -> map.ts
+    // drawCluster
+    drawCluster(options, cluster) {
         const { markers } = options;
+        let newCluster;
         if (!markers)
             return;
         if (!cluster) {
             markers.forEach((marker) => this.map.setMap(marker, false));
             newCluster = createKakaoClusterInstance(options);
-            this.map.setMap(newCluster, true);
         }
         else {
             newCluster = cluster;

@@ -165,11 +165,15 @@ const Home = ({
             });
             return mapService;
         });
-        taxiMarkerService.createCluster({ markers: [marker] }, cluster);
+        taxiMarkerService.drawCluster({ markers: [marker] }, cluster);
     };
 
-    const createCluster = (cluster) => {
-        setCluster(cluster);
+    const onUpdateCluster = (newCluster) => {
+        setCluster((cluster) => {
+            cluster && cluster.clear();
+            newCluster && mapService.setMap(newCluster, true);
+            return newCluster;
+        });
     };
 
     const onCreateMarker = (marker) => {
@@ -222,10 +226,7 @@ const Home = ({
                     stationMarkers={stationMarkers}
                     handleClickTaxiMarker={getProfielByUserId}
                     handleClickCluster={onClickCluster}
-                    createCluster={createCluster}
-                    onCreateMarker={onCreateMarker}
-                    onDeleteMarker={onDeleteMarker}
-                    onUpdateMarker={onUpdateMarker}
+                    handleUpdateCluster={onUpdateCluster}
                 />
                 {profile && (
                     <Profile userInfo={profile} closeProfile={closeProfile} />

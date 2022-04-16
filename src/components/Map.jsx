@@ -24,7 +24,7 @@ const Map = React.forwardRef(
             stationMarkers,
             handleClickTaxiMarker,
             handleClickCluster,
-            createCluster,
+            handleUpdateCluster,
         },
         ref
     ) => {
@@ -85,6 +85,7 @@ const Map = React.forwardRef(
                 };
                 return taxiMarkerService.createMarker(newMarkerOptions);
             });
+
             if (!newClusterMarkers) return;
 
             const clusterOptions = {
@@ -93,7 +94,7 @@ const Map = React.forwardRef(
                 disableClickZoom: true,
                 markers: newClusterMarkers,
             };
-            const newCluster = taxiMarkerService.createCluster(clusterOptions);
+            const newCluster = taxiMarkerService.drawCluster(clusterOptions);
 
             const removeMarkerEventListeners = newClusterMarkers.map((marker) =>
                 mapService.addEventListener(
@@ -108,7 +109,7 @@ const Map = React.forwardRef(
                 newCluster
             );
 
-            createCluster(newCluster);
+            handleUpdateCluster(newCluster);
 
             return () => {
                 removeMarkerEventListeners &&

@@ -8,7 +8,7 @@ declare class BaseMarkerController {
     private map;
     constructor(map: any);
     createMarker(options: any, marker?: any): any;
-    createCluster(options: any, cluster?: any): any;
+    drawCluster(options: any, cluster?: any): any;
     setCenter(position: any): void;
 }
 export declare class Taxi extends BaseMarkerController implements MarkerController {

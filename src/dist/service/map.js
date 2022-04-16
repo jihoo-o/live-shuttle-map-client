@@ -7,13 +7,6 @@ export class Map {
             center: new kakao.maps.LatLng(35.267342474237104, 129.08901354232913),
             level: 6,
         });
-        // ❌
-        this.clusterer = new kakao.maps.MarkerClusterer({
-            map: this.map,
-            averageCenter: true,
-            minLevel: 2,
-            disableClickZoom: true,
-        });
         kakao.maps.event.addListener(this.map, 'click', (e) => {
             const latlng = e.latLng;
             console.log(`lat: ${latlng.getLat()}, lng: ${latlng.getLng()}`);
