@@ -54,5 +54,5 @@
         "@types/react": "^17.0.39",
         "gh-pages": "^3.2.3"
     },
-    "homepage": "https://kmseonhwa.github.io/taxi"
+    "homepage": "https://kmseonhwa.github.io/taxi/"
 }
