@@ -6,6 +6,7 @@ import { getProfile } from '../dist/api/users.js';
 import { Socket } from '../dist/api/socket.js';
 import MarkerList from './MarkerList';
 import ProgerssIndicator from './ProgerssIndicator.jsx';
+import { createKakaoLatLngInstance } from '../dist/utils/kakaomap';
 
 const Home = ({
     userInfo,
@@ -119,6 +120,13 @@ const Home = ({
         setStationMarkers(newStationMarkers);
     }, []);
 
+    useEffect(() => {
+        window.addEventListener('resize', handleResizeWindow);
+        return () => {
+            window.removeEventListener('resize', handleResizeWindow);
+        };
+    }, []);
+
     const getProfielByUserId = async (marker) => {
         const [userId, name] = [...marker.getTitle().trim().split(' ')];
         const newProfile = await getProfile(userId);
@@ -198,8 +206,21 @@ const Home = ({
     };
 
     const onUpdateMarker = () => {};
+
     const onUpdateProgressMode = (newProgressMode) => {
         setProgressMode(newProgressMode);
+    };
+
+    const handleResizeWindow = () => {
+        setMapService((mapService) => {
+            mapService.setCenter(
+                createKakaoLatLngInstance({
+                    lat: 35.267342474237104,
+                    lng: 129.08901354232913,
+                })
+            );
+            return mapService;
+        });
     };
 
     return (
