@@ -20,6 +20,7 @@ const Map = React.forwardRef(
         {
             userInfo,
             currentMode,
+            currentCategory,
             mapService,
             taxiMarkerService,
             stationMarkerService,
@@ -30,6 +31,7 @@ const Map = React.forwardRef(
             handleClickCluster,
             handleUpdateCluster,
             onUpdateCurrentMode,
+            onUpdateCurrentCategory,
         },
         ref
     ) => {
@@ -39,6 +41,7 @@ const Map = React.forwardRef(
         const enterUserModeBtn = useRef();
         const exitModeBtn = useRef();
 
+        const [stationKakaoMarkers, setStationKakaoMarkers] = useState([]);
         const [sendIsClickable, setSendIsClickable] = useState(true);
         const [marker, setMarker] = useState(null);
         const [circles, setCircles] = useState([]);
@@ -59,26 +62,34 @@ const Map = React.forwardRef(
         }, [mapService]);
 
         useEffect(() => {
-            stationMarkerService &&
-                stationMarkers.forEach((markerOptions) => {
-                    const { position, type, state, isCurrent } = markerOptions;
-                    const newMarkerOptions = {
-                        ...markerOptions,
-                        position: createKakaoLatLngInstance(position),
-                        image: createKakaoMarkerImageInstance({
-                            type,
-                            state,
-                            isCurrent,
-                        }),
-                    };
-                    stationMarkerService.createMarker(newMarkerOptions);
-                });
-        }, [stationMarkerService, stationMarkers]);
+            if (currentCategory !== 'TAXI' || !stationMarkerService) return;
+            if (!stationMarkers) return;
+            setStationKakaoMarkers((stationMarkers) => {
+                if (stationMarkers.length === 0) return;
+                stationMarkers.forEach((marker) =>
+                    mapService.setMap(marker, false)
+                );
+                return [];
+            });
+            const newStationMarkers = stationMarkers.map((markerOptions) => {
+                const { position, type, state, isCurrent } = markerOptions;
+                const newMarkerOptions = {
+                    ...markerOptions,
+                    position: createKakaoLatLngInstance(position),
+                    image: createKakaoMarkerImageInstance({
+                        type,
+                        state,
+                        isCurrent,
+                    }),
+                };
+                return stationMarkerService.createMarker(newMarkerOptions);
+            });
+            setStationKakaoMarkers(newStationMarkers);
+        }, [stationMarkerService, stationMarkers, currentCategory]);
 
         useEffect(() => {
-            if (!taxiMarkerService || !taxiMarkers) return;
-            console.log(taxiMarkers);
-
+            if (currentCategory !== 'TAXI' || !taxiMarkerService) return;
+            if (!taxiMarkers) return;
             const newClusterMarkers = taxiMarkers.map((markerOptions) => {
                 const { position, type, state, isCurrent } = markerOptions;
                 const newMarkerOptions = {
@@ -123,7 +134,7 @@ const Map = React.forwardRef(
                     removeMarkerEventListeners.forEach((cb) => cb());
                 removeMarkerEventListeners && removeClusterEventListener();
             };
-        }, [taxiMarkerService, taxiMarkers]);
+        }, [taxiMarkerService, taxiMarkers, currentCategory]);
 
         useEffect(() => {
             createMarkerBtn.current &&
@@ -399,10 +410,16 @@ const Map = React.forwardRef(
 
         const handleClickUserMode = () => {
             onUpdateCurrentMode('USER');
+            handleUpdateCategory('USER');
         };
 
         const handleClickExitMode = () => {
             onUpdateCurrentMode('DEFAULT');
+            handleUpdateCategory('TAXI'); // 'TAXI' -> old category
+        };
+
+        const handleUpdateCategory = (newCategory) => {
+            onUpdateCurrentCategory(newCategory);
         };
 
         return (

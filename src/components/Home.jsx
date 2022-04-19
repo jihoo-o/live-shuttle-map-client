@@ -14,7 +14,6 @@ const Home = ({
     taxiMarkerController,
     stationMarkerController,
     shapeController,
-    currentCategory,
 }) => {
     const ref = React.createRef();
     const [mapService, setMapService] = useState(null);
@@ -23,6 +22,7 @@ const Home = ({
     const [drawingService, setDrawingService] = useState(null);
     const [currentMode, setCurrentMode] = useState('DEFAULT');
 
+    const [currentCategory, setCurrentCategory] = useState('TAXI');
     const [userMarkers, setUserMarkers] = useState({ TAXI: [], DELIVERY: [] });
     const [taxiMarkers, setTaxiMarkers] = useState([]);
     const [stationMarkers, setStationMarkers] = useState([]);
@@ -236,8 +236,22 @@ const Home = ({
     };
 
     const onUpdateCurrentMode = (newMode) => {
-        console.log(newMode);
+        console.log(`mode: ${newMode}`);
         setCurrentMode(newMode);
+    };
+
+    const onUpdateCurrentCategory = (newCategory) => {
+        console.log(`category: ${newCategory}`);
+
+        setCluster((cluster) => {
+            cluster && cluster.clear();
+            return cluster;
+        });
+        setMarkerHighlighter((customOverlay) => {
+            customOverlay && customOverlay.setMap(false);
+            return customOverlay;
+        });
+        setCurrentCategory(newCategory);
     };
 
     const handleResizeWindow = () => {
@@ -273,6 +287,7 @@ const Home = ({
                     userInfo={userInfo}
                     ref={ref}
                     currentMode={currentMode}
+                    currentCategory={currentCategory}
                     mapService={mapService}
                     taxiMarkerService={taxiMarkerService}
                     stationMarkerService={stationMarkerService}
@@ -283,19 +298,22 @@ const Home = ({
                     handleClickCluster={onClickCluster}
                     handleUpdateCluster={onUpdateCluster}
                     onUpdateCurrentMode={onUpdateCurrentMode}
+                    onUpdateCurrentCategory={onUpdateCurrentCategory}
                 />
                 {profile && (
                     <Profile userInfo={profile} closeProfile={closeProfile} />
                 )}
             </section>
-            <section style={{ height: '40vh', width: '100%' }}>
-                {clusterMarkers.length !== 0 && (
-                    <MarkerList
-                        markers={clusterMarkers}
-                        handleListItemClick={onClickListItem}
-                    />
-                )}
-            </section>
+            {currentMode === 'DEFAULT' && (
+                <section style={{ height: '40vh', width: '100%' }}>
+                    {clusterMarkers.length !== 0 && (
+                        <MarkerList
+                            markers={clusterMarkers}
+                            handleListItemClick={onClickListItem}
+                        />
+                    )}
+                </section>
+            )}
             {currentMode === 'PROGRESS' && <ProgerssIndicator />}
         </div>
     );

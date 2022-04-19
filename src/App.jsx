@@ -12,7 +12,6 @@ const App = ({
         userId: '2dsfji5r44356j',
         name: '선화',
     });
-    const [currentCategory, setCurrentCategory] = useState('TAXI');
 
     // let navigate = useNavigate();
 
@@ -56,7 +55,6 @@ const App = ({
                         taxiMarkerController={taxiMarkerController}
                         stationMarkerController={stationMarkerController}
                         shapeController={shapeController}
-                        currentCategory={currentCategory}
                     />
                 }
             />
