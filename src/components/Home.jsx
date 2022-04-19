@@ -14,6 +14,7 @@ const Home = ({
     taxiMarkerController,
     stationMarkerController,
     shapeController,
+    currentCategory,
 }) => {
     const ref = React.createRef();
     const [mapService, setMapService] = useState(null);
@@ -21,7 +22,7 @@ const Home = ({
     const [stationMarkerService, setStationMarker] = useState(null);
     const [drawingService, setDrawingService] = useState(null);
 
-    // taxiMarekrs -> markers
+    const [userMarkers, setUserMarkers] = useState({ TAXI: [], DELIVERY: [] });
     const [taxiMarkers, setTaxiMarkers] = useState([]);
     const [stationMarkers, setStationMarkers] = useState([]);
     const [clusterMarkers, setClusterMarkers] = useState([]);
@@ -95,7 +96,6 @@ const Home = ({
                 title: `${userId} ${name}`,
                 position: { lat, lng },
                 draggable: false,
-                clickListener: getProfielByUserId,
             };
             delete newMarker['lat'];
             delete newMarker['lng'];
@@ -192,11 +192,20 @@ const Home = ({
             title: `${userId} ${name}`,
             position: { lat, lng },
             draggable: false,
-            clickListener: getProfielByUserId,
         };
         delete newMarker['lat'];
         delete newMarker['lng'];
         setTaxiMarkers((markers) => [...markers, newMarker]);
+        if (userId === userInfo.userId) {
+            setUserMarkers((markers) => {
+                const newMarkers = { ...markers };
+                newMarkers[currentCategory] = [
+                    ...newMarkers[currentCategory],
+                    newMarker,
+                ];
+                return newMarkers;
+            });
+        }
     };
 
     const onDeleteMarker = (markerId) => {
