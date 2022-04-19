@@ -69,7 +69,6 @@ export class Taxi extends BaseMarkerController {
      * @param marker null이면 새로운 마커를 생성하고, null이 아니면 기존의 마커를 수정합니다.
      */
     create(options, marker) {
-        console.log(marker);
         const newMarker = super.createMarker(options, marker);
         options.position && super.setCenter(options.position);
         return newMarker;

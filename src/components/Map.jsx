@@ -5,6 +5,9 @@ import RoomIcon from '@mui/icons-material/Room';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import EditLocationIcon from '@mui/icons-material/EditLocation';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { getCurrentPosition } from '../dist/service/geolocation.js';
 import {
@@ -16,6 +19,7 @@ const Map = React.forwardRef(
     (
         {
             userInfo,
+            currentMode,
             mapService,
             taxiMarkerService,
             stationMarkerService,
@@ -25,20 +29,21 @@ const Map = React.forwardRef(
             handleClickTaxiMarker,
             handleClickCluster,
             handleUpdateCluster,
-            handleUpdateProgressMode,
+            onUpdateCurrentMode,
         },
         ref
     ) => {
         const createMarkerBtn = useRef();
         const clearMarkerBtn = useRef();
         const sendMarkerBtn = useRef();
+        const enterUserModeBtn = useRef();
+        const exitModeBtn = useRef();
+
         const [sendIsClickable, setSendIsClickable] = useState(true);
         const [marker, setMarker] = useState(null);
         const [circles, setCircles] = useState([]);
         const [polyline, setPolyline] = useState(null);
-        const [position, setPosition] = useState(null); //
-        const [createMode, setCreateMode] = useState(false);
-        // const [readyMode, handleUpdateProgressMode] = useState(false);
+        const [position, setPosition] = useState(null);
 
         const [isCurrent, setIsCurrent] = useState(true);
         const [drag, setDrag] = useState(false);
@@ -138,6 +143,19 @@ const Map = React.forwardRef(
                     'click',
                     handleAddMarker
                 );
+
+            enterUserModeBtn.current &&
+                enterUserModeBtn.current.addEventListener(
+                    'click',
+                    handleClickUserMode
+                );
+
+            exitModeBtn.current &&
+                exitModeBtn.current.addEventListener(
+                    'click',
+                    handleClickExitMode
+                );
+
             return () => {
                 /**
                  * removeEventListeners를 설정하지 않으면 useEffect가 여러번 실행되면서 listener가 여러번 등록됩니다
@@ -159,17 +177,23 @@ const Map = React.forwardRef(
                         'click',
                         handleAddMarker
                     );
+
+                enterUserModeBtn.current &&
+                    enterUserModeBtn.current.removeEventListener(
+                        'click',
+                        handleClickUserMode
+                    );
+
+                exitModeBtn.current &&
+                    exitModeBtn.current.removeEventListener(
+                        'click',
+                        handleClickExitMode
+                    );
             };
         }, [mapService]);
 
         const handleCreateMarker = () => {
-            console.log('created');
-            if (createMode) {
-                window.alert('이미 생성중인 마커가 존재합니다.');
-                return;
-            }
-            setCreateMode(true);
-            handleUpdateProgressMode(true);
+            onUpdateCurrentMode('PROGRESS');
 
             getCurrentPosition(({ lat, lng }) => {
                 setMarker((marker) => {
@@ -219,7 +243,7 @@ const Map = React.forwardRef(
                 }
                 setPosition({ lat, lng });
                 handleDrawPolyline();
-                handleUpdateProgressMode(false);
+                onUpdateCurrentMode('CREATE');
             });
         };
 
@@ -236,10 +260,10 @@ const Map = React.forwardRef(
                 mapService.setMap(polyline, false);
                 return null;
             });
-            setCreateMode(false);
             setIsCurrent(true);
             setPosition(null);
             setSendIsClickable(true);
+            onUpdateCurrentMode('DEFAULT');
         };
 
         const handleAddMarker = () => {
@@ -373,35 +397,66 @@ const Map = React.forwardRef(
             }
         };
 
+        const handleClickUserMode = () => {
+            onUpdateCurrentMode('USER');
+        };
+
+        const handleClickExitMode = () => {
+            onUpdateCurrentMode('DEFAULT');
+        };
+
         return (
             <>
-                <Button
-                    ref={createMarkerBtn}
-                    variant="contained"
+                <ButtonGroup
                     style={{
-                        display: `${createMode ? 'none' : ''}`,
+                        // 조건부 렌더링의 경우 이벤트 바인딩을 위해 컴포넌트로 분리해야 함
+                        display: `${
+                            currentMode === 'DEFAULT'
+                                ? ''
+                                : `${currentMode === 'PROGRESS' ? '' : 'none'}`
+                        }`,
                     }}
                 >
-                    <RoomIcon />
-                </Button>
+                    <Button ref={createMarkerBtn} variant="contained">
+                        <RoomIcon />
+                    </Button>
+                    <Button ref={enterUserModeBtn} variant="contained">
+                        <EditLocationIcon />
+                    </Button>
+                </ButtonGroup>
                 <ButtonGroup
-                    // variant="contained"
                     style={{
-                        display: `${!createMode ? 'none' : ''}`,
+                        display: `${currentMode === 'CREATE' ? '' : 'none'}`,
                     }}
                 >
                     <Button
                         ref={sendMarkerBtn}
                         variant={sendIsClickable ? 'contained' : 'outlined'}
-                        style={
-                            {
-                                // backgroundColor: `${sendIsClickable ? '' : 'gray'}`,
-                            }
-                        }
                     >
                         <CheckIcon />
                     </Button>
                     <Button ref={clearMarkerBtn} variant="contained">
+                        <ClearIcon />
+                    </Button>
+                </ButtonGroup>
+                <ButtonGroup
+                    style={{
+                        display: `${currentMode === 'USER' ? '' : 'none'}`,
+                    }}
+                >
+                    <Button
+                        // ref={}
+                        variant="contained"
+                    >
+                        <EditIcon />
+                    </Button>
+                    <Button
+                        // ref={}
+                        variant="contained"
+                    >
+                        <DeleteIcon />
+                    </Button>
+                    <Button ref={exitModeBtn} variant="contained">
                         <ClearIcon />
                     </Button>
                 </ButtonGroup>

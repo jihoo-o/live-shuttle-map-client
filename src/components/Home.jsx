@@ -21,6 +21,7 @@ const Home = ({
     const [taxiMarkerService, setTaxiMarker] = useState(null);
     const [stationMarkerService, setStationMarker] = useState(null);
     const [drawingService, setDrawingService] = useState(null);
+    const [currentMode, setCurrentMode] = useState('DEFAULT');
 
     const [userMarkers, setUserMarkers] = useState({ TAXI: [], DELIVERY: [] });
     const [taxiMarkers, setTaxiMarkers] = useState([]);
@@ -31,7 +32,7 @@ const Home = ({
     const [markerHighlighter, setMarkerHighlighter] = useState(null);
     const [profile, setProfile] = useState(null);
 
-    // user <- contextAPI,
+    // user <- contextAPI, -> <Home />
     const [user, setUser] = useState({
         userId: '2dsfji5r44356j',
         name: '선화',
@@ -39,7 +40,6 @@ const Home = ({
         state: 'ready',
         isAuthorized: true,
     });
-    const [progressMode, setProgressMode] = useState(false);
 
     useEffect(() => {
         const websocket = new Socket('http://localhost:8080/webSocket');
@@ -127,7 +127,7 @@ const Home = ({
         };
     }, []);
 
-    const getProfielByUserId = async (marker) => {
+    const getProfileByUserId = async (marker) => {
         const [userId, name] = [...marker.getTitle().trim().split(' ')];
         const newProfile = await getProfile(userId);
         if (newProfile && newProfile.state === 'running') {
@@ -216,8 +216,28 @@ const Home = ({
 
     const onUpdateMarker = () => {};
 
-    const onUpdateProgressMode = (newProgressMode) => {
-        setProgressMode(newProgressMode);
+    const onClickMarker = (marker) => {
+        let newCurrentMode;
+        setCurrentMode((currentMode) => {
+            newCurrentMode = currentMode;
+            return currentMode;
+        });
+        switch (newCurrentMode) {
+            case 'DEFAULT':
+                getProfileByUserId(marker);
+                break;
+            case 'USER':
+                // 선택된 마커를 state로 보관하고
+                // edit 혹은 delete 버튼 액션에 따라 처리함
+                break;
+            default:
+                throw new Error('유효하지 않은 currentMode입니다.');
+        }
+    };
+
+    const onUpdateCurrentMode = (newMode) => {
+        console.log(newMode);
+        setCurrentMode(newMode);
     };
 
     const handleResizeWindow = () => {
@@ -252,16 +272,17 @@ const Home = ({
                 <Map
                     userInfo={userInfo}
                     ref={ref}
+                    currentMode={currentMode}
                     mapService={mapService}
                     taxiMarkerService={taxiMarkerService}
                     stationMarkerService={stationMarkerService}
                     drawingService={drawingService}
                     taxiMarkers={taxiMarkers}
                     stationMarkers={stationMarkers}
-                    handleClickTaxiMarker={getProfielByUserId}
+                    handleClickTaxiMarker={onClickMarker}
                     handleClickCluster={onClickCluster}
                     handleUpdateCluster={onUpdateCluster}
-                    handleUpdateProgressMode={onUpdateProgressMode}
+                    onUpdateCurrentMode={onUpdateCurrentMode}
                 />
                 {profile && (
                     <Profile userInfo={profile} closeProfile={closeProfile} />
@@ -275,7 +296,7 @@ const Home = ({
                     />
                 )}
             </section>
-            {progressMode && <ProgerssIndicator />}
+            {currentMode === 'PROGRESS' && <ProgerssIndicator />}
         </div>
     );
 };
