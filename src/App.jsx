@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import Auth from './components/Auth';
 import Home from './components/Home';
+import Login from './components/Login';
 
 const App = ({
     map,
@@ -12,12 +14,6 @@ const App = ({
         userId: '2dsfji5r44356j',
         name: '선화',
     });
-
-    // let navigate = useNavigate();
-
-    // useEffect(() => {
-    // navigate('home');
-    // }, []);
 
     return (
         // <Routes>
@@ -49,15 +45,17 @@ const App = ({
             <Route
                 path="/"
                 element={
-                    <Home
-                        userInfo={userInfo}
-                        map={map}
-                        taxiMarkerController={taxiMarkerController}
-                        stationMarkerController={stationMarkerController}
-                        shapeController={shapeController}
-                    />
+                    <Login />
+                    // <Home
+                    //     userInfo={userInfo}
+                    //     map={map}
+                    //     taxiMarkerController={taxiMarkerController}
+                    //     stationMarkerController={stationMarkerController}
+                    //     shapeController={shapeController}
+                    // />
                 }
             />
+            <Route path="/oauth" element={<Auth />} />
         </Routes>
     );
 };
