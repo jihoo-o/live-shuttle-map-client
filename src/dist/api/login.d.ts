@@ -1,1 +1,1 @@
-export declare const login: () => void;
+export declare const login: (token: any, getUserInfo: any) => Promise<void>;
