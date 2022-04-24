@@ -9,6 +9,7 @@ const App = ({
     taxiMarkerController,
     stationMarkerController,
     shapeController,
+    authService,
 }) => {
     const [userInfo, setUerInfo] = useState({
         userId: '2dsfji5r44356j',
@@ -45,7 +46,7 @@ const App = ({
             <Route
                 path="/"
                 element={
-                    <Login />
+                    <Login authService={authService} />
                     // <Home
                     //     userInfo={userInfo}
                     //     map={map}
@@ -55,7 +56,7 @@ const App = ({
                     // />
                 }
             />
-            <Route path="/oauth" element={<Auth />} />
+            <Route path="/oauth" element={<Auth authService={authService} />} />
         </Routes>
     );
 };
