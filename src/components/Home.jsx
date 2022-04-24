@@ -7,6 +7,7 @@ import { Socket } from '../dist/api/socket.js';
 import MarkerList from './MarkerList';
 import ProgerssIndicator from './ProgerssIndicator.jsx';
 import { createKakaoLatLngInstance } from '../dist/utils/kakaomap';
+import { useNavigate } from 'react-router-dom';
 
 const Home = ({
     userInfo,
@@ -32,14 +33,12 @@ const Home = ({
     const [markerHighlighter, setMarkerHighlighter] = useState(null);
     const [profile, setProfile] = useState(null);
 
-    // user <- contextAPI, -> <Home />
-    const [user, setUser] = useState({
-        userId: '2dsfji5r44356j',
-        name: '선화',
-        iamgeUrl: '',
-        state: 'ready',
-        isAuthorized: true,
-    });
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!userInfo) {
+            navigate('login');
+        }
+    }, [userInfo]);
 
     useEffect(() => {
         const websocket = new Socket('http://localhost:8080/webSocket');

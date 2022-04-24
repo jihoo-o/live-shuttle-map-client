@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Auth from './components/Auth';
 import Home from './components/Home';
-import Login from './components/Login';
+import Login from './pages/Login';
 
 const App = ({
     map,
@@ -11,10 +11,11 @@ const App = ({
     shapeController,
     authService,
 }) => {
-    const [userInfo, setUerInfo] = useState({
-        userId: '2dsfji5r44356j',
-        name: '선화',
-    });
+    const [userInfo, setUerInfo] = useState(null);
+    // useState({
+    //     userId: '2dsfji5r44356j',
+    //     name: '선화',
+    // });
 
     return (
         // <Routes>
@@ -46,16 +47,19 @@ const App = ({
             <Route
                 path="/"
                 element={
-                    <Login authService={authService} />
-                    // <Home
-                    //     userInfo={userInfo}
-                    //     map={map}
-                    //     taxiMarkerController={taxiMarkerController}
-                    //     stationMarkerController={stationMarkerController}
-                    //     shapeController={shapeController}
-                    // />
+                    <Home
+                        userInfo={userInfo}
+                        map={map}
+                        taxiMarkerController={taxiMarkerController}
+                        stationMarkerController={stationMarkerController}
+                        shapeController={shapeController}
+                    />
                 }
             />
+            <Route
+                path="/login"
+                element={<Login authService={authService} />}
+            ></Route>
             <Route path="/oauth" element={<Auth authService={authService} />} />
         </Routes>
     );
