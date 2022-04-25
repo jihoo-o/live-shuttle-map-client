@@ -24,8 +24,10 @@ const App = ({
     };
 
     const handleLogout = () => {
-        setUserInfo(null);
-        navigator('/login');
+        authService.logout(() => {
+            setUserInfo(null);
+            navigator('/login');
+        });
     };
 
     return (
@@ -64,7 +66,6 @@ const App = ({
                         taxiMarkerController={taxiMarkerController}
                         stationMarkerController={stationMarkerController}
                         shapeController={shapeController}
-                        authService={authService}
                         onLogout={handleLogout}
                     />
                 }

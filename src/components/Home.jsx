@@ -8,6 +8,7 @@ import MarkerList from './MarkerList';
 import ProgerssIndicator from './ProgerssIndicator.jsx';
 import { createKakaoLatLngInstance } from '../dist/utils/kakaomap';
 import { useNavigate } from 'react-router-dom';
+import Header from './Header';
 
 const Home = ({
     userInfo,
@@ -15,7 +16,6 @@ const Home = ({
     taxiMarkerController,
     stationMarkerController,
     shapeController,
-    authService,
     onLogout,
 }) => {
     const ref = React.createRef();
@@ -274,6 +274,7 @@ const Home = ({
                 width: '100%',
             }}
         >
+            <Header userInfo={userInfo} onLogout={onLogout} />
             <section
                 style={{
                     position: 'sticky',
@@ -316,19 +317,6 @@ const Home = ({
                 </section>
             )}
             {currentMode === 'PROGRESS' && <ProgerssIndicator />}
-            <button
-                style={{
-                    position: 'absolute',
-                    top: '0px',
-                    right: '0px',
-                    zIndex: '999',
-                }}
-                onClick={() => {
-                    authService.logout(onLogout);
-                }}
-            >
-                logout
-            </button>
         </div>
     );
 };
