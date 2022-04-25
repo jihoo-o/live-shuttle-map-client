@@ -14,7 +14,7 @@ const Auth = ({ authService, onLogin }) => {
         await authService.login(ACCESS_TOKEN, onLogin);
     };
 
-    return <h1>Auth</h1>;
+    return <h1>⏳...</h1>;
 };
 
 export default Auth;

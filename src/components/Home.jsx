@@ -15,6 +15,8 @@ const Home = ({
     taxiMarkerController,
     stationMarkerController,
     shapeController,
+    authService,
+    onLogout,
 }) => {
     const ref = React.createRef();
     const [mapService, setMapService] = useState(null);
@@ -314,6 +316,19 @@ const Home = ({
                 </section>
             )}
             {currentMode === 'PROGRESS' && <ProgerssIndicator />}
+            <button
+                style={{
+                    position: 'absolute',
+                    top: '0px',
+                    right: '0px',
+                    zIndex: '999',
+                }}
+                onClick={() => {
+                    authService.logout(onLogout);
+                }}
+            >
+                logout
+            </button>
         </div>
     );
 };

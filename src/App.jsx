@@ -23,6 +23,11 @@ const App = ({
         navigator('/');
     };
 
+    const handleLogout = () => {
+        setUserInfo(null);
+        navigator('/login');
+    };
+
     return (
         // <Routes>
         //     <Route
@@ -59,6 +64,8 @@ const App = ({
                         taxiMarkerController={taxiMarkerController}
                         stationMarkerController={stationMarkerController}
                         shapeController={shapeController}
+                        authService={authService}
+                        onLogout={handleLogout}
                     />
                 }
             />

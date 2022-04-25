@@ -72,4 +72,17 @@ export class AuthService {
             throw new Error(e.message);
         }
     };
+
+    logout = async (handleRedirect) => {
+        if (!Kakao.Auth.getAccessToken()) {
+            console.log('로그인되지 않은 사용자입니다.');
+            return;
+        }
+
+        try {
+            Kakao.Auth.logout(handleRedirect);
+        } catch (e: any) {
+            throw new Error(e.message);
+        }
+    };
 }

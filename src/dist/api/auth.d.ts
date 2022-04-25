@@ -12,4 +12,5 @@ export declare class AuthService {
      * @param errorCallback 로그인이 실패했을 때 실행될 콜백함수
      */
     login: (token: any, getUserInfo: any, errorCallback: any) => Promise<void>;
+    logout: (handleRedirect: any) => Promise<void>;
 }
