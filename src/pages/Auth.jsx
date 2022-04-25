@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-const Auth = ({ authService }) => {
+const Auth = ({ authService, onLogin }) => {
     const [searchParams] = useSearchParams();
 
     useEffect(async () => {
@@ -11,10 +11,7 @@ const Auth = ({ authService }) => {
     const login = async () => {
         const code = searchParams.get('code');
         const ACCESS_TOKEN = await authService.getAuthorizationToken(code);
-        await authService.login(ACCESS_TOKEN, (res) => {
-            // Home 페이지로 redirect
-            console.log(res);
-        });
+        await authService.login(ACCESS_TOKEN, onLogin);
     };
 
     return <h1>Auth</h1>;

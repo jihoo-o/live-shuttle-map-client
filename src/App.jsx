@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import Auth from './components/Auth';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import Auth from './pages/Auth';
 import Home from './components/Home';
 import Login from './pages/Login';
 
@@ -11,11 +11,17 @@ const App = ({
     shapeController,
     authService,
 }) => {
-    const [userInfo, setUerInfo] = useState(null);
+    const [userInfo, setUserInfo] = useState(null);
     // useState({
     //     userId: '2dsfji5r44356j',
     //     name: '선화',
     // });
+    const navigator = useNavigate();
+
+    const handleLogin = (userInfo) => {
+        setUserInfo(userInfo);
+        navigator('/');
+    };
 
     return (
         // <Routes>
@@ -60,7 +66,12 @@ const App = ({
                 path="/login"
                 element={<Login authService={authService} />}
             ></Route>
-            <Route path="/oauth" element={<Auth authService={authService} />} />
+            <Route
+                path="/oauth"
+                element={
+                    <Auth authService={authService} onLogin={handleLogin} />
+                }
+            />
         </Routes>
     );
 };
