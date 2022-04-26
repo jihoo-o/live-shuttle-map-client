@@ -9,10 +9,13 @@ import EditLocationIcon from '@mui/icons-material/EditLocation';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+import axios from 'axios';
+
 import { getCurrentPosition } from '../dist/service/geolocation.js';
 import {
     createKakaoLatLngInstance,
     createKakaoMarkerImageInstance,
+    createKakaoPolyInstance,
 } from '../dist/utils/kakaomap.js';
 
 const Map = React.forwardRef(
@@ -202,6 +205,115 @@ const Map = React.forwardRef(
                     );
             };
         }, [mapService]);
+
+        useEffect(() => {
+            if (!mapService) return;
+            findDirection();
+        }, [mapService]);
+
+        const findDirection = async () => {
+            // 다중 경유지(현재 셔틀(origin) -> 중간 셔틀 정류장을 경유지로 -> 학교)
+            //   학교를 도착지로 설정하면 셔틀을 탔을 때 예상 도착시간까지 보여줄 수 있음
+            // ⭐️ sections의 아이템으로 각 경유지에 대한 duration이 주어짐
+            // 이미 지난 정류장은 경유지로 포함하지 않음 or 시간표로 표시하지 않음
+            try {
+                const postData = {
+                    origin: {
+                        name: '학교',
+                        x: 129.080358588741,
+                        y: 35.26753755709011,
+                    },
+                    destination: {
+                        name: '학교',
+                        x: 129.080358588741,
+                        y: 35.26753755709011,
+                    },
+                    waypoints: [
+                        {
+                            name: '외성생활관',
+                            x: 129.08528905299215,
+                            y: 35.269841186287096,
+                        },
+                        {
+                            name: '범어사역',
+                            x: 129.09251,
+                            y: 35.272884,
+                        },
+                        {
+                            name: '남산역',
+                            x: 129.0922891953689,
+                            y: 35.26527765324612,
+                        },
+                        {
+                            name: '남산소방서',
+                            x: 129.0871546707029,
+                            y: 35.26107692825543,
+                        },
+                    ],
+
+                    radius: '10000',
+                    priority: 'TIME',
+                    // car_fuel: 'GASOLINE', //default
+                    // car_hipass: false, //default
+                    // alternatives: false, //default
+                    road_details: true, //default
+                };
+                const postConfig = {
+                    headers: {
+                        Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_LOGIN_REST_API_KEY}`,
+                        'Content-Type': 'application/json',
+                    },
+                };
+
+                // 다중 경유지 길찾기
+                const response = await axios.post(
+                    'https://apis-navi.kakaomobility.com/v1/waypoints/directions',
+                    postData,
+                    postConfig
+                );
+
+                const polyPath = [];
+                response.data.routes[0].sections.forEach((section) => {
+                    const { roads, duration } = section;
+                    const due = parseInt(duration);
+                    console.log(
+                        `${Math.floor(due / 60)}분 ${Math.floor(due % 60)}초`
+                    );
+                    roads.forEach((road) => {
+                        road.vertexes.reduce((prev, curr, idx) => {
+                            if (idx % 2 !== 0) {
+                                polyPath.push(
+                                    createKakaoLatLngInstance({
+                                        lat: curr,
+                                        lng: prev,
+                                    })
+                                );
+                            }
+                            return curr;
+                        });
+                    });
+                });
+
+                const newPolyline = createKakaoPolyInstance({
+                    path: polyPath,
+                    strokeWeight: 2,
+                    strokeColor: '#FF00FF',
+                    strokeOpacity: 0.8,
+                    strokeStyle: 'dashed',
+                });
+                mapService.setMap(newPolyline, true);
+
+                const summary = response.data.routes[0].summary;
+                const duration = parseInt(summary.duration);
+                console.log(
+                    `학교 -> 학교: ${Math.floor(duration / 60)}분 ${Math.floor(
+                        duration % 60
+                    )}초`
+                );
+            } catch (error) {
+                console.error(error);
+            }
+        };
 
         const handleCreateMarker = () => {
             onUpdateCurrentMode('PROGRESS');

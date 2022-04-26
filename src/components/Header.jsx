@@ -7,6 +7,9 @@ const Header = ({ userInfo, onLogout }) => {
                 {userInfo && userInfo.kakao_account.profile.nickname}님
                 안녕하세요
             </h2>
+            <p>
+                https://www.figma.com/file/TY57qnNAz2fDRCj54bJDPG/MUI-for-Figma-v5.4.0-(Community)-(Community)?node-id=5005%3A61176
+            </p>
             <button
                 style={{
                     position: 'absolute',
