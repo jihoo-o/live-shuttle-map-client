@@ -37,9 +37,9 @@ const Home = ({
 
     const navigate = useNavigate();
     useEffect(() => {
-        if (!userInfo) {
-            navigate('login');
-        }
+        // if (!userInfo) {
+        //     navigate('login');
+        // }
     }, [userInfo]);
 
     useEffect(() => {
