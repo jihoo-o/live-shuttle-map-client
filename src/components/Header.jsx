@@ -8,7 +8,7 @@ const Header = ({ userInfo, onLogout }) => {
                 안녕하세요
             </h2>
             <p>
-                https://www.figma.com/file/TY57qnNAz2fDRCj54bJDPG/MUI-for-Figma-v5.4.0-(Community)-(Community)?node-id=5005%3A61176
+                https://www.figma.com/file/TYowh7VWRn6LFwxKrsM6Ub/capstone?node-id=0%3A1
             </p>
             <button
                 style={{
