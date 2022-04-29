@@ -212,27 +212,38 @@ const Map = React.forwardRef(
         }, [mapService]);
 
         const findDirection = async () => {
-            // 다중 경유지(현재 셔틀(origin) -> 중간 셔틀 정류장을 경유지로 -> 학교)
-            //   학교를 도착지로 설정하면 셔틀을 탔을 때 예상 도착시간까지 보여줄 수 있음
-            // ⭐️ sections의 아이템으로 각 경유지에 대한 duration이 주어짐
-            // 이미 지난 정류장은 경유지로 포함하지 않음 or 시간표로 표시하지 않음
             try {
                 const postData = {
                     origin: {
-                        name: '학교',
-                        x: 129.080358588741,
-                        y: 35.26753755709011,
+                        name: '운동장',
+                        x: 129.07719215990883,
+                        y: 35.26914021080837,
                     },
                     destination: {
-                        name: '학교',
+                        name: '건학관',
                         x: 129.080358588741,
                         y: 35.26753755709011,
                     },
                     waypoints: [
                         {
+                            name: '건학관',
+                            x: 129.080358588741,
+                            y: 35.26753755709011,
+                        },
+                        {
                             name: '외성생활관',
                             x: 129.08528905299215,
                             y: 35.269841186287096,
+                        },
+                        {
+                            name: '범어사역 이디야',
+                            x: 129.08512374355013,
+                            y: 35.27528693680311,
+                        },
+                        {
+                            name: '범어사역 어귀삼거리',
+                            x: 129.09246745017668,
+                            y: 35.275624177002896,
                         },
                         {
                             name: '범어사역',
@@ -249,14 +260,16 @@ const Map = React.forwardRef(
                             x: 129.0871546707029,
                             y: 35.26107692825543,
                         },
+                        {
+                            name: '건학관',
+                            x: 129.080358588741,
+                            y: 35.26753755709011,
+                        },
                     ],
-
                     radius: '10000',
                     priority: 'TIME',
-                    // car_fuel: 'GASOLINE', //default
-                    // car_hipass: false, //default
-                    // alternatives: false, //default
-                    road_details: true, //default
+                    car_type: 3,
+                    car_fuel: 'DIESEL',
                 };
                 const postConfig = {
                     headers: {
@@ -272,25 +285,52 @@ const Map = React.forwardRef(
                     postConfig
                 );
 
+                console.log(response);
+
+                const route = response.data.routes[0];
+                const stationNames = [
+                    '건학관',
+                    '외성생활관',
+                    '범어사역',
+                    '남산역',
+                    '남산소방서',
+                ];
+                const summary = route.summary.waypoints.map((waypoint, idx) => {
+                    let sectionDuration = 0;
+                    route.sections[idx].guides.forEach(({ duration }) => {
+                        sectionDuration += duration;
+                    });
+                    return {
+                        ...waypoint,
+                        duration: sectionDuration,
+                    };
+                });
+                console.log(summary);
+
+                summary.reduce((prev, curr) => {
+                    const duration = prev + curr.duration;
+                    if (stationNames.includes(curr.name)) {
+                        console.log(
+                            `${curr.name}에 ${Math.floor(
+                                parseInt(duration) / 60
+                            )}분 ${Math.floor(
+                                parseInt(duration) % 60
+                            )}초 후 도착합니다`
+                        );
+                    }
+                    return duration;
+                }, 0);
+
                 const polyPath = [];
                 response.data.routes[0].sections.forEach((section) => {
-                    const { roads, duration } = section;
-                    const due = parseInt(duration);
-                    console.log(
-                        `${Math.floor(due / 60)}분 ${Math.floor(due % 60)}초`
-                    );
-                    roads.forEach((road) => {
-                        road.vertexes.reduce((prev, curr, idx) => {
-                            if (idx % 2 !== 0) {
-                                polyPath.push(
-                                    createKakaoLatLngInstance({
-                                        lat: curr,
-                                        lng: prev,
-                                    })
-                                );
-                            }
-                            return curr;
-                        });
+                    const { guides } = section;
+                    guides.forEach((guide) => {
+                        polyPath.push(
+                            createKakaoLatLngInstance({
+                                lat: guide.y,
+                                lng: guide.x,
+                            })
+                        );
                     });
                 });
 
@@ -302,14 +342,6 @@ const Map = React.forwardRef(
                     strokeStyle: 'dashed',
                 });
                 mapService.setMap(newPolyline, true);
-
-                const summary = response.data.routes[0].summary;
-                const duration = parseInt(summary.duration);
-                console.log(
-                    `학교 -> 학교: ${Math.floor(duration / 60)}분 ${Math.floor(
-                        duration % 60
-                    )}초`
-                );
             } catch (error) {
                 console.error(error);
             }
