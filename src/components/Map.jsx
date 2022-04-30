@@ -213,6 +213,19 @@ const Map = React.forwardRef(
 
         const findDirection = async () => {
             try {
+                // get shuttle schedule
+                const getConfig = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+                const shuttleSchedule = await axios.get(
+                    `http://localhost:8080/schedule/shuttlebus`
+                    // getConfig
+                );
+                console.log('------⬇️서버에서 호출한 api 응답⬇️------');
+                console.log(shuttleSchedule);
+
                 const postData = {
                     origin: {
                         name: '운동장',
@@ -285,6 +298,7 @@ const Map = React.forwardRef(
                     postConfig
                 );
 
+                console.log('------⬇️프론트에서 직접 호출한 api 응답⬇️------');
                 console.log(response);
 
                 const route = response.data.routes[0];

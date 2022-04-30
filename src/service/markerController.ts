@@ -87,21 +87,31 @@ export class Taxi extends BaseMarkerController implements MarkerController {
     }
 
     protected update(data) {
-        this.socket.publish('/marker', data);
+        // this.socket.publish('/marker', data);
+        this.socket.publish('/app/markers/users', data);
     }
 
     public async add(userInfo, marker, isCurrent: Boolean) {
         const position = this.getPosition(marker);
-        this.update({
-            userId: userInfo.userId,
-            name: userInfo.name,
-            type: 'user',
-            state: 'ready',
-            isCurrent,
-            lat: position.lat,
-            lng: position.lng,
-            status: 'ADD',
-        });
+        this.update(
+            //     {
+            //     userId: userInfo.userId,
+            //     name: userInfo.name,
+            //     type: 'user',
+            //     state: 'ready',
+            //     isCurrent,
+            //     lat: position.lat,
+            //     lng: position.lng,
+            //     status: 'ADD',
+            // }
+            {
+                userid: 'dbid1234',
+                img_url: null,
+                lat: 1.1,
+                lng: 2.2,
+                user_id: 'seonhwa',
+            }
+        );
     }
 
     public edit() {}

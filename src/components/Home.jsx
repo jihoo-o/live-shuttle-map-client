@@ -55,9 +55,11 @@ const Home = ({
         // connect & subscribe
         taxiMarkerInstance.connect([
             {
-                destination: '/topic/marker-create',
+                // destination: '/topic/marker-create',
+                destination: '/topic/markers/users',
                 callback: (response) => {
-                    onCreateMarker(JSON.parse(response.body));
+                    // onCreateMarker(JSON.parse(response.body));
+                    console.log(response);
                 },
             },
             {
