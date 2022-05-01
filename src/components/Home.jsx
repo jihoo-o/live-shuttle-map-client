@@ -43,7 +43,8 @@ const Home = ({
     }, [userInfo]);
 
     useEffect(() => {
-        const websocket = new Socket('http://localhost:8080/webSocket');
+        // const websocket = new Socket('http://localhost:8080/webSocket');
+        const websocket = new Socket('http://220.95.118.174:8080/webSocket');
         const mapInstance = new map(ref.current);
         const taxiMarkerInstance = new taxiMarkerController(
             mapInstance,
