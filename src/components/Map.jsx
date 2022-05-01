@@ -30,7 +30,7 @@ const Map = React.forwardRef(
             drawingService,
             taxiMarkers,
             stationMarkers,
-            handleClickTaxiMarker,
+            onClickMarker,
             handleClickCluster,
             handleUpdateCluster,
             onUpdateCurrentMode,
@@ -87,7 +87,21 @@ const Map = React.forwardRef(
                 };
                 return stationMarkerService.createMarker(newMarkerOptions);
             });
+
+            const removeMarkerEventListeners = newStationMarkers.map((marker) =>
+                mapService.addEventListener(
+                    'click',
+                    () => onClickMarker('shuttle', marker),
+                    marker
+                )
+            );
+
             setStationKakaoMarkers(newStationMarkers);
+
+            return () => {
+                removeMarkerEventListeners &&
+                    removeMarkerEventListeners.forEach((cb) => cb());
+            };
         }, [stationMarkerService, stationMarkers, currentCategory]);
 
         useEffect(() => {
@@ -120,7 +134,7 @@ const Map = React.forwardRef(
             const removeMarkerEventListeners = newClusterMarkers.map((marker) =>
                 mapService.addEventListener(
                     'click',
-                    () => handleClickTaxiMarker(marker),
+                    () => onClickMarker('taxi', marker),
                     marker
                 )
             );

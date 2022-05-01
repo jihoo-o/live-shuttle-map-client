@@ -30,7 +30,10 @@ const Home = ({
     const [userMarkers, setUserMarkers] = useState({ TAXI: [], DELIVERY: [] });
     const [taxiMarkers, setTaxiMarkers] = useState([]);
     const [stationMarkers, setStationMarkers] = useState([]);
-    const [clusterMarkers, setClusterMarkers] = useState([]); // selectedMarkers
+    const [selectedMarkers, setSelectedMarkers] = useState({
+        type: null,
+        markers: [],
+    });
 
     const [cluster, setCluster] = useState(null);
     const [markerHighlighter, setMarkerHighlighter] = useState(null);
@@ -111,9 +114,10 @@ const Home = ({
     useEffect(async () => {
         const shuttlestopMarkers = await getShuttleStops();
         const newStationMarkers = shuttlestopMarkers.map((marker) => {
-            const { lat, lng } = marker;
+            const { lat, lng, name } = marker;
             const newMarker = {
                 ...marker,
+                title: `${name.ko}`,
                 position: { lat, lng },
                 draggable: false,
             };
@@ -156,7 +160,7 @@ const Home = ({
                 marker,
             };
         });
-        setClusterMarkers(includedMarkers);
+        setSelectedMarkers({ type: 'taxi', markers: [...includedMarkers] });
     };
 
     const onClickListItem = (marker) => {
@@ -220,7 +224,7 @@ const Home = ({
 
     const onUpdateMarker = () => {};
 
-    const onClickMarker = (marker) => {
+    const onClickMarker = (type, marker) => {
         let newCurrentMode;
         setCurrentMode((currentMode) => {
             newCurrentMode = currentMode;
@@ -228,8 +232,14 @@ const Home = ({
         });
         switch (newCurrentMode) {
             case 'DEFAULT':
-                getProfileByUserId(marker);
-                break;
+                if (type === 'taxi') {
+                    getProfileByUserId(marker);
+                } else if (type === 'shuttle') {
+                    setSelectedMarkers({
+                        type: 'shuttle',
+                        markers: [marker],
+                    });
+                }
             case 'USER':
                 // 선택된 마커를 state로 보관하고
                 // edit 혹은 delete 버튼 액션에 따라 처리함
@@ -270,6 +280,23 @@ const Home = ({
         });
     };
 
+    const getContents = ({ type, markers }) => {
+        switch (type) {
+            case 'taxi':
+                return (
+                    markers.length !== 0 && (
+                        <MarkerList
+                            markers={markers}
+                            handleListItemClick={onClickListItem}
+                        />
+                    )
+                );
+            case 'shuttle':
+                // 정류장에 맞는 시간표 출력
+                return markers[0].getTitle();
+        }
+    };
+
     return (
         <div
             style={{
@@ -298,7 +325,7 @@ const Home = ({
                     drawingService={drawingService}
                     taxiMarkers={taxiMarkers}
                     stationMarkers={stationMarkers}
-                    handleClickTaxiMarker={onClickMarker}
+                    onClickMarker={onClickMarker}
                     handleClickCluster={onClickCluster}
                     handleUpdateCluster={onUpdateCluster}
                     onUpdateCurrentMode={onUpdateCurrentMode}
@@ -312,18 +339,14 @@ const Home = ({
                 style={{
                     flexBasis: 'auto',
                     transition: 'all 1s',
-                    height: `${clusterMarkers.length !== 0 ? '100%' : '0'}`,
+                    height: `${
+                        selectedMarkers.markers.length !== 0 ? '100%' : '0'
+                    }`,
                     overflowY: 'hidden',
                 }}
             >
                 <Panel>
-                    {currentMode === 'DEFAULT' &&
-                        clusterMarkers.length !== 0 && (
-                            <MarkerList
-                                markers={clusterMarkers}
-                                handleListItemClick={onClickListItem}
-                            />
-                        )}
+                    {currentMode === 'DEFAULT' && getContents(selectedMarkers)}
                 </Panel>
             </section>
             {currentMode === 'PROGRESS' && <ProgerssIndicator />}
