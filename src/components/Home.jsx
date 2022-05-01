@@ -9,6 +9,7 @@ import ProgerssIndicator from './ProgerssIndicator.jsx';
 import { createKakaoLatLngInstance } from '../dist/utils/kakaomap';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
+import Panel from './Panel';
 
 const Home = ({
     userInfo,
@@ -29,7 +30,7 @@ const Home = ({
     const [userMarkers, setUserMarkers] = useState({ TAXI: [], DELIVERY: [] });
     const [taxiMarkers, setTaxiMarkers] = useState([]);
     const [stationMarkers, setStationMarkers] = useState([]);
-    const [clusterMarkers, setClusterMarkers] = useState([]);
+    const [clusterMarkers, setClusterMarkers] = useState([]); // selectedMarkers
 
     const [cluster, setCluster] = useState(null);
     const [markerHighlighter, setMarkerHighlighter] = useState(null);
@@ -272,19 +273,18 @@ const Home = ({
     return (
         <div
             style={{
-                height: '100vh',
+                height: '100%',
                 width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
             }}
         >
-            <Header userInfo={userInfo} onLogout={onLogout} />
+            {/* <Header userInfo={userInfo} onLogout={onLogout} /> */}
             <section
                 style={{
-                    position: 'sticky',
-                    height: '60vh',
+                    transition: 'all 1s',
                     width: '100%',
-                    zIndex: '10',
-                    top: '0px',
-                    left: '0px',
+                    height: '100%',
                 }}
             >
                 <Map
@@ -308,16 +308,24 @@ const Home = ({
                     <Profile userInfo={profile} closeProfile={closeProfile} />
                 )}
             </section>
-            {currentMode === 'DEFAULT' && (
-                <section style={{ height: '40vh', width: '100%' }}>
-                    {clusterMarkers.length !== 0 && (
-                        <MarkerList
-                            markers={clusterMarkers}
-                            handleListItemClick={onClickListItem}
-                        />
-                    )}
-                </section>
-            )}
+            <section
+                style={{
+                    flexBasis: 'auto',
+                    transition: 'all 1s',
+                    height: `${clusterMarkers.length !== 0 ? '100%' : '0'}`,
+                    overflowY: 'hidden',
+                }}
+            >
+                <Panel>
+                    {currentMode === 'DEFAULT' &&
+                        clusterMarkers.length !== 0 && (
+                            <MarkerList
+                                markers={clusterMarkers}
+                                handleListItemClick={onClickListItem}
+                            />
+                        )}
+                </Panel>
+            </section>
             {currentMode === 'PROGRESS' && <ProgerssIndicator />}
         </div>
     );

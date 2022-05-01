@@ -590,7 +590,7 @@ const Map = React.forwardRef(
 
         return (
             <>
-                <ButtonGroup
+                {/* <ButtonGroup
                     style={{
                         // 조건부 렌더링의 경우 이벤트 바인딩을 위해 컴포넌트로 분리해야 함
                         display: `${
@@ -642,13 +642,11 @@ const Map = React.forwardRef(
                     <Button ref={exitModeBtn} variant="contained">
                         <ClearIcon />
                     </Button>
-                </ButtonGroup>
+                </ButtonGroup> */}
                 <div
                     style={{
-                        width: '100vw',
-                        height: '50vh',
-                        borderRadius: '10px',
-                        padding: '5px',
+                        width: '100%',
+                        height: '100%',
                     }}
                 >
                     <div
@@ -657,7 +655,6 @@ const Map = React.forwardRef(
                         style={{
                             width: '100%',
                             height: '100%',
-                            borderRadius: '10px',
                         }}
                     ></div>
                 </div>
