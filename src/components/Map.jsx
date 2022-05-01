@@ -30,7 +30,7 @@ const Map = React.forwardRef(
             drawingService,
             taxiMarkers,
             stationMarkers,
-            handleClickTaxiMarker,
+            onClickMarker,
             handleClickCluster,
             handleUpdateCluster,
             onUpdateCurrentMode,
@@ -87,7 +87,21 @@ const Map = React.forwardRef(
                 };
                 return stationMarkerService.createMarker(newMarkerOptions);
             });
+
+            const removeMarkerEventListeners = newStationMarkers.map((marker) =>
+                mapService.addEventListener(
+                    'click',
+                    () => onClickMarker('shuttle', marker),
+                    marker
+                )
+            );
+
             setStationKakaoMarkers(newStationMarkers);
+
+            return () => {
+                removeMarkerEventListeners &&
+                    removeMarkerEventListeners.forEach((cb) => cb());
+            };
         }, [stationMarkerService, stationMarkers, currentCategory]);
 
         useEffect(() => {
@@ -120,7 +134,7 @@ const Map = React.forwardRef(
             const removeMarkerEventListeners = newClusterMarkers.map((marker) =>
                 mapService.addEventListener(
                     'click',
-                    () => handleClickTaxiMarker(marker),
+                    () => onClickMarker('taxi', marker),
                     marker
                 )
             );
@@ -590,7 +604,7 @@ const Map = React.forwardRef(
 
         return (
             <>
-                <ButtonGroup
+                {/* <ButtonGroup
                     style={{
                         // 조건부 렌더링의 경우 이벤트 바인딩을 위해 컴포넌트로 분리해야 함
                         display: `${
@@ -642,13 +656,11 @@ const Map = React.forwardRef(
                     <Button ref={exitModeBtn} variant="contained">
                         <ClearIcon />
                     </Button>
-                </ButtonGroup>
+                </ButtonGroup> */}
                 <div
                     style={{
-                        width: '100vw',
-                        height: '50vh',
-                        borderRadius: '10px',
-                        padding: '5px',
+                        width: '100%',
+                        height: '100%',
                     }}
                 >
                     <div
@@ -657,7 +669,6 @@ const Map = React.forwardRef(
                         style={{
                             width: '100%',
                             height: '100%',
-                            borderRadius: '10px',
                         }}
                     ></div>
                 </div>
