@@ -213,18 +213,26 @@ const Map = React.forwardRef(
 
         const findDirection = async () => {
             try {
-                // get shuttle schedule
                 const getConfig = {
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 };
+                const nodeResponse = await axios.get(
+                    'http://localhost:8080/shuttle/schedule',
+                    getConfig
+                );
+                console.log(nodeResponse);
+
+                // get shuttle schedule
+                /** 
                 const shuttleSchedule = await axios.get(
                     `http://localhost:8080/schedule/shuttlebus`
                     // getConfig
                 );
                 console.log('------⬇️서버에서 호출한 api 응답⬇️------');
                 console.log(shuttleSchedule);
+                */
 
                 const postData = {
                     origin: {
