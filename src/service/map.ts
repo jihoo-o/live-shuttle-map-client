@@ -53,6 +53,10 @@ export class Map {
         anchor && this.map.setCenter(anchor);
     }
 
+    relayout() {
+        this.map.relayout();
+    }
+
     // ❌
     drawCircle(center, radius, color) {
         return new kakao.maps.Circle({

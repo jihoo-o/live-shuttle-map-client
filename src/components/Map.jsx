@@ -31,7 +31,7 @@ const Map = React.forwardRef(
             taxiMarkers,
             stationMarkers,
             onClickMarker,
-            handleClickCluster,
+            onClickListTarget,
             handleUpdateCluster,
             onUpdateCurrentMode,
             onUpdateCurrentCategory,
@@ -91,7 +91,12 @@ const Map = React.forwardRef(
             const removeMarkerEventListeners = newStationMarkers.map((marker) =>
                 mapService.addEventListener(
                     'click',
-                    () => onClickMarker('shuttle', marker),
+                    () =>
+                        onClickListTarget({
+                            targetType: 'marker',
+                            type: 'shuttle',
+                            target: marker,
+                        }),
                     marker
                 )
             );
@@ -132,15 +137,25 @@ const Map = React.forwardRef(
             const newCluster = taxiMarkerService.drawCluster(clusterOptions);
 
             const removeMarkerEventListeners = newClusterMarkers.map((marker) =>
+                // () => onClickMarker(marker)
+                // marker 전달 확인
                 mapService.addEventListener(
                     'click',
-                    () => onClickMarker('taxi', marker),
+                    () => {
+                        onClickMarker(marker);
+                    },
                     marker
                 )
             );
             const removeClusterEventListener = mapService.addEventListener(
                 'clusterclick',
-                handleClickCluster,
+                (cluster) => {
+                    onClickListTarget({
+                        targetType: 'cluster',
+                        type: 'taxi',
+                        target: cluster,
+                    });
+                },
                 newCluster
             );
 

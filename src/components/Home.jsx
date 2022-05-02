@@ -128,13 +128,6 @@ const Home = ({
         setStationMarkers(newStationMarkers);
     }, []);
 
-    useEffect(() => {
-        window.addEventListener('resize', handleResizeWindow);
-        return () => {
-            window.removeEventListener('resize', handleResizeWindow);
-        };
-    }, []);
-
     const getProfileByUserId = async (marker) => {
         const [userId, name] = [...marker.getTitle().trim().split(' ')];
         const newProfile = await getProfile(userId);
@@ -149,23 +142,50 @@ const Home = ({
         setProfile(null);
     };
 
-    const onClickCluster = (cluster) => {
-        console.log(cluster.getMarkers());
-        const includedMarkers = cluster.getMarkers().map((marker) => {
-            const [userId, name] = [...marker.getTitle().trim().split(' ')];
-            return {
-                userId,
-                name,
-                image: marker.getImage().Yj,
-                marker,
-            };
+    /**
+     *
+     * @param targetType 'cluster' | 'marker'
+     * @param type 'taxi' | 'shuttle'
+     * @param target cluster | marker
+     */
+    const handleClickListTarget = ({ targetType, type, target }) => {
+        let includedMarkers = [];
+        let position;
+        switch (targetType) {
+            case 'cluster':
+                position = target.getCenter();
+                // includedMarkers = target.getMarkers()
+                includedMarkers = [
+                    ...target.getMarkers().map((marker) => {
+                        const [userId, name] = [
+                            ...marker.getTitle().trim().split(' '),
+                        ];
+                        return {
+                            userId,
+                            name,
+                            image: marker.getImage().Yj,
+                            marker,
+                        };
+                    }),
+                ];
+                break;
+            case 'marker':
+                position = target.getPosition();
+                includedMarkers = [target];
+                break;
+        }
+        setSelectedMarkers({ type, markers: [...includedMarkers] });
+        setMapService((mapService) => {
+            mapService.relayout();
+            mapService.setCenter(position);
+            return mapService;
         });
-        setSelectedMarkers({ type: 'taxi', markers: [...includedMarkers] });
     };
 
     const onClickListItem = (marker) => {
         const position = marker.getPosition();
         setMapService((mapService) => {
+            mapService.relayout();
             mapService.setLevel(2);
             mapService.setLevel(1, position);
             setMarkerHighlighter((customOverlay) => {
@@ -224,7 +244,7 @@ const Home = ({
 
     const onUpdateMarker = () => {};
 
-    const onClickMarker = (type, marker) => {
+    const handleClickMarker = (marker) => {
         let newCurrentMode;
         setCurrentMode((currentMode) => {
             newCurrentMode = currentMode;
@@ -232,14 +252,8 @@ const Home = ({
         });
         switch (newCurrentMode) {
             case 'DEFAULT':
-                if (type === 'taxi') {
-                    getProfileByUserId(marker);
-                } else if (type === 'shuttle') {
-                    setSelectedMarkers({
-                        type: 'shuttle',
-                        markers: [marker],
-                    });
-                }
+                getProfileByUserId(marker);
+                break;
             case 'USER':
                 // 선택된 마커를 state로 보관하고
                 // edit 혹은 delete 버튼 액션에 따라 처리함
@@ -266,18 +280,6 @@ const Home = ({
             return customOverlay;
         });
         setCurrentCategory(newCategory);
-    };
-
-    const handleResizeWindow = () => {
-        setMapService((mapService) => {
-            mapService.setCenter(
-                createKakaoLatLngInstance({
-                    lat: 35.267342474237104,
-                    lng: 129.08901354232913,
-                })
-            );
-            return mapService;
-        });
     };
 
     const getContents = ({ type, markers }) => {
@@ -325,8 +327,8 @@ const Home = ({
                     drawingService={drawingService}
                     taxiMarkers={taxiMarkers}
                     stationMarkers={stationMarkers}
-                    onClickMarker={onClickMarker}
-                    handleClickCluster={onClickCluster}
+                    onClickMarker={handleClickMarker}
+                    onClickListTarget={handleClickListTarget}
                     handleUpdateCluster={onUpdateCluster}
                     onUpdateCurrentMode={onUpdateCurrentMode}
                     onUpdateCurrentCategory={onUpdateCurrentCategory}
@@ -337,7 +339,6 @@ const Home = ({
             </section>
             <section
                 style={{
-                    flexBasis: 'auto',
                     transition: 'all 1s',
                     height: `${
                         selectedMarkers.markers.length !== 0 ? '100%' : '0'
