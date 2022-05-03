@@ -22,6 +22,7 @@ export declare class Map {
     constructor(container: HTMLDivElement);
     setCenter(position: any): void;
     setLevel(level: number, anchor?: any): void;
+    relayout(): void;
     drawCircle(center: any, radius: any, color: any): any;
     drawPolyline({ polyline, path }: {
         polyline: any;
