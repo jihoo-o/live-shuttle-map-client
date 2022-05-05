@@ -172,10 +172,16 @@ const Home = ({
                 break;
             case 'marker':
                 position = target.getPosition();
-                includedMarkers = [target];
+                // includedMarkers = [target];
                 break;
         }
-        setSelectedMarkers({ type, markers: [...includedMarkers] });
+        setSelectedMarkers((selectedMarkers) => {
+            if (includedMarkers.length === 0) {
+                return selectedMarkers;
+            } else {
+                return { type, markers: [...includedMarkers] };
+            }
+        });
         setMapService((mapService) => {
             mapService.relayout();
             mapService.setCenter(position);
