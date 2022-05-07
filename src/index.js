@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App.jsx';
+import App from './App.tsx';
 import './index.css';
 import { Map } from './dist/service/map.js';
 import { Taxi, Station } from './dist/service/markerController.js';
@@ -22,11 +22,11 @@ ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter basename={process.env.PUBLIC_URL}>
             <App
-                map={map}
-                taxiMarkerController={taxiMarkerController}
-                stationMarkerController={stationMarkerController}
-                shapeController={shapeController}
-                authService={authService}
+            // map={map}
+            // taxiMarkerController={taxiMarkerController}
+            // stationMarkerController={stationMarkerController}
+            // shapeController={shapeController}
+            // authService={authService}
             />
         </BrowserRouter>
     </React.StrictMode>,
