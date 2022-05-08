@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getShuttleStops, getUsers } from '../api/marker';
+import { getCurrentPosition } from '../service/geolocation';
+import { CreatingMarker, Position, UserMarker } from '../types/map';
 import BottomTab from './BottomTab';
 import FloatTab from './FloatTab';
 import HalfPanel from './HalfPanel';
 import MapComponent from './MapComponent';
+import ProgressIndicator from './ProgressIndicator';
 
 const HomeLayout = styled.div<{ isRow: boolean }>`
     position: relative;
@@ -14,7 +17,7 @@ const HomeLayout = styled.div<{ isRow: boolean }>`
     flex-direction: ${(props) => (props.isRow === true ? 'row' : 'column')};
 `;
 
-interface IState {
+interface ICurrentService {
     currentCategory: null | string;
     currentMarkers: Array<any>;
     subMarkers: {
@@ -23,13 +26,17 @@ interface IState {
 }
 
 const Home = (props) => {
-    const [currentService, setCurrentService] = useState<IState>({
+    const [currentService, setCurrentService] = useState<ICurrentService>({
         currentCategory: null,
         currentMarkers: [],
         subMarkers: {
             stations: [],
         },
     });
+    const [creatingMarker, setCreatingMarker] = useState<CreatingMarker | null>(
+        null
+    );
+    const [progressIndicator, setProgressIndicator] = useState<boolean>(false);
 
     useEffect(() => {
         getShuttleStops() //
@@ -70,14 +77,73 @@ const Home = (props) => {
         });
     };
 
+    const handleCreateCratingMarker = async () => {
+        try {
+            const newPosition = await getCurrentPosition(() => {
+                handleUpdateProgressIndicator(false);
+            });
+            setCreatingMarker((oldMarker) => {
+                if (!oldMarker) {
+                    const newMarker: CreatingMarker = {
+                        startPosition: newPosition,
+                        type: 'user',
+                        state: 'ready',
+                        userId: 'seonhwa123',
+                        name: '선화',
+                        lat: newPosition.lat,
+                        lng: newPosition.lng,
+                        isCurrent: true,
+                    };
+                    return newMarker;
+                }
+                return null;
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    const handleUpdateCreatingMarker = async ({ lat, lng, isCurrent }) => {
+        setCreatingMarker((oldMarker) => {
+            const newMarker: UserMarker = {
+                ...oldMarker,
+                type: 'user',
+                state: 'ready',
+                userId: 'seonhwa123',
+                name: '선화',
+                lat,
+                lng,
+                isCurrent,
+            };
+            return newMarker;
+        });
+    };
+
+    const handlePublishCreatingMarker = () => {
+        // 마커 publish
+    };
+
+    const handleUpdateProgressIndicator = (visible: boolean) => {
+        setProgressIndicator(visible);
+    };
+
     return (
         <>
             <HomeLayout isRow={false}>
-                <MapComponent currentService={currentService} />
+                <MapComponent
+                    currentService={currentService}
+                    creatingMarker={creatingMarker}
+                    onUpdateCreatingMarker={handleUpdateCreatingMarker}
+                />
                 <HalfPanel />
-                <BottomTab onUpdateService={handleUpdateService} />
+                <BottomTab
+                    onUpdateService={handleUpdateService}
+                    onCreateCreatingMarker={handleCreateCratingMarker}
+                    onUpdateProgressIndicator={handleUpdateProgressIndicator}
+                />
             </HomeLayout>
             <FloatTab />
+            {progressIndicator && <ProgressIndicator />}
         </>
     );
 };

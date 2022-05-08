@@ -2,14 +2,14 @@ import React from 'react';
 import { Map, MapMarker, MarkerClusterer } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import { getMarkerImage } from '../utils/kakaomap';
+import CreatingMarker from './CreatingMarker';
 const StyledMap = styled.div `
     height: 100%;
     width: 100%;
     background-color: red;
     transition: all 1s;
 `;
-const MapComponent = ({ currentService }) => {
-    console.log(currentService);
+const MapComponent = ({ currentService, creatingMarker, onUpdateCreatingMarker, }) => {
     return (React.createElement(StyledMap, null,
         React.createElement(Map, { center: {
                 lat: 35.267342474237104,
@@ -49,7 +49,8 @@ const MapComponent = ({ currentService }) => {
                                     height: 50,
                                 },
                             } }))));
-                }))));
+                }),
+            React.createElement(CreatingMarker, { creatingMarker: creatingMarker, onUpdateCreatingMarker: onUpdateCreatingMarker }))));
 };
 export default MapComponent;
 //# sourceMappingURL=MapComponent.js.map

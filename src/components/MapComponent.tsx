@@ -2,6 +2,7 @@ import React from 'react';
 import { Map, MapMarker, MarkerClusterer } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import { getMarkerImage } from '../utils/kakaomap';
+import CreatingMarker from './CreatingMarker';
 
 const StyledMap = styled.div`
     height: 100%;
@@ -10,9 +11,11 @@ const StyledMap = styled.div`
     transition: all 1s;
 `;
 
-const MapComponent = ({ currentService }) => {
-    console.log(currentService);
-
+const MapComponent = ({
+    currentService,
+    creatingMarker,
+    onUpdateCreatingMarker,
+}) => {
     return (
         <StyledMap>
             <Map
@@ -103,6 +106,10 @@ const MapComponent = ({ currentService }) => {
                             )
                         );
                     })}
+                <CreatingMarker
+                    creatingMarker={creatingMarker}
+                    onUpdateCreatingMarker={onUpdateCreatingMarker}
+                />
             </Map>
         </StyledMap>
     );

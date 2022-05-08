@@ -1,2 +1,2 @@
-export declare const getCurrentPosition: (onUpdate: any) => void;
+export declare const getCurrentPosition: (onUpdate: any) => Promise<any>;
 export declare const watchPosition: (onUpdate: any) => void;

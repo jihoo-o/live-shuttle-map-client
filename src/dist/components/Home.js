@@ -10,10 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getShuttleStops, getUsers } from '../api/marker';
+import { getCurrentPosition } from '../service/geolocation';
 import BottomTab from './BottomTab';
 import FloatTab from './FloatTab';
 import HalfPanel from './HalfPanel';
 import MapComponent from './MapComponent';
+import ProgressIndicator from './ProgressIndicator';
 const HomeLayout = styled.div `
     position: relative;
     width: 100%;
@@ -29,6 +31,8 @@ const Home = (props) => {
             stations: [],
         },
     });
+    const [creatingMarker, setCreatingMarker] = useState(null);
+    const [progressIndicator, setProgressIndicator] = useState(false);
     useEffect(() => {
         getShuttleStops() //
             .then((shuttleStations) => {
@@ -55,12 +59,53 @@ const Home = (props) => {
             return newService;
         });
     });
+    const handleCreateCratingMarker = () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const newPosition = yield getCurrentPosition(() => {
+                handleUpdateProgressIndicator(false);
+            });
+            setCreatingMarker((oldMarker) => {
+                if (!oldMarker) {
+                    const newMarker = {
+                        startPosition: newPosition,
+                        type: 'user',
+                        state: 'ready',
+                        userId: 'seonhwa123',
+                        name: '선화',
+                        lat: newPosition.lat,
+                        lng: newPosition.lng,
+                        isCurrent: true,
+                    };
+                    return newMarker;
+                }
+                return null;
+            });
+        }
+        catch (e) {
+            console.log(e);
+        }
+    });
+    const handleUpdateCreatingMarker = ({ lat, lng, isCurrent }) => __awaiter(void 0, void 0, void 0, function* () {
+        setCreatingMarker((oldMarker) => {
+            const newMarker = Object.assign(Object.assign({}, oldMarker), { type: 'user', state: 'ready', userId: 'seonhwa123', name: '선화', lat,
+                lng,
+                isCurrent });
+            return newMarker;
+        });
+    });
+    const handlePublishCreatingMarker = () => {
+        // 마커 publish
+    };
+    const handleUpdateProgressIndicator = (visible) => {
+        setProgressIndicator(visible);
+    };
     return (React.createElement(React.Fragment, null,
         React.createElement(HomeLayout, { isRow: false },
-            React.createElement(MapComponent, { currentService: currentService }),
+            React.createElement(MapComponent, { currentService: currentService, creatingMarker: creatingMarker, onUpdateCreatingMarker: handleUpdateCreatingMarker }),
             React.createElement(HalfPanel, null),
-            React.createElement(BottomTab, { onUpdateService: handleUpdateService })),
-        React.createElement(FloatTab, null)));
+            React.createElement(BottomTab, { onUpdateService: handleUpdateService, onCreateCreatingMarker: handleCreateCratingMarker, onUpdateProgressIndicator: handleUpdateProgressIndicator })),
+        React.createElement(FloatTab, null),
+        progressIndicator && React.createElement(ProgressIndicator, null)));
 };
 export default Home;
 //# sourceMappingURL=Home.js.map
