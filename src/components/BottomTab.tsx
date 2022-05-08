@@ -7,6 +7,13 @@ const StyledBottomTab = styled.div`
     background-color: green;
 `;
 
-const BottomTab = (props) => <StyledBottomTab>bottom tab</StyledBottomTab>;
+const BottomTab = ({ onUpdateService }) => {
+    return (
+        <StyledBottomTab>
+            <button onClick={() => onUpdateService('SHUTTLE')}>셔틀버스</button>
+            <button onClick={() => onUpdateService('TAXI')}>택시</button>
+        </StyledBottomTab>
+    );
+};
 
 export default BottomTab;

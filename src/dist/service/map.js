@@ -25,7 +25,7 @@ export class Map {
     // ❌
     drawCircle(center, radius, color) {
         return new kakao.maps.Circle({
-            map: this.map,
+            // map: this.map,
             center: new kakao.maps.LatLng(center.lat, center.lng),
             radius,
             strokeWeight: 5,
@@ -40,7 +40,7 @@ export class Map {
     drawPolyline({ polyline, path }) {
         if (!polyline) {
             return new kakao.maps.Polyline({
-                map: this.map,
+                // map: this.map,
                 path,
                 strokeWeight: 3,
                 strokeColor: '#db4040',

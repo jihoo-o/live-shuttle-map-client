@@ -60,7 +60,7 @@ export class Map {
     // ❌
     drawCircle(center, radius, color) {
         return new kakao.maps.Circle({
-            map: this.map,
+            // map: this.map,
             center: new kakao.maps.LatLng(center.lat, center.lng), // 원의 중심좌표 입니다
             radius, // 미터 단위의 원의 반지름입니다
             strokeWeight: 5, // 선의 두께입니다
@@ -76,7 +76,7 @@ export class Map {
     drawPolyline({ polyline, path }) {
         if (!polyline) {
             return new kakao.maps.Polyline({
-                map: this.map,
+                // map: this.map,
                 path,
                 strokeWeight: 3, // 선의 두께입니다
                 strokeColor: '#db4040', // 선의 색깔입니다

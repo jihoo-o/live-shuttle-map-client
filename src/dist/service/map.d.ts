@@ -1,3 +1,4 @@
+/// <reference types="kakao.maps.d.ts" />
 import { StationTypes, UserStates } from './markerController';
 export interface Coordinates {
     lat: number;
@@ -23,7 +24,7 @@ export declare class Map {
     setCenter(position: any): void;
     setLevel(level: number, anchor?: any): void;
     relayout(): void;
-    drawCircle(center: any, radius: any, color: any): any;
+    drawCircle(center: any, radius: any, color: any): kakao.maps.Circle;
     drawPolyline({ polyline, path }: {
         polyline: any;
         path: any;

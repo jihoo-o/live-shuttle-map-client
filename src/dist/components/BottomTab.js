@@ -5,6 +5,10 @@ const StyledBottomTab = styled.div `
     width: 100%;
     background-color: green;
 `;
-const BottomTab = (props) => React.createElement(StyledBottomTab, null, "bottom tab");
+const BottomTab = ({ onUpdateService }) => {
+    return (React.createElement(StyledBottomTab, null,
+        React.createElement("button", { onClick: () => onUpdateService('SHUTTLE') }, "\uC154\uD2C0\uBC84\uC2A4"),
+        React.createElement("button", { onClick: () => onUpdateService('TAXI') }, "\uD0DD\uC2DC")));
+};
 export default BottomTab;
 //# sourceMappingURL=BottomTab.js.map

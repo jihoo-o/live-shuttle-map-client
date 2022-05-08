@@ -6,6 +6,8 @@ const StyledMap = styled.div `
     background-color: red;
     transition: all 1s;
 `;
-const Map = (props) => React.createElement(StyledMap, null, "map");
+const Map = ({ currentService }) => {
+    return React.createElement(StyledMap, null, "map");
+};
 export default Map;
 //# sourceMappingURL=Map.js.map

@@ -12,7 +12,7 @@ export const createKakaoMarkerImageInstance = (markerImageOptions) => {
     return new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(50, 50));
 };
 
-const getMarkerImage = ({ type, state, isCurrent }) => {
+export const getMarkerImage = ({ type, state, isCurrent }) => {
     switch (type) {
         case 'shuttlebus':
         case 'bus':
