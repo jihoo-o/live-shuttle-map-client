@@ -13,17 +13,17 @@ export class Socket {
             console.log('끊김 ✂️');
         };
     }
-    connect(subscribeList) {
+    activate() {
+        this.stompClient.activate();
+        return () => this.stompClient.deactivate();
+    }
+    subscribe(subscribeList) {
         this.stompClient.onConnect = () => {
             console.log('연결 ✨');
             subscribeList.forEach(({ destination, callback }) => this.stompClient.subscribe(destination, callback));
         };
     }
-    activate() {
-        this.stompClient.activate();
-        return () => this.stompClient.deactivate();
-    }
-    publish(destination, payload) {
+    publish({ destination, payload }) {
         this.stompClient.publish({
             destination,
             body: JSON.stringify(payload),

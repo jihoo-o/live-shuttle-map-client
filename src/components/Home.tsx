@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getShuttleStops, getUsers } from '../api/marker';
+import { getShuttles, getShuttleStops, getUsers } from '../api/marker';
 import { getCurrentPosition } from '../service/geolocation';
 import { CreatingMarker, Position, UserMarker } from '../types/map';
 import BottomTab from './BottomTab';
@@ -25,7 +25,7 @@ interface ICurrentService {
     };
 }
 
-const Home = (props) => {
+const Home = ({ stomp }) => {
     const [currentService, setCurrentService] = useState<ICurrentService>({
         currentCategory: null,
         currentMarkers: [],
@@ -37,6 +37,19 @@ const Home = (props) => {
         null
     );
     const [progressIndicator, setProgressIndicator] = useState<boolean>(false);
+
+    // useEffect(() => {
+    //     console.log(stomp);
+    //     stomp.client &&
+    //         stomp.client.subscribe([
+    //             {
+    //                 destination: 'abc',
+    //                 callback: () => {
+    //                     console.log('subscribe');
+    //                 },
+    //             },
+    //         ]);
+    // }, [stomp]);
 
     useEffect(() => {
         getShuttleStops() //
@@ -59,6 +72,7 @@ const Home = (props) => {
         let newMarkers;
         switch (newCategory) {
             case 'SHUTTLE':
+                newMarkers = await await getShuttles();
                 break;
             case 'TAXI':
                 newMarkers = await getUsers();
@@ -88,11 +102,11 @@ const Home = (props) => {
                         startPosition: newPosition,
                         type: 'user',
                         state: 'ready',
-                        userId: 'seonhwa123',
-                        name: '선화',
+                        userId: 'seonhwa123', //
+                        name: '선화', //
                         lat: newPosition.lat,
                         lng: newPosition.lng,
-                        isCurrent: true,
+                        isCurrent: true, //
                     };
                     return newMarker;
                 }
@@ -120,7 +134,17 @@ const Home = (props) => {
     };
 
     const handlePublishCreatingMarker = () => {
-        // 마커 publish
+        setCreatingMarker((creatingMarker) => {
+            const newMarker = { ...creatingMarker };
+            delete newMarker.startPosition;
+            const userMarker: UserMarker = { ...newMarker } as UserMarker;
+            stomp.client.publish('/marker/createuser', userMarker);
+            return null;
+        });
+    };
+
+    const handleClearCreatingMarker = () => {
+        setCreatingMarker(null);
     };
 
     const handleUpdateProgressIndicator = (visible: boolean) => {
@@ -142,7 +166,11 @@ const Home = (props) => {
                     onUpdateProgressIndicator={handleUpdateProgressIndicator}
                 />
             </HomeLayout>
-            <FloatTab />
+            <FloatTab
+                creatingMarker={creatingMarker}
+                onPublishCreatingMarker={handlePublishCreatingMarker}
+                onClearCreatingMarker={handleClearCreatingMarker}
+            />
             {progressIndicator && <ProgressIndicator />}
         </>
     );

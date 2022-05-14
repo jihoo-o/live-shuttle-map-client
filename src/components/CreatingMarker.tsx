@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { MapMarker, Polyline, Circle } from 'react-kakao-maps-sdk';
-import { Position } from '../types/map';
+import { Image, Position } from '../types/map';
 import { getMarkerImage } from '../utils/kakaomap';
 
 const CreatingMarker = ({ creatingMarker, onUpdateCreatingMarker }) => {
     const [polyline, setPolyline] = useState<null | any>(null);
     const [polylinePath, setPolylinePath] = useState<null | Position[]>();
-    const [image, setImage] = useState<string>('');
+    const [image, setImage] = useState<Image>({
+        url: '',
+        size: {
+            width: 0,
+            height: 0,
+        },
+    });
 
     useEffect(() => {
         if (!creatingMarker) return;
@@ -15,16 +21,15 @@ const CreatingMarker = ({ creatingMarker, onUpdateCreatingMarker }) => {
             const newPath = [{ ...creatingMarker.startPosition }];
             return newPath;
         });
-        setImage(
-            getMarkerImage({
-                type: creatingMarker.type,
-                state: creatingMarker.state ? creatingMarker.state : null,
-                isCurrent:
-                    creatingMarker.isCurrent !== null
-                        ? creatingMarker.isCurrent
-                        : null,
-            })
-        );
+        const { url, size } = getMarkerImage({
+            type: creatingMarker.type,
+            state: creatingMarker.state != null ? creatingMarker.state : null,
+            isCurrent:
+                creatingMarker.isCurrent != null
+                    ? creatingMarker.isCurrent
+                    : null,
+        });
+        setImage({ url, size });
     }, [creatingMarker]);
 
     const handleDragEnd = (marker) => {
@@ -72,11 +77,8 @@ const CreatingMarker = ({ creatingMarker, onUpdateCreatingMarker }) => {
                             lng: creatingMarker.startPosition.lng,
                         }}
                         image={{
-                            src: image,
-                            size: {
-                                width: 50,
-                                height: 50,
-                            },
+                            src: image.url,
+                            size: image.size,
                         }}
                         onDragEnd={handleDragEnd}
                     />

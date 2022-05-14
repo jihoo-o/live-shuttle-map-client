@@ -1,7 +1,16 @@
+interface SubscribeParam {
+    destination: string;
+    callback: any;
+}
+interface PublishParam {
+    destination: string;
+    payload: object;
+}
 export declare class Socket {
     private stompClient;
     constructor(baseURL: any);
-    connect(subscribeList: []): void;
     activate(): () => any;
-    publish(destination: any, payload: any): void;
+    subscribe(subscribeList: SubscribeParam[]): void;
+    publish({ destination, payload }: PublishParam): void;
 }
+export {};

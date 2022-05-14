@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getShuttleStops, getUsers } from '../api/marker';
+import { getShuttles, getShuttleStops, getUsers } from '../api/marker';
 import { getCurrentPosition } from '../service/geolocation';
 import BottomTab from './BottomTab';
 import FloatTab from './FloatTab';
@@ -23,7 +23,7 @@ const HomeLayout = styled.div `
     display: flex;
     flex-direction: ${(props) => (props.isRow === true ? 'row' : 'column')};
 `;
-const Home = (props) => {
+const Home = ({ stomp }) => {
     const [currentService, setCurrentService] = useState({
         currentCategory: null,
         currentMarkers: [],
@@ -33,6 +33,18 @@ const Home = (props) => {
     });
     const [creatingMarker, setCreatingMarker] = useState(null);
     const [progressIndicator, setProgressIndicator] = useState(false);
+    // useEffect(() => {
+    //     console.log(stomp);
+    //     stomp.client &&
+    //         stomp.client.subscribe([
+    //             {
+    //                 destination: 'abc',
+    //                 callback: () => {
+    //                     console.log('subscribe');
+    //                 },
+    //             },
+    //         ]);
+    // }, [stomp]);
     useEffect(() => {
         getShuttleStops() //
             .then((shuttleStations) => {
@@ -47,6 +59,7 @@ const Home = (props) => {
         let newMarkers;
         switch (newCategory) {
             case 'SHUTTLE':
+                newMarkers = yield yield getShuttles();
                 break;
             case 'TAXI':
                 newMarkers = yield getUsers();
@@ -74,7 +87,7 @@ const Home = (props) => {
                         name: '선화',
                         lat: newPosition.lat,
                         lng: newPosition.lng,
-                        isCurrent: true,
+                        isCurrent: true, //
                     };
                     return newMarker;
                 }
@@ -94,7 +107,16 @@ const Home = (props) => {
         });
     });
     const handlePublishCreatingMarker = () => {
-        // 마커 publish
+        setCreatingMarker((creatingMarker) => {
+            const newMarker = Object.assign({}, creatingMarker);
+            delete newMarker.startPosition;
+            const userMarker = Object.assign({}, newMarker);
+            stomp.client.publish('/marker/createuser', userMarker);
+            return null;
+        });
+    };
+    const handleClearCreatingMarker = () => {
+        setCreatingMarker(null);
     };
     const handleUpdateProgressIndicator = (visible) => {
         setProgressIndicator(visible);
@@ -104,7 +126,7 @@ const Home = (props) => {
             React.createElement(MapComponent, { currentService: currentService, creatingMarker: creatingMarker, onUpdateCreatingMarker: handleUpdateCreatingMarker }),
             React.createElement(HalfPanel, null),
             React.createElement(BottomTab, { onUpdateService: handleUpdateService, onCreateCreatingMarker: handleCreateCratingMarker, onUpdateProgressIndicator: handleUpdateProgressIndicator })),
-        React.createElement(FloatTab, null),
+        React.createElement(FloatTab, { creatingMarker: creatingMarker, onPublishCreatingMarker: handlePublishCreatingMarker, onClearCreatingMarker: handleClearCreatingMarker }),
         progressIndicator && React.createElement(ProgressIndicator, null)));
 };
 export default Home;

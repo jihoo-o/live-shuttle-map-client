@@ -2,6 +2,16 @@
 import * as StompJs from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
+interface SubscribeParam {
+    destination: string;
+    callback: any;
+}
+
+interface PublishParam {
+    destination: string;
+    payload: object;
+}
+
 export class Socket {
     private stompClient: any;
     constructor(baseURL) {
@@ -17,7 +27,12 @@ export class Socket {
         };
     }
 
-    public connect(subscribeList: []) {
+    public activate() {
+        this.stompClient.activate();
+        return () => this.stompClient.deactivate();
+    }
+
+    public subscribe(subscribeList: SubscribeParam[]) {
         this.stompClient.onConnect = () => {
             console.log('연결 ✨');
             subscribeList.forEach(({ destination, callback }) =>
@@ -26,12 +41,7 @@ export class Socket {
         };
     }
 
-    public activate() {
-        this.stompClient.activate();
-        return () => this.stompClient.deactivate();
-    }
-
-    public publish(destination, payload) {
+    public publish({ destination, payload }: PublishParam) {
         this.stompClient.publish({
             destination,
             body: JSON.stringify(payload),

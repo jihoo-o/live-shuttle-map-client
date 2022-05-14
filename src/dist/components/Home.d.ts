@@ -1,2 +1,4 @@
-declare const Home: (props: any) => JSX.Element;
+declare const Home: ({ stomp }: {
+    stomp: any;
+}) => JSX.Element;
 export default Home;

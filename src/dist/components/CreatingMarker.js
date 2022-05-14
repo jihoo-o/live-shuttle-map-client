@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { MapMarker, Polyline } from 'react-kakao-maps-sdk';
+import { MapMarker, Polyline, Circle } from 'react-kakao-maps-sdk';
 import { getMarkerImage } from '../utils/kakaomap';
 const CreatingMarker = ({ creatingMarker, onUpdateCreatingMarker }) => {
     const [polyline, setPolyline] = useState(null);
     const [polylinePath, setPolylinePath] = useState();
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState({
+        url: '',
+        size: {
+            width: 0,
+            height: 0,
+        },
+    });
     useEffect(() => {
         if (!creatingMarker)
             return;
@@ -14,13 +20,14 @@ const CreatingMarker = ({ creatingMarker, onUpdateCreatingMarker }) => {
             const newPath = [Object.assign({}, creatingMarker.startPosition)];
             return newPath;
         });
-        setImage(getMarkerImage({
+        const { url, size } = getMarkerImage({
             type: creatingMarker.type,
-            state: creatingMarker.state ? creatingMarker.state : null,
-            isCurrent: creatingMarker.isCurrent !== null
+            state: creatingMarker.state != null ? creatingMarker.state : null,
+            isCurrent: creatingMarker.isCurrent != null
                 ? creatingMarker.isCurrent
                 : null,
-        }));
+        });
+        setImage({ url, size });
     }, [creatingMarker]);
     const handleDragEnd = (marker) => {
         const kakaoPosition = marker.getPosition();
@@ -58,20 +65,26 @@ const CreatingMarker = ({ creatingMarker, onUpdateCreatingMarker }) => {
         onUpdateCreatingMarker(Object.assign(Object.assign({}, newPosition), { isCurrent }));
     };
     return (React.createElement(React.Fragment, null,
-        creatingMarker && creatingMarker.startPosition && (React.createElement(MapMarker, { draggable: true, position: {
-                lat: creatingMarker.startPosition.lat,
-                lng: creatingMarker.startPosition.lng,
-            }, image: {
-                src: image,
-                size: {
-                    width: 50,
-                    height: 50,
-                },
-            }, onDragEnd: handleDragEnd })),
+        creatingMarker && creatingMarker.startPosition && (React.createElement(React.Fragment, null,
+            React.createElement(MapMarker, { draggable: true, position: {
+                    lat: creatingMarker.startPosition.lat,
+                    lng: creatingMarker.startPosition.lng,
+                }, image: {
+                    src: image.url,
+                    size: image.size,
+                }, onDragEnd: handleDragEnd }),
+            React.createElement(Circle, { center: {
+                    lat: creatingMarker.startPosition.lat,
+                    lng: creatingMarker.startPosition.lng,
+                }, radius: 50, strokeWeight: 3, strokeColor: '#fa983a', strokeOpacity: 2, strokeStyle: 'dash', fillColor: '#fed330', fillOpacity: 0.7 }),
+            React.createElement(Circle, { center: {
+                    lat: creatingMarker.startPosition.lat,
+                    lng: creatingMarker.startPosition.lng,
+                }, radius: 20, strokeWeight: 3, strokeColor: '#78e08f', strokeOpacity: 2, strokeStyle: 'dash', fillColor: '#b8e994', fillOpacity: 0.7 }))),
         polylinePath && (React.createElement(Polyline, { path: polylinePath, onCreate: (polyline) => {
                 console.log('create polyline');
                 setPolyline(polyline);
-            } }))));
+            }, strokeOpacity: 0 }))));
 };
 export default CreatingMarker;
 //# sourceMappingURL=CreatingMarker.js.map

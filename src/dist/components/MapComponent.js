@@ -18,37 +18,35 @@ const MapComponent = ({ currentService, creatingMarker, onUpdateCreatingMarker, 
                 width: '100%',
                 height: '100%',
             }, level: 5 },
-            currentService.currentMarkers.length !== 0 && (React.createElement(MarkerClusterer, { averageCenter: true, minLevel: 2 }, currentService.currentMarkers.map(({ lat, lng, userId, name, type, state, isCurrent, }) => (React.createElement(MapMarker, { key: lat - lng, position: { lat, lng }, title: `${userId} ${name}`, image: {
-                    src: getMarkerImage({
-                        type,
-                        state: state ? state : null,
-                        isCurrent: isCurrent !== null
-                            ? isCurrent
-                            : null,
-                    }),
-                    size: {
-                        width: 50,
-                        height: 50,
-                    },
-                } }))))),
+            currentService.currentMarkers.length !== 0 && (React.createElement(MarkerClusterer, { averageCenter: true, minLevel: 2 }, currentService.currentMarkers.map(({ lat, lng, userId, name, type, state, isCurrent, }) => {
+                const { url, size } = getMarkerImage({
+                    type,
+                    state: state != null ? state : null,
+                    isCurrent: isCurrent != null ? isCurrent : null,
+                });
+                return (React.createElement(MapMarker, { key: lat - lng, position: { lat, lng }, title: `${userId} ${name}`, image: {
+                        src: url,
+                        size,
+                    } }));
+            }))),
             currentService.subMarkers &&
                 Object.keys(currentService.subMarkers).map((sub) => {
                     const subMarkers = currentService.subMarkers[sub];
                     // stationId => id
                     return (subMarkers.length !== 0 &&
-                        subMarkers.map(({ lat, lng, name, stationId, type, state, isCurrent, }) => (React.createElement(MapMarker, { key: lat - lng, position: { lat, lng }, title: `${stationId} ${name}`, image: {
-                                src: getMarkerImage({
-                                    type,
-                                    state: state ? state : null,
-                                    isCurrent: isCurrent !== null
-                                        ? isCurrent
-                                        : null,
-                                }),
-                                size: {
-                                    width: 50,
-                                    height: 50,
-                                },
-                            } }))));
+                        subMarkers.map(({ lat, lng, name, stationId, type, state, isCurrent, }) => {
+                            const { url, size } = getMarkerImage({
+                                type,
+                                state: state != null ? state : null,
+                                isCurrent: isCurrent != null
+                                    ? isCurrent
+                                    : null,
+                            });
+                            return (React.createElement(MapMarker, { key: lat - lng, position: { lat, lng }, title: `${stationId} ${name}`, image: {
+                                    src: url,
+                                    size,
+                                } }));
+                        }));
                 }),
             React.createElement(CreatingMarker, { creatingMarker: creatingMarker, onUpdateCreatingMarker: onUpdateCreatingMarker }))));
 };

@@ -9,11 +9,21 @@ interface Marker extends Position {
     isCurrent: boolean;
 }
 
-export interface UserMarker extends Marker {
+export interface User {
     userId: string;
     name: string;
 }
 
+export interface UserMarker extends Marker, User {}
+
 export interface CreatingMarker extends UserMarker {
     startPosition?: Position;
+}
+
+export interface Image {
+    url: string;
+    size: {
+        width: number;
+        height: number;
+    };
 }

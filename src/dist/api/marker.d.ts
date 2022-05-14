@@ -1,16 +1,58 @@
 export declare const markerImages: {
-    shuttlebus: string;
-    bus: string;
+    shuttlestation: {
+        url: string;
+        size: {
+            width: number;
+            height: number;
+        };
+    };
+    shuttlebus: {
+        url: string;
+        size: {
+            width: number;
+            height: number;
+        };
+    };
     user: {
         ready: {
-            isCurrent: string;
-            isNotCurrent: string;
+            isCurrent: {
+                url: string;
+                size: {
+                    width: number;
+                    height: number;
+                };
+            };
+            isNotCurrent: {
+                url: string;
+                size: {
+                    width: number;
+                    height: number;
+                };
+            };
         };
         running: {
-            isCurrent: string;
-            isNotCurrent: string;
+            isCurrent: {
+                url: string;
+                size: {
+                    width: number;
+                    height: number;
+                };
+            };
+            isNotCurrent: {
+                url: string;
+                size: {
+                    width: number;
+                    height: number;
+                };
+            };
         };
-        blocked: string;
+    };
+    blocked: {
+        url: string;
+        size: {
+            width: number;
+            height: number;
+        };
     };
 };
 export declare const getUsers: () => Promise<{
@@ -31,6 +73,12 @@ export declare const getShuttleStops: () => Promise<{
     };
     lat: number;
     lng: number;
+}[]>;
+export declare const getShuttles: () => Promise<{
+    id: string;
+    lat: number;
+    lng: number;
+    type: string;
 }[]>;
 export declare const postUser: (userInfo: any, isCurrent: any, position: any) => Promise<{
     userId: any;

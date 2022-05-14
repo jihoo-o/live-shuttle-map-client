@@ -1,16 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
+import CreatingMarkerButtons from './CreatingMarkerButtons';
 
 const StyledFloatTab = styled.div`
-    display: none;
     position: absolute;
     top: 10px;
     left: 10px;
     height: 60px;
     width: 50%;
-    background-color: blue;
+    z-index: 999;
 `;
 
-const FloatTab = (props) => <StyledFloatTab>float tab</StyledFloatTab>;
+const FloatTab = ({
+    creatingMarker,
+    onPublishCreatingMarker,
+    onClearCreatingMarker,
+}) => {
+    return (
+        <StyledFloatTab>
+            {creatingMarker && (
+                <CreatingMarkerButtons
+                    onPublishCreatingMarker={onPublishCreatingMarker}
+                    onClearCreatingMarker={onClearCreatingMarker}
+                />
+            )}
+        </StyledFloatTab>
+    );
+};
 
 export default FloatTab;

@@ -1,2 +1,6 @@
-declare const FloatTab: (props: any) => JSX.Element;
+declare const FloatTab: ({ creatingMarker, onPublishCreatingMarker, onClearCreatingMarker, }: {
+    creatingMarker: any;
+    onPublishCreatingMarker: any;
+    onClearCreatingMarker: any;
+}) => JSX.Element;
 export default FloatTab;

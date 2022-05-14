@@ -43,27 +43,25 @@ const MapComponent = ({
                                 type,
                                 state,
                                 isCurrent,
-                            }) => (
-                                <MapMarker
-                                    key={lat - lng}
-                                    position={{ lat, lng }}
-                                    title={`${userId} ${name}`}
-                                    image={{
-                                        src: getMarkerImage({
-                                            type,
-                                            state: state ? state : null,
-                                            isCurrent:
-                                                isCurrent !== null
-                                                    ? isCurrent
-                                                    : null,
-                                        }),
-                                        size: {
-                                            width: 50,
-                                            height: 50,
-                                        },
-                                    }}
-                                />
-                            )
+                            }) => {
+                                const { url, size } = getMarkerImage({
+                                    type,
+                                    state: state != null ? state : null,
+                                    isCurrent:
+                                        isCurrent != null ? isCurrent : null,
+                                });
+                                return (
+                                    <MapMarker
+                                        key={lat - lng}
+                                        position={{ lat, lng }}
+                                        title={`${userId} ${name}`}
+                                        image={{
+                                            src: url,
+                                            size,
+                                        }}
+                                    />
+                                );
+                            }
                         )}
                     </MarkerClusterer>
                 )}
@@ -82,27 +80,27 @@ const MapComponent = ({
                                     type,
                                     state,
                                     isCurrent,
-                                }) => (
-                                    <MapMarker
-                                        key={lat - lng}
-                                        position={{ lat, lng }}
-                                        title={`${stationId} ${name}`}
-                                        image={{
-                                            src: getMarkerImage({
-                                                type,
-                                                state: state ? state : null,
-                                                isCurrent:
-                                                    isCurrent !== null
-                                                        ? isCurrent
-                                                        : null,
-                                            }),
-                                            size: {
-                                                width: 50,
-                                                height: 50,
-                                            },
-                                        }}
-                                    />
-                                )
+                                }) => {
+                                    const { url, size } = getMarkerImage({
+                                        type,
+                                        state: state != null ? state : null,
+                                        isCurrent:
+                                            isCurrent != null
+                                                ? isCurrent
+                                                : null,
+                                    });
+                                    return (
+                                        <MapMarker
+                                            key={lat - lng}
+                                            position={{ lat, lng }}
+                                            title={`${stationId} ${name}`}
+                                            image={{
+                                                src: url,
+                                                size,
+                                            }}
+                                        />
+                                    );
+                                }
                             )
                         );
                     })}

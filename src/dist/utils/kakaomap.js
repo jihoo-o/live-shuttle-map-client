@@ -8,8 +8,8 @@ export const createKakaoMarkerImageInstance = (markerImageOptions) => {
 };
 export const getMarkerImage = ({ type, state, isCurrent }) => {
     switch (type) {
+        case 'shuttlestation':
         case 'shuttlebus':
-        case 'bus':
             return markerImages[type];
         case 'user':
             return isCurrent != null

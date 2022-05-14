@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,19 +7,65 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+/* eslint-disable import/first */
 export const markerImages = {
-    shuttlebus: `https://drive.google.com/uc?export=view&id=1SxLVSs9veJZf80PP3j74Tr-R-JvUj_bo`,
-    bus: `https://drive.google.com/uc?export=view&id=1_1LrBBWyvVa9rXahqAcSBYQ7ipF6BMfl`,
+    // object user
+    shuttlestation: {
+        url: `https://drive.google.com/uc?export=view&id=1VjmwEQowOUPBaBXVmmx18Sv4R5WMcuL4`,
+        size: {
+            width: 20,
+            height: 25,
+        },
+    },
+    shuttlebus: {
+        url: `https://drive.google.com/uc?export=view&id=1HPcUAPtzfCs6XADFTuTYl9xM4PEfA24F`,
+        size: {
+            width: 30,
+            height: 30,
+        },
+    },
     user: {
         ready: {
-            isCurrent: `https://drive.google.com/uc?export=view&id=1v2DNMCWAY5Mg7q68bEKtPdKOng4oyi3L`,
-            isNotCurrent: `https://drive.google.com/uc?export=view&id=1uSUmYTg6mAlfDNnlPUHojPSJcm21YiaX`,
+            isCurrent: {
+                url: `https://drive.google.com/uc?export=view&id=1v2DNMCWAY5Mg7q68bEKtPdKOng4oyi3L`,
+                size: {
+                    width: 50,
+                    height: 50,
+                },
+            },
+            isNotCurrent: {
+                url: `https://drive.google.com/uc?export=view&id=1uSUmYTg6mAlfDNnlPUHojPSJcm21YiaX`,
+                size: {
+                    width: 50,
+                    height: 50,
+                },
+            },
         },
         running: {
-            isCurrent: `https://drive.google.com/uc?export=view&id=1zL_KLMSD-3-aFNgYbYDN_MhXR67bKeDx`,
-            isNotCurrent: `https://drive.google.com/uc?export=view&id=141ZvA3O_z4y-kr95R0O396l2Pj1NNJPm`,
+            isCurrent: {
+                // 이미지 없음
+                url: `https://drive.google.com/uc?export=view&id=1zL_KLMSD-3-aFNgYbYDN_MhXR67bKeDx`,
+                size: {
+                    width: 50,
+                    height: 50,
+                },
+            },
+            isNotCurrent: {
+                // 이미지 없음
+                url: `https://drive.google.com/uc?export=view&id=141ZvA3O_z4y-kr95R0O396l2Pj1NNJPm`,
+                size: {
+                    width: 50,
+                    height: 50,
+                },
+            },
         },
-        blocked: `https://drive.google.com/uc?export=view&id=1NOot7KuDbwiVAZxiGr7Hbkc7Pf-x3f3g`,
+    },
+    blocked: {
+        url: `https://drive.google.com/uc?export=view&id=1NOot7KuDbwiVAZxiGr7Hbkc7Pf-x3f3g`,
+        size: {
+            width: 50,
+            height: 50,
+        },
     },
 };
 // const users: Array<UserMarker> = [
@@ -125,7 +170,7 @@ const busStops = [
 const shuttleStops = [
     {
         stationId: '111',
-        type: 'shuttlebus',
+        type: 'shuttlestation',
         name: {
             ko: '외성생활관',
             en: 'Off-campus dorm',
@@ -136,7 +181,7 @@ const shuttleStops = [
     },
     {
         stationId: '112',
-        type: 'shuttlebus',
+        type: 'shuttlestation',
         name: {
             ko: '범어사역',
             en: 'Beomeosa station',
@@ -147,7 +192,7 @@ const shuttleStops = [
     },
     {
         stationId: '113',
-        type: 'shuttlebus',
+        type: 'shuttlestation',
         name: {
             ko: '남산역',
             en: 'Namsan station',
@@ -158,7 +203,7 @@ const shuttleStops = [
     },
     {
         stationId: '114',
-        type: 'shuttlebus',
+        type: 'shuttlestation',
         name: {
             ko: '남산소방서',
             en: 'Namsan Fire Station',
@@ -169,7 +214,7 @@ const shuttleStops = [
     },
     {
         stationId: '115',
-        type: 'shuttlebus',
+        type: 'shuttlestation',
         name: {
             ko: '건학관',
             en: 'Campus',
@@ -179,11 +224,36 @@ const shuttleStops = [
         // image: `https://lh3.googleusercontent.com/c9CejXwvda4Q6deonivhym_QlpuN3gNLeJCbY9lVjA-_Azm6VhdCOABigdTGdPsqN-87WcOo_rRUcg_vuYI5AUkEWv8bdPS8r5yOociuXXUgqeHP-_95n4JKwiYkSA-ioMzAtSCkXqbPZJY5LmHZLa_ss1D9aMk6Rk4Fdv8xKaMl_wyjgOdMs4Jpn2mjvKypO72Ez3cuK7BLTpI2D0lQEJ7bsInSoAGqNQavLKK2dxqlhTHTQ9SS61fAJIops0JclgpQCCNDtOLMXsCaUs4EILSSELt9o8joMvPUXumU4_oS89fFv9-ik1_9OoTmLYd2OLZtzVtEveVY7lIkVt2EWavfpgnQ4qkXs7uHyN56chQo4V8CmdMJFGNgnEeZz0NMfg8Fv9oi_Q0lnxpuJkrSiD7HJ-v02aDGDv-qmJJDIH1V413DXzSBh2CuQjLC7txFpZK3pexvexoA8fwK3NRnvRNhSQZYfDa8pjrYSEDGk59eOcRfJb0v-rBsYAYB_x-1SITyx6gQL0t4FYXozYW-5RxPVAYnDc_68Qsc_YkzMF8AeIGx-Exe6O2hOoDidaELQ-UBhMKxoqyAFjsk4vmEhtLn1VeP4AJfN9psjeHkSNzvktgHDvMvs5xgFYry-Uc-CXfK5TgQCGsdHPKiABfMKp3P2xCZihrE5cVf4sYvOJUmUu_pAWCRCdHR9m1qhMkfQI8mPhS482vcrt6w5toFmA5Z_bEQPlNtcXWSn9J39yyDfCuYdEBIP0yhLYKMoPfKr0p-xCYn1tZbDRZgkL7Aq6A-nr_VuPU=s500-no?authuser=1`,
     },
 ];
+const shuttlebuses = [
+    {
+        id: '1',
+        lat: 35.26753755709011,
+        lng: 129.080358588741,
+        type: 'shuttlebus',
+    },
+];
 export const getUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     return users.map((user) => (Object.assign({}, user)));
 });
 export const getShuttleStops = () => __awaiter(void 0, void 0, void 0, function* () {
     return shuttleStops.map((shuttlestop) => (Object.assign({}, shuttlestop)));
+});
+export const getShuttles = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // const response = await axios.get(
+        // 'http://220.95.118.174:8080/markers/shuttlebus/all',
+        //     {
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //     }
+        // );
+        // return await response;
+        return yield shuttlebuses;
+    }
+    catch (e) {
+        throw new Error(e);
+    }
 });
 // export const getBusStops = async (): Promise<Array<StationMarker>> => {
 // return busStops;
