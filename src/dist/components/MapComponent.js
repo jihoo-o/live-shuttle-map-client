@@ -6,7 +6,6 @@ import CreatingMarker from './CreatingMarker';
 const StyledMap = styled.div `
     height: 100%;
     width: 100%;
-    background-color: red;
     transition: all 1s;
 `;
 const MapComponent = ({ currentService, creatingMarker, onUpdateCreatingMarker, }) => {
