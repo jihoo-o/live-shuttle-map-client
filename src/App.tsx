@@ -20,11 +20,7 @@ const App = ({ socket }) => {
 
     useEffect(() => {
         if (!user) return;
-        const client = new socket('http://220.95.118.174:8080/webSocket');
-        // const client = new socket(
-        //     'http://www.2022bufscapstone.p-e.kr:8080/webSocket'
-        // );
-        // const client = new socket('http://localhost:8080/webSocket');
+        const client = new socket('https://2022bufscapstone.kr:8080/webSocket');
         const deactivate = client.activate();
         setStomp({
             client,

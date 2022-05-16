@@ -245,19 +245,12 @@ export const getShuttleStops = async () => {
 export const getShuttles = async () => {
     try {
         const response = await axios.get(
-            'https://220.95.118.174:8080/markers/shuttlebus/all'
-            // 'http://www.2022bufscapstone.p-e.kr:8080/markers/shuttlebus/all'
-            // 'http://localhost:8080/markers/shuttlebus/all'
-            // {
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            // }
+            'https://2022bufscapstone.kr:8080/markers/shuttlebus/all'
         );
-        return response.data.map((tmp) => ({
-            ...tmp,
+        return response.data.map((bus) => ({
+            ...bus,
             type: 'shuttlebus',
-            id: tmp.busid,
+            id: bus.busid,
         }));
     } catch (e: any) {
         throw new Error(e);
