@@ -74,12 +74,7 @@ export declare const getShuttleStops: () => Promise<{
     lat: number;
     lng: number;
 }[]>;
-export declare const getShuttles: () => Promise<{
-    id: string;
-    lat: number;
-    lng: number;
-    type: string;
-}[]>;
+export declare const getShuttles: () => Promise<any>;
 export declare const postUser: (userInfo: any, isCurrent: any, position: any) => Promise<{
     userId: any;
     name: any;

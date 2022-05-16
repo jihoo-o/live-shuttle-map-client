@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import axios from 'axios';
 /* eslint-disable import/first */
 export const markerImages = {
     // object user
@@ -20,8 +21,8 @@ export const markerImages = {
     shuttlebus: {
         url: `https://drive.google.com/uc?export=view&id=1HPcUAPtzfCs6XADFTuTYl9xM4PEfA24F`,
         size: {
-            width: 30,
-            height: 30,
+            width: 28,
+            height: 28,
         },
     },
     user: {
@@ -240,16 +241,15 @@ export const getShuttleStops = () => __awaiter(void 0, void 0, void 0, function*
 });
 export const getShuttles = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // const response = await axios.get(
-        // 'http://220.95.118.174:8080/markers/shuttlebus/all',
-        //     {
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //     }
-        // );
-        // return await response;
-        return yield shuttlebuses;
+        const response = yield axios.get(
+        // 'http://220.95.118.174:8080/markers/shuttlebus/all'
+        // 'http://www.2022bufscapstone.p-e.kr:8080/markers/shuttlebus/all'
+        'http://localhost:8080/markers/shuttlebus/all', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data.map((tmp) => (Object.assign(Object.assign({}, tmp), { type: 'shuttlebus', id: tmp.busid, lat: parseFloat(tmp.latitude), lng: parseFloat(tmp.longitude) })));
     }
     catch (e) {
         throw new Error(e);

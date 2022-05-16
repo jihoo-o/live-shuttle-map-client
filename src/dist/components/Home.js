@@ -33,18 +33,18 @@ const Home = ({ stomp }) => {
     });
     const [creatingMarker, setCreatingMarker] = useState(null);
     const [progressIndicator, setProgressIndicator] = useState(false);
-    // useEffect(() => {
-    //     console.log(stomp);
-    //     stomp.client &&
-    //         stomp.client.subscribe([
-    //             {
-    //                 destination: 'abc',
-    //                 callback: () => {
-    //                     console.log('subscribe');
-    //                 },
-    //             },
-    //         ]);
-    // }, [stomp]);
+    useEffect(() => {
+        console.log(stomp);
+        stomp.client &&
+            stomp.client.subscribe([
+                {
+                    destination: 'abc',
+                    callback: () => {
+                        console.log('subscribe');
+                    },
+                },
+            ]);
+    }, [stomp]);
     useEffect(() => {
         getShuttleStops() //
             .then((shuttleStations) => {
@@ -59,7 +59,7 @@ const Home = ({ stomp }) => {
         let newMarkers;
         switch (newCategory) {
             case 'SHUTTLE':
-                newMarkers = yield yield getShuttles();
+                newMarkers = yield getShuttles();
                 break;
             case 'TAXI':
                 newMarkers = yield getUsers();

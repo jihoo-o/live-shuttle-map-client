@@ -38,18 +38,18 @@ const Home = ({ stomp }) => {
     );
     const [progressIndicator, setProgressIndicator] = useState<boolean>(false);
 
-    // useEffect(() => {
-    //     console.log(stomp);
-    //     stomp.client &&
-    //         stomp.client.subscribe([
-    //             {
-    //                 destination: 'abc',
-    //                 callback: () => {
-    //                     console.log('subscribe');
-    //                 },
-    //             },
-    //         ]);
-    // }, [stomp]);
+    useEffect(() => {
+        console.log(stomp);
+        stomp.client &&
+            stomp.client.subscribe([
+                {
+                    destination: 'abc',
+                    callback: () => {
+                        console.log('subscribe');
+                    },
+                },
+            ]);
+    }, [stomp]);
 
     useEffect(() => {
         getShuttleStops() //
@@ -72,7 +72,8 @@ const Home = ({ stomp }) => {
         let newMarkers;
         switch (newCategory) {
             case 'SHUTTLE':
-                newMarkers = await await getShuttles();
+                newMarkers = await getShuttles();
+                console.log(newMarkers);
                 break;
             case 'TAXI':
                 newMarkers = await getUsers();

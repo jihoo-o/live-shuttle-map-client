@@ -16,14 +16,17 @@ const MapComponent = ({ currentService, creatingMarker, onUpdateCreatingMarker, 
             }, style: {
                 width: '100%',
                 height: '100%',
-            }, level: 5 },
+            }, level: 5, onClick: (map, mouseEvent) => {
+                const latlng = mouseEvent.latLng;
+                console.log(`lat: ${latlng === null || latlng === void 0 ? void 0 : latlng.getLat()}, lng: ${latlng === null || latlng === void 0 ? void 0 : latlng.getLng()}`);
+            } },
             currentService.currentMarkers.length !== 0 && (React.createElement(MarkerClusterer, { averageCenter: true, minLevel: 2 }, currentService.currentMarkers.map(({ lat, lng, userId, name, type, state, isCurrent, }) => {
                 const { url, size } = getMarkerImage({
                     type,
                     state: state != null ? state : null,
                     isCurrent: isCurrent != null ? isCurrent : null,
                 });
-                return (React.createElement(MapMarker, { key: lat - lng, position: { lat, lng }, title: `${userId} ${name}`, image: {
+                return (React.createElement(MapMarker, { key: lat - lng + Math.random(), position: { lat, lng }, title: `${userId} ${name}`, image: {
                         src: url,
                         size,
                     } }));
