@@ -6,15 +6,15 @@ export const markerImages = {
     shuttlestation: {
         url: `https://drive.google.com/uc?export=view&id=1VjmwEQowOUPBaBXVmmx18Sv4R5WMcuL4`,
         size: {
-            width: 20,
-            height: 25,
+            width: 25,
+            height: 30,
         },
     },
     shuttlebus: {
         url: `https://drive.google.com/uc?export=view&id=1HPcUAPtzfCs6XADFTuTYl9xM4PEfA24F`,
         size: {
-            width: 28,
-            height: 28,
+            width: 35,
+            height: 35,
         },
     },
     user: {
@@ -245,14 +245,14 @@ export const getShuttleStops = async () => {
 export const getShuttles = async () => {
     try {
         const response = await axios.get(
-            // 'http://220.95.118.174:8080/markers/shuttlebus/all'
+            'https://220.95.118.174:8080/markers/shuttlebus/all'
             // 'http://www.2022bufscapstone.p-e.kr:8080/markers/shuttlebus/all'
-            'http://localhost:8080/markers/shuttlebus/all',
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }
+            // 'http://localhost:8080/markers/shuttlebus/all'
+            // {
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            // }
         );
         return response.data.map((tmp) => ({
             ...tmp,
