@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Map, MapMarker, MarkerClusterer } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
-import { getMarkerImage } from '../utils/kakaomap';
+import { createKakaoLatLngInstance, getMarkerImage } from '../utils/kakaomap';
 import CreatingMarker from './CreatingMarker';
 
 const StyledMap = styled.div`
@@ -15,6 +15,22 @@ const MapComponent = ({
     creatingMarker,
     onUpdateCreatingMarker,
 }) => {
+    const [map, setMap] = useState<any>(null);
+
+    useEffect(() => {
+        window.dispatchEvent(new Event('resize'));
+        setMap((map) => {
+            map &&
+                map.setCenter(
+                    createKakaoLatLngInstance({
+                        lat: 35.267342474237104,
+                        lng: 129.08901354232913,
+                    })
+                );
+            return map;
+        });
+    }, [map]);
+
     return (
         <StyledMap>
             <Map
@@ -27,6 +43,9 @@ const MapComponent = ({
                     height: '100%',
                 }}
                 level={5}
+                onCreate={(map: kakao.maps.Map) => {
+                    setMap(map);
+                }}
                 onClick={(
                     map: kakao.maps.Map,
                     mouseEvent: kakao.maps.event.MouseEvent
