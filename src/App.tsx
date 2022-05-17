@@ -4,7 +4,7 @@ import Home from './components/Home';
 import { User } from './types/map';
 
 const Wrapper = styled.div`
-    height: 100vh;
+    height: 100%;
     width: 100%;
 `;
 
@@ -31,6 +31,18 @@ const App = ({ socket }) => {
             // 연결된 상태 && deactivate()
         };
     }, [user]);
+
+    useEffect(() => {
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const handleResize = () => {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
 
     return (
         <>
