@@ -1,6 +1,6 @@
 import axios from 'axios';
-import ShuttleStation from '../assets/shuttle-station.svg';
-import ShuttleMarker from '../assets/shuttle-marker.svg';
+import ShuttleStation from '../assets/shuttle-station.png';
+import ShuttleMarker from '../assets/shuttle-marker.png';
 /* eslint-disable import/first */
 
 export const markerImages = {
@@ -8,15 +8,15 @@ export const markerImages = {
     shuttlestation: {
         url: ShuttleStation,
         size: {
-            width: 30,
+            width: 28,
             height: 30,
         },
     },
     shuttlebus: {
         url: ShuttleMarker,
         size: {
-            width: 45,
-            height: 45,
+            width: 35,
+            height: 43,
         },
     },
     user: {

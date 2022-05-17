@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import MarkerCreator from '../assets/marker-creator-large.svg';
+import MarkerCreator from '../assets/marker-creator.png';
 import CategoryShuttle from '../assets/category-shuttle.svg';
 import CategoryTaxi from '../assets/category-taxi.svg';
 import FloatButton from './FloatButton';
@@ -46,8 +46,8 @@ const BottomTab = ({
                 img={{
                     url: MarkerCreator,
                     size: {
-                        width: 43,
-                        height: 63,
+                        width: 45,
+                        height: 60,
                     },
                 }}
                 onClickButton={handleUpdateCreatingMarker}
