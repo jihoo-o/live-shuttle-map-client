@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Map, MapMarker, MarkerClusterer } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
+import useInterval from '../hooks/useInterval';
 import { createKakaoLatLngInstance, getMarkerImage } from '../utils/kakaomap';
 import CreatingMarker from './CreatingMarker';
 
@@ -14,6 +15,7 @@ const MapComponent = ({
     currentService,
     creatingMarker,
     onUpdateCreatingMarker,
+    onUpdateService,
 }) => {
     const [map, setMap] = useState<any>(null);
 
@@ -30,6 +32,13 @@ const MapComponent = ({
             return map;
         });
     }, [map]);
+
+    useInterval({
+        callback: () => {
+            onUpdateService('SHUTTLE');
+        },
+        delay: currentService.currentCategory === 'SHUTTLE' ? 3000 : null,
+    });
 
     return (
         <StyledMap>

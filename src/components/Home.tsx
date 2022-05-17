@@ -159,6 +159,7 @@ const Home = ({ stomp }) => {
                     currentService={currentService}
                     creatingMarker={creatingMarker}
                     onUpdateCreatingMarker={handleUpdateCreatingMarker}
+                    onUpdateService={handleUpdateService}
                 />
                 <HalfPanel />
                 <BottomTab
