@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import MarkerCreator from '../assets/marker-creator.svg';
+import MarkerCreator from '../assets/marker-creator-large.svg';
 import CategoryShuttle from '../assets/category-shuttle.svg';
 import CategoryTaxi from '../assets/category-taxi.svg';
 import FloatButton from './FloatButton';
