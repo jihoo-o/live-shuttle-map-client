@@ -1,20 +1,22 @@
 import axios from 'axios';
+import ShuttleStation from '../assets/shuttle-station.svg';
+import ShuttleMarker from '../assets/shuttle-marker.svg';
 /* eslint-disable import/first */
 
 export const markerImages = {
     // object user
     shuttlestation: {
-        url: `https://drive.google.com/uc?export=view&id=1VjmwEQowOUPBaBXVmmx18Sv4R5WMcuL4`,
+        url: ShuttleStation,
         size: {
-            width: 25,
+            width: 30,
             height: 30,
         },
     },
     shuttlebus: {
-        url: `https://drive.google.com/uc?export=view&id=1HPcUAPtzfCs6XADFTuTYl9xM4PEfA24F`,
+        url: ShuttleMarker,
         size: {
-            width: 35,
-            height: 35,
+            width: 45,
+            height: 45,
         },
     },
     user: {
@@ -77,7 +79,7 @@ const users = [
         userId: '1235',
         name: 'abc',
         type: 'user',
-        state: 'running',
+        state: 'ready',
         isCurrent: false,
         lat: 35.2657742202417,
         lng: 129.0923651447031,
@@ -95,7 +97,7 @@ const users = [
         userId: '1238',
         name: 'uuu',
         type: 'user',
-        state: 'running',
+        state: 'ready',
         isCurrent: true,
         lat: 35.264981643568305,
         lng: 129.09221016434967,

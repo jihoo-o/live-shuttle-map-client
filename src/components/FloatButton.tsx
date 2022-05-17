@@ -5,7 +5,7 @@ import ImageButtonTab, { ImageButtonTabProps } from './ImageButtonTab';
 const StyledFloatButton = styled.div`
     position: absolute;
     left: 50%;
-    bottom: 10px;
+    bottom: 5px;
     transform: translate(-50%, 0);
 `;
 
