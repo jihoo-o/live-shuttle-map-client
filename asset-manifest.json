@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/taxi/static/css/main.6b2e0612.css",
-    "main.js": "/taxi/static/js/main.8d44956d.js",
-    "static/media/shuttle-marker.svg": "/taxi/static/media/shuttle-marker.d2fcb9faee120e7cfb20f70e63c25037.svg",
-    "static/media/shuttle-station.svg": "/taxi/static/media/shuttle-station.bc4bdd26f5b3dd2ada14a5c3d8e92903.svg",
+    "main.js": "/taxi/static/js/main.00c81298.js",
+    "static/media/shuttle-marker.png": "/taxi/static/media/shuttle-marker.a8a433f476c3d450e333.png",
+    "static/media/marker-creator.png": "/taxi/static/media/marker-creator.574f65e18e504c3eaf5e.png",
+    "static/media/shuttle-station.png": "/taxi/static/media/shuttle-station.ea604fdff089aa43b960.png",
     "static/media/category-taxi.svg": "/taxi/static/media/category-taxi.cbfb94f29988a798fa9f042cdcb8c7a7.svg",
-    "static/media/marker-creator-large.svg": "/taxi/static/media/marker-creator-large.c33c24a927ec3b7d919d97fc0213160d.svg",
     "static/media/category-shuttle.svg": "/taxi/static/media/category-shuttle.d58491d9106f43d0c16df35df1bd153f.svg",
     "index.html": "/taxi/index.html",
     "main.6b2e0612.css.map": "/taxi/static/css/main.6b2e0612.css.map",
-    "main.8d44956d.js.map": "/taxi/static/js/main.8d44956d.js.map"
+    "main.00c81298.js.map": "/taxi/static/js/main.00c81298.js.map"
   },
   "entrypoints": [
     "static/css/main.6b2e0612.css",
-    "static/js/main.8d44956d.js"
+    "static/js/main.00c81298.js"
   ]
 }
