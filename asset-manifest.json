@@ -1,13 +1,18 @@
 {
   "files": {
     "main.css": "/taxi/static/css/main.6b2e0612.css",
-    "main.js": "/taxi/static/js/main.bd59f2a8.js",
+    "main.js": "/taxi/static/js/main.af1bbfab.js",
+    "static/media/shuttle-marker.svg": "/taxi/static/media/shuttle-marker.d2fcb9faee120e7cfb20f70e63c25037.svg",
+    "static/media/shuttle-station.svg": "/taxi/static/media/shuttle-station.bc4bdd26f5b3dd2ada14a5c3d8e92903.svg",
+    "static/media/category-taxi.svg": "/taxi/static/media/category-taxi.cbfb94f29988a798fa9f042cdcb8c7a7.svg",
+    "static/media/marker-creator.svg": "/taxi/static/media/marker-creator.f07693272e612f689c4f8e2135b46b96.svg",
+    "static/media/category-shuttle.svg": "/taxi/static/media/category-shuttle.d58491d9106f43d0c16df35df1bd153f.svg",
     "index.html": "/taxi/index.html",
     "main.6b2e0612.css.map": "/taxi/static/css/main.6b2e0612.css.map",
-    "main.bd59f2a8.js.map": "/taxi/static/js/main.bd59f2a8.js.map"
+    "main.af1bbfab.js.map": "/taxi/static/js/main.af1bbfab.js.map"
   },
   "entrypoints": [
     "static/css/main.6b2e0612.css",
-    "static/js/main.bd59f2a8.js"
+    "static/js/main.af1bbfab.js"
   ]
 }
