@@ -34,11 +34,7 @@ const ImageButtonTab = ({ img, title, onClickButton }: ImageButtonTabProps) => {
     return (
         <StyledImageButtonTab>
             <Styledbutton onClick={onClickButton}>
-                {/* svg */}
                 <img
-                    style={{
-                        imageRendering: '-webkit-optimize-contrast',
-                    }}
                     src={img.url}
                     width={img.size.width}
                     height={img.size.height}
