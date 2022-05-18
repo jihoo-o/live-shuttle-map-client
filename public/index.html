@@ -2,15 +2,19 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <link rel="manifest" href="manifest.json" />
-        <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
+        <link rel="/manifest" href="%PUBLIC_URL%/manifest.json" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <meta
             name="description"
             content="Web site created using create-react-app"
         />
-        <title>React App</title>
+        <title>Capstone Client</title>
+        <script
+            type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%REACT_APP_KAKAO_MAPS_API_KEY%&libraries=clusterer"
+        ></script>
+        <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
         <script type="module">
             import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
             const el = document.createElement('pwa-update');
@@ -19,10 +23,5 @@
     </head>
     <body>
         <div id="root"></div>
-        <script
-            type="text/javascript"
-            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%REACT_APP_KAKAO_MAPS_API_KEY%&libraries=clusterer"
-        ></script>
-        <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
     </body>
 </html>
