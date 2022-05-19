@@ -10,7 +10,7 @@ const STYLE_CACHE = 'stylesheets';
 const IMAGE_CACHE = 'images';
 const FONT_CACHE = 'fonts';
 
-const offlineFallbackPage = `${process.env.PUBLIC_URL}/offline.html`;
+const offlineFallbackPage = `../public/offline.html`;
 
 self.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'SKIP_WAITING') {
