@@ -15,10 +15,14 @@
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%REACT_APP_KAKAO_MAPS_API_KEY%&libraries=clusterer"
         ></script>
         <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
-        <script type="module">
-            import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
-            const el = document.createElement('pwa-update');
-            document.body.appendChild(el);
+        <script>
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker
+                    .register('%PUBLIC_URL%/pwabuilder-sw.js')
+                    .then(() => {
+                        console.log('service worker 등록');
+                    });
+            }
         </script>
     </head>
     <body>
