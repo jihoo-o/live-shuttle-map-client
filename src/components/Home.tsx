@@ -72,6 +72,13 @@ const Home = ({ stomp }) => {
         let newMarkers;
         switch (newCategory) {
             case 'SHUTTLE':
+                const time = new Date();
+                const day = time.getDay();
+                const hours = time.getHours();
+                if (day === 6 || day === 0 || hours < 8 || hours > 23) {
+                    window.alert('셔틀버스 서비스는 평일 8시부터 23시까지 제공됩니다.');
+                    return;
+                }
                 newMarkers = await getShuttles();
                 console.log(newMarkers);
                 break;
