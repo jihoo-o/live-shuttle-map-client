@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/capstone-client/static/css/main.6b2e0612.css",
-    "main.js": "/capstone-client/static/js/main.2c6fc852.js",
+    "main.js": "/capstone-client/static/js/main.a58454fd.js",
     "static/media/shuttle-marker.png": "/capstone-client/static/media/shuttle-marker.a8a433f476c3d450e333.png",
     "static/media/marker-creator.png": "/capstone-client/static/media/marker-creator.574f65e18e504c3eaf5e.png",
     "static/media/shuttle-station.png": "/capstone-client/static/media/shuttle-station.ea604fdff089aa43b960.png",
@@ -9,10 +9,10 @@
     "index.html": "/capstone-client/index.html",
     "static/media/category-shuttle.svg": "/capstone-client/static/media/category-shuttle.d58491d9106f43d0c16df35df1bd153f.svg",
     "main.6b2e0612.css.map": "/capstone-client/static/css/main.6b2e0612.css.map",
-    "main.2c6fc852.js.map": "/capstone-client/static/js/main.2c6fc852.js.map"
+    "main.a58454fd.js.map": "/capstone-client/static/js/main.a58454fd.js.map"
   },
   "entrypoints": [
     "static/css/main.6b2e0612.css",
-    "static/js/main.2c6fc852.js"
+    "static/js/main.a58454fd.js"
   ]
 }
