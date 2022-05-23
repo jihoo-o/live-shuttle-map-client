@@ -1,1 +1,0 @@
-{"version":3,"file":"shapeController.js","sourceRoot":"","sources":["../../service/shapeController.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,eAAe;IACxB,YAAoB,GAAQ;QAAR,QAAG,GAAH,GAAG,CAAK;IAAG,CAAC;IAChC,UAAU,CAAC,MAAM,EAAE,MAAM,EAAE,KAAK;QAC5B,OAAO,IAAI,CAAC,GAAG,CAAC,UAAU,CAAC,MAAM,EAAE,MAAM,EAAE,KAAK,CAAC,CAAC;IACtD,CAAC;CAKJ"}

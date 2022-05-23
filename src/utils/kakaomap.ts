@@ -1,9 +1,9 @@
+import { Position } from './../types/map.d';
 import { markerImages } from './../api/marker';
-import { Coordinates } from '../service/map';
 
 const { kakao } = window;
 
-export const createKakaoLatLngInstance = ({ lat, lng }: Coordinates) =>
+export const createKakaoLatLngInstance = ({ lat, lng }: Position) =>
     new kakao.maps.LatLng(lat, lng);
 
 export const createKakaoMarkerImageInstance = (markerImageOptions) => {

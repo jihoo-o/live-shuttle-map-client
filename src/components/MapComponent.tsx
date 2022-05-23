@@ -87,7 +87,7 @@ const MapComponent = ({
                             });
                             return (
                                 <MapMarker
-                                    key={lat - lng + crypto.randomUUID()}
+                                    key={lat - lng}
                                     position={{ lat, lng }}
                                     title={`${userId} ${name}`}
                                     image={{
