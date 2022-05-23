@@ -12,6 +12,7 @@ interface Marker extends Position {
 export interface User {
     userId: string;
     name: string;
+    image?: Image;
 }
 
 export interface UserMarker extends Marker, User {}
@@ -27,3 +28,11 @@ export interface Image {
         height: number;
     };
 }
+
+export interface Message {
+    user: User;
+    text: string;
+    timestamp: number;
+}
+
+export type Direction = 'Left' | 'Right';
