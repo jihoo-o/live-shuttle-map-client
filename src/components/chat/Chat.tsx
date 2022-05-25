@@ -1,11 +1,36 @@
 import React from 'react';
-import { Message } from '../../types/map';
+import styled from 'styled-components';
+import { Message, User } from '../../types/map';
+import Avatar from '../AvatarComponent';
+import ChatBubble from './ChatBubble';
 
 interface ChatProps {
-    isOwner: boolean;
+    isOwn: boolean;
+    showAvatar: boolean;
     chat: Message;
+    onProfileClick?: (user: User) => {};
 }
 
-const Chat = ({ isOwner, chat }: ChatProps) => <h1>Chat</h1>;
+const FlexContainer = styled.div<{ isOwn: boolean }>`
+    height: auto;
+    display: flex;
+    justify-content: ${(props) =>
+        props.isOwn === true ? 'flex-end' : 'flex-start'};
+    align-items: flex-end;
+    margin: 10px;
+`;
+
+const Chat = ({ isOwn, showAvatar, chat, onProfileClick }: ChatProps) => (
+    <FlexContainer isOwn={isOwn}>
+        {showAvatar === true && (
+            <Avatar user={chat.user} onClick={onProfileClick} />
+        )}
+        <ChatBubble
+            direction={isOwn ? 'right' : 'left'}
+            text={chat.text}
+            timestamp={chat.timestamp}
+        />
+    </FlexContainer>
+);
 
 export default Chat;
