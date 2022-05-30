@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Map, MapMarker, MarkerClusterer } from 'react-kakao-maps-sdk';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import useInterval from '../hooks/useInterval';
 import { createKakaoLatLngInstance, getMarkerImage } from '../utils/kakaomap';
@@ -66,10 +66,6 @@ const MapComponent = ({
                 }}
             >
                 {currentService.currentMarkers.length !== 0 &&
-                    // <MarkerClusterer
-                    //     averageCenter={true} // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-                    //     minLevel={2} // 클러스터 할 최소 지도 레벨
-                    // >
                     currentService.currentMarkers.map(
                         ({
                             lat,
@@ -87,7 +83,12 @@ const MapComponent = ({
                             });
                             return (
                                 <MapMarker
-                                    key={lat - lng}
+                                    key={
+                                        lat -
+                                        lng +
+                                        (window.crypto &&
+                                            window.crypto.randomUUID())
+                                    }
                                     position={{ lat, lng }}
                                     title={`${userId} ${name}`}
                                     image={{
@@ -98,7 +99,6 @@ const MapComponent = ({
                             );
                         }
                     )}
-                {/* </MarkerClusterer> */}
                 {currentService.subMarkers &&
                     Object.keys(currentService.subMarkers).map((sub) => {
                         const subMarkers = currentService.subMarkers[sub];

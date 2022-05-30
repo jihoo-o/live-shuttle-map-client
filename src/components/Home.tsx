@@ -3,11 +3,9 @@ import styled from 'styled-components';
 import { getShuttles, getShuttleStops, getUsers } from '../api/marker';
 import { getCurrentPosition } from '../service/geolocation';
 import { CreatingMarker, Position, UserMarker } from '../types/map';
-import BottomTab from './BottomTab';
-import FloatTab from './FloatTab';
 import HalfPanel from './HalfPanel';
 import MapComponent from './MapComponent';
-import ProgressIndicator from './ProgressIndicator';
+import Time from './Time';
 
 const HomeLayout = styled.div<{ isRow: boolean }>`
     position: relative;
@@ -25,6 +23,8 @@ interface ICurrentService {
     };
 }
 
+interface LastUpdatedTime {}
+
 const Home = ({ stomp }) => {
     const [currentService, setCurrentService] = useState<ICurrentService>({
         currentCategory: null,
@@ -37,6 +37,7 @@ const Home = ({ stomp }) => {
         null
     );
     const [progressIndicator, setProgressIndicator] = useState<boolean>(false);
+    const [lastUpdatedTime, setLastUpdatedTime] = useState<Date>(new Date());
 
     useEffect(() => {
         console.log(stomp);
@@ -68,13 +69,17 @@ const Home = ({ stomp }) => {
             .catch((e) => console.log('셔틀 정류장을 불러오지 못했습니다.'));
     }, []);
 
-    const handleUpdateService = async (newCategory: string) => {
+    useEffect(() => {
+        handleUpdateService('SHUTTLE');
+    }, []);
+
+    const handleUpdateService = async (newCategory: 'SHUTTLE' | 'TAXI') => {
         let newMarkers;
         switch (newCategory) {
             case 'SHUTTLE':
-                // const time = new Date();
-                // const day = time.getDay();
-                // const hours = time.getHours();
+                const date = new Date();
+                // const day = date.getDay();
+                // const hours = date.getHours();
                 // if (day === 6 || day === 0 || hours < 8 || hours > 23) {
                 //     window.alert(
                 //         '셔틀버스 서비스는 평일 8시부터 23시까지 제공됩니다.'
@@ -83,6 +88,7 @@ const Home = ({ stomp }) => {
                 // }
                 newMarkers = await getShuttles();
                 console.log(newMarkers);
+                setLastUpdatedTime(date);
                 break;
             case 'TAXI':
                 newMarkers = await getUsers();
@@ -164,6 +170,7 @@ const Home = ({ stomp }) => {
     return (
         <>
             <HomeLayout isRow={false}>
+                <Time date={lastUpdatedTime} />
                 <MapComponent
                     currentService={currentService}
                     creatingMarker={creatingMarker}
@@ -171,18 +178,7 @@ const Home = ({ stomp }) => {
                     onUpdateService={handleUpdateService}
                 />
                 <HalfPanel />
-                <BottomTab
-                    onUpdateService={handleUpdateService}
-                    onCreateCreatingMarker={handleCreateCratingMarker}
-                    onUpdateProgressIndicator={handleUpdateProgressIndicator}
-                />
             </HomeLayout>
-            <FloatTab
-                creatingMarker={creatingMarker}
-                onPublishCreatingMarker={handlePublishCreatingMarker}
-                onClearCreatingMarker={handleClearCreatingMarker}
-            />
-            {progressIndicator && <ProgressIndicator />}
         </>
     );
 };
