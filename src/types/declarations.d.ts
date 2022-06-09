@@ -3,3 +3,9 @@ declare module 'querystring' {
     export function parse(val: string): object;
 }
 declare module 'sockjs-client';
+declare global {
+    interface Crypto {
+        randomUUID: () => string;
+    }
+}
+export {};

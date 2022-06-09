@@ -18,17 +18,15 @@ const MapComponent = ({
     onUpdateService,
 }) => {
     const [map, setMap] = useState<any>(null);
+    const center = {
+        lat: 35.26669397351014,
+        lng: 129.0858099489354,
+    };
 
     useEffect(() => {
         window.dispatchEvent(new Event('resize'));
         setMap((map) => {
-            map &&
-                map.setCenter(
-                    createKakaoLatLngInstance({
-                        lat: 35.267342474237104,
-                        lng: 129.08901354232913,
-                    })
-                );
+            map && map.setCenter(createKakaoLatLngInstance(center));
             return map;
         });
     }, [map]);
@@ -43,10 +41,12 @@ const MapComponent = ({
     return (
         <StyledMap>
             <Map
-                center={{
-                    lat: 35.267342474237104,
-                    lng: 129.08901354232913,
-                }}
+                draggable={false}
+                zoomable={false}
+                scrollwheel={false}
+                disableDoubleClick={true}
+                disableDoubleClickZoom={true}
+                center={center}
                 style={{
                     width: '100%',
                     height: '100%',
