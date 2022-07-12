@@ -1,70 +1,130 @@
-# Getting Started with Create React App
+<h1 align="center">셔틀버스 실시간 지도(Live Shuttle Map)</h1>
+<p align="center">
+    <img src="https://drive.google.com/uc?export=view&id=1VWv3rFT_vCuCYdgf7syIrZcSCjsxy3Xn" alt="사용자 클라이언트" width="200" height="400"/>
+</p>
+<p align="center">
+    <img src="https://drive.google.com/uc?export=view&id=1K51S0lwUxoS2YgKeEqSOkCRhoVR7wEpV" alt="시스템 구조" width="400" height="400"/>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 프로젝트 정보 💁🏻
 
-## Available Scripts
+-   설명
+    -   부산외국어대학교 컴퓨터공학과 캡스톤디자인 수업에서 제작된 <b>교내 셔틀버스의 위치를 실시간으로 확인할 수 있는 지도 웹앱</b>입니다
+-   기간
+    -   개발: 2022.3.18 ~ 2022.5.23
+    -   서비스 시행 준비: 2022.5.18~
+-   구성원
+    -   백엔드
+        -   [길해준](https://github.com/Do-Yun0223)(💌 true_blue2@naver.com): 서버
+        -   [강규림](https://github.com/HelloLotusRoot)(💌 rbfla0426_1@naver.com): api
+        -   [박혜민](https://github.com/snees)(💌 snees@naver.com): api·데이터베이스
+    -   프론트엔드, 프로젝트 총괄: [김선화](https://github.com/kmseonhwa)(💌 seonhwakei@gmail.com)
+    -   디자인: 임은혜(💌 dolphin4007@naver.com)
 
-In the project directory, you can run:
+## 기술스택 🧑🏻‍💻
 
-### `npm start`
+<table border="2">
+    <tr>
+        <th><p align="center">분야</p></th>
+        <th><p align="center">사용 기술</p></th>
+    </tr> 
+    <tr>
+        <td>프론트엔드</td>
+        <td>React, Javascript, Typescript, Styled-components</td>
+    </tr>
+    <tr>
+        <td>백엔드</td>
+        <td>Springboot</td>
+    </tr>
+    <tr>
+        <td>데이터베이스</td>
+        <td><del>MySQL, Firebase</del></td>
+    </tr>
+    <tr>
+        <td>라이브러리</td>
+        <td><a src="https://apis.map.kakao.com/">Kakao maps</a>, <a src="https://github.com/JaeSeoKim/react-kakao-maps-sdk">React-kakao-maps-sdk</a>, <del><a src="https://developers.kakao.com/product/kakaoLogin">Kakao login</a></del></td>
+    </tr>
+    <tr>
+        <td>협업</td>
+        <td>Figma(<a src="https://www.figma.com/file/TY57qnNAz2fDRCj54bJDPG/MUI-for-Figma-v5.4.0-(Community)-(Community)?node-id=5005%3A61176)">디자인</a>, <a src="https://www.figma.com/file/TYowh7VWRn6LFwxKrsM6Ub/capstone?node-id=0%3A1">개발</a>), <a src="https://discovered-limpet-efa.notion.site/369c62bbe50a4b20bbd7b28a6a485f0e">Notion</a>, Discord</td>
+    </tr>
+</table>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 아키텍처 🏗
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<table border="2">
+    <tr>
+        <th><p align="center">기획</p></th>
+    </tr> 
+    <tr>
+        <td><img src="https://drive.google.com/uc?export=view&id=10mjR8FharJTZO4W4H9VISs1s4fEnG277" alt="기획 아키텍처" width="400" height="200"/></td>
+    </tr>
+    <tr>
+        <th><p align="center">개발</p></th>
+    </tr> 
+    <tr>
+        <td><img src="https://drive.google.com/uc?export=view&id=1oVrRf9VP7_ByRHZSlgL_xnuA0VrP8ZXr" alt="구현 아키텍처" width="400" height="200"/></td>
+    </tr>
+    <tr>
+        <th><p align="center">배포</p></th>
+    </tr> 
+    <tr>
+        <td><img src="https://drive.google.com/uc?export=view&id=1tsUOoHsPW5j6O39huiffA7z4EdZyoMvF" alt="배포 아키텍처" width="400" height="200"/></td>
+    </tr>
+</table>
 
-### `npm test`
+## 기능 완성도 ✔
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-   셔틀버스 🚌
 
-### `npm run build`
+    -   [x] 셔틀버스 클라이언트: 서버에 셔틀버스의 현재 위치 전송
+    -   [x] 사용자 클라이언트: 사용자 화면에 셔틀버스의 위치 출력
+    -   [ ] 사용자 클라이언트: 각 정류장의 도착시간 출력
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+-   택시 🚕
+    -   [x] 합승 요청 대기: 사용자 위치에 마커 생성
+    -   [x] 합승 요청: 다른 사용자들의 마커 확인
+    -   [ ] 채팅: 사용자 간의 채팅
+    -   [ ] 알림: 채팅·합승 요청 알림
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 기능 설명 📖
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+-   셔틀버스 클라이언트 🚌
+<p align="center">
+    <img src="https://drive.google.com/uc?export=view&id=13Z1ofeFtaddMFlH_2fu4hmKYHQG8aA_v" alt="셔틀버스 클라이언트 🚌" width="500" height="400"/>
+</p>
+-   사용자 클라이언트 👥
+<p align="center">
+    <img src="https://drive.google.com/uc?export=view&id=1YHckpaeWqcaAf8xqljAw5of-sh1Wv8q8" alt="사용자 클라이언트 👥" width="500" height="400"/>
+</p>
+-   웹앱 📱
+<p align="center">
+    <img src="https://drive.google.com/uc?export=view&id=1l8nzu-e55zWdK0tcbZr6WXKFzMxUWFL3" alt="웹앱 📱" width="800" height="400"/>
+</p>
 
-### `npm run eject`
+## API 문서 📄
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+https://documenter.getpostman.com/view/19973322/Uz5Gobzc#0f7cca67-ee17-4736-bf4a-201052158d2a
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 진행 상황 ⏳
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+서비스 시행 준비 및 개선사항 업데이트 진행중
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 링크 🔗
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+-   셔틀버스 클라이언트
+    -   소스코드: https://github.com/kmseonhwa/capstone-shuttle-client
+    -   배포: https://kmseonhwa.github.io/capstone-shuttle-client/
+-   사용자 클라이언트
+    -   소스코드: 현 리포지토리
+    -   배포: https://kmseonhwa.github.io/capstone-client/
+-   백엔드: https://github.com/HelloLotusRoot/capstonePro
+-   PPT: https://docs.google.com/presentation/d/1YXi0UHqRbecX3u5FRfqxmQetcbjtOXMf/edit?usp=sharing&ouid=112958308982025392499&rtpof=true&sd=true
+-   Figma(날것 주의⚠️)
+    -   디자인: https://www.figma.com/file/TY57qnNAz2fDRCj54bJDPG/MUI-for-Figma-v5.4.0-(Community)-(Community)?node-id=5005%3A61176)
+    -   개발: https://www.figma.com/file/TYowh7VWRn6LFwxKrsM6Ub/capstone?node-id=0%3A1
+-   Notion(날것 주의⚠️): https://discovered-limpet-efa.notion.site/369c62bbe50a4b20bbd7b28a6a485f0e
+-   외부 라이브러리
+    -   React-kakao-maps-sdk⭐️: https://github.com/JaeSeoKim/react-kakao-maps-sdk
+    -   Kakao maps: https://apis.map.kakao.com/
+    -   Kakao login: https://developers.kakao.com/product/kakaoLogin
