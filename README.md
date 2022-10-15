@@ -14,11 +14,11 @@
     -   개발: 2022.3.18 ~ 2022.5.23
 -   구성원
     -   백엔드
-        -   [길해준](https://github.com/Do-Yun0223)(💌 true_blue2@naver.com): 서버
-        -   [강규림](https://github.com/HelloLotusRoot)(💌 rbfla0426_1@naver.com): api
-        -   [박혜민](https://github.com/snees)(💌 snees@naver.com): api·데이터베이스
-    -   프론트엔드, 프로젝트 총괄: [김선화](https://github.com/kmseonhwa)(💌 seonhwakei@gmail.com)
-    -   디자인: 임은혜(💌 dolphin4007@naver.com)
+        -   [길해준](https://github.com/Do-Yun0223)(true_blue2@naver.com): 서버
+        -   [강규림](https://github.com/HelloLotusRoot)(rbfla0426_1@naver.com): api
+        -   [박혜민](https://github.com/snees)(snees@naver.com): api·데이터베이스
+    -   프론트엔드, 프로젝트 총괄: [김선화](https://github.com/kmseonhwa)(seonhwakei@gmail.com)
+    -   디자인: 임은혜(dolphin4007@naver.com)
 
 ## 기술스택 🧑🏻‍💻
 
@@ -107,7 +107,7 @@ https://documenter.getpostman.com/view/19973322/Uz5Gobzc#0f7cca67-ee17-4736-bf4a
 
 ## 진행 상황 ⏳
 
-서비스 시행 준비 및 개선사항 업데이트 진행중
+~~서비스 시행 준비 및 개선사항 업데이트 진행중~~
 
 ## 링크 🔗
 
@@ -118,11 +118,6 @@ https://documenter.getpostman.com/view/19973322/Uz5Gobzc#0f7cca67-ee17-4736-bf4a
     -   소스코드: 현 리포지토리
     -   배포: https://kmseonhwa.github.io/capstone-client/
 -   백엔드: https://github.com/HelloLotusRoot/capstonePro
--   PPT: https://docs.google.com/presentation/d/1YXi0UHqRbecX3u5FRfqxmQetcbjtOXMf/edit?usp=sharing&ouid=112958308982025392499&rtpof=true&sd=true
--   Figma(날것 주의⚠️)
-    -   디자인: https://www.figma.com/file/TY57qnNAz2fDRCj54bJDPG/MUI-for-Figma-v5.4.0-(Community)-(Community)?node-id=5005%3A61176)
-    -   개발: https://www.figma.com/file/TYowh7VWRn6LFwxKrsM6Ub/capstone?node-id=0%3A1
--   Notion(날것 주의⚠️): https://discovered-limpet-efa.notion.site/369c62bbe50a4b20bbd7b28a6a485f0e
 -   외부 라이브러리
     -   React-kakao-maps-sdk⭐️: https://github.com/JaeSeoKim/react-kakao-maps-sdk
     -   Kakao maps: https://apis.map.kakao.com/
